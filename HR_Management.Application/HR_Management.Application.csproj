@@ -16,8 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\LeaveType\Handlers\Commonds\" />
-    <Folder Include="Features\LeaveType\Request\Commonds\" />
+    <Folder Include="Features\LeaveAllocations\Handlers\Commonds\" />
+    <Folder Include="Features\LeaveAllocations\Requests\Commonds\" />
+    <Folder Include="Features\LeaveRequests\Handlers\Commonds\" />
+    <Folder Include="Features\LeaveRequests\Requests\Commonds\" />
+    <Folder Include="Features\LeaveTypes\Handlers\Commonds\" />
+    <Folder Include="Features\LeaveTypes\Requests\Commonds\" />
   </ItemGroup>
 
 </Project>
