@@ -15,13 +15,4 @@
     <ProjectReference Include="..\HR_Managment.Domain\HR_Management.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\LeaveAllocations\Handlers\Commonds\" />
-    <Folder Include="Features\LeaveAllocations\Requests\Commonds\" />
-    <Folder Include="Features\LeaveRequests\Handlers\Commonds\" />
-    <Folder Include="Features\LeaveRequests\Requests\Commonds\" />
-    <Folder Include="Features\LeaveTypes\Handlers\Commonds\" />
-    <Folder Include="Features\LeaveTypes\Requests\Commonds\" />
-  </ItemGroup>
-
 </Project>
