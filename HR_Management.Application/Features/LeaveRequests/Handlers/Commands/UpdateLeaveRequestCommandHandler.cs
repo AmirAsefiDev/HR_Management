@@ -19,9 +19,9 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
     public async Task<Unit> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
     {
         var leaveRequest = await _leaveRequestRepo.Get(request.Id);
-        if (request.LeaveRequestDto != null)
+        if (request.UpdateLeaveRequestDto != null)
         {
-            _mapper.Map(request.LeaveRequestDto, leaveRequest);
+            _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
             await _leaveRequestRepo.Update(leaveRequest);
             return Unit.Value;
         }
