@@ -2,15 +2,16 @@
 
 namespace HR_Management.Application.DTOs.LeaveType.Validators;
 
-public class CreateLeaveTypeDtoValidator : AbstractValidator<CreateLeaveTypeDto>
+public class ILeaveTypeDtoValidator : AbstractValidator<ILeaveTypeDto>
 {
-    public CreateLeaveTypeDtoValidator()
+    public ILeaveTypeDtoValidator()
     {
         RuleFor(l => l.Name)
             .NotEmpty()
             .WithMessage("{PropertyName} is required.")
             .NotNull()
             .WithMessage("{PropertyName} must not exceed 50");
+
         RuleFor(p => p.DefaultDay)
             .NotEmpty()
             .WithMessage("{PropertyName} is required")

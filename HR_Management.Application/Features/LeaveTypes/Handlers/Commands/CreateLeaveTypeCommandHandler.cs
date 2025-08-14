@@ -22,7 +22,7 @@ public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeComm
     {
         #region Validations
 
-        var validator = new CreateLeaveTypeDtoValidator();
+        var validator = new ILeaveTypeDtoValidator();
         var validationResult = await validator.ValidateAsync(request.LeaveTypeDto);
 
         if (!validationResult.IsValid)

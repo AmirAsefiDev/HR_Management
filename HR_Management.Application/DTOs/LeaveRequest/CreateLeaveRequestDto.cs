@@ -8,8 +8,10 @@ public class CreateLeaveRequestDto : BaseDto
     public DateTime EndDate { get; set; }
     public int LeaveTypeId { get; set; }
     public DateTime DateRequested { get; set; }
+
     public string RequestComments { get; set; }
-    public DateTime DateActioned { get; set; }
-    public bool? Aoorived { get; set; }
-    public bool Cancelled { get; set; }
+
+    //public DateTime DateActioned { get; set; }
+    //public bool? Aoorived { get; set; }
+    //public bool Cancelled { get; set; }
 }
