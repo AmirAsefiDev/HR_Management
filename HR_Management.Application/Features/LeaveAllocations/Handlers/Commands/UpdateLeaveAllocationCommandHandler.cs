@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HR_Management.Application.DTOs.LeaveAllocation.Validators;
+using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Commands;
 using HR_Management.Application.Persistence.Contracts;
 using HR_Management.Domain;
@@ -26,7 +27,7 @@ public class UpdateLeaveAllocationCommandHandler : IRequestHandler<UpdateLeaveAl
     {
         var validator = new UpdateLeaveAllocationDtoValidator(_leaveTypeRepo);
         var validationResult = await validator.ValidateAsync(request.UpdateLeaveAllocationDto);
-        if (!validationResult.IsValid) throw new Exception("Validation failed");
+        if (!validationResult.IsValid) throw new ValidationException(validationResult);
 
         var leaveAllocation = await _leaveAllocationRepo.Get(request.UpdateLeaveAllocationDto.Id);
         _mapper.Map<LeaveAllocation>(request.UpdateLeaveAllocationDto);
