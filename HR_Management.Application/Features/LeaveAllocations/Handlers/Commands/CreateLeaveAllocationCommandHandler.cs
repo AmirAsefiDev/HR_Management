@@ -7,13 +7,13 @@ using MediatR;
 
 namespace HR_Management.Application.Features.LeaveAllocations.Handlers.Commands;
 
-public class UpdateLeaveAllocationCommandHandler : IRequestHandler<UpdateLeaveAllocationCommand, Unit>
+public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAllocationCommand, int>
 {
     private readonly ILeaveAllocationRepository _leaveAllocationRepo;
     private readonly ILeaveTypeRepository _leaveTypeRepo;
     private readonly IMapper _mapper;
 
-    public UpdateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepo,
+    public CreateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepo,
         IMapper mapper,
         ILeaveTypeRepository leaveTypeRepo)
     {
@@ -22,15 +22,15 @@ public class UpdateLeaveAllocationCommandHandler : IRequestHandler<UpdateLeaveAl
         _leaveTypeRepo = leaveTypeRepo;
     }
 
-    public async Task<Unit> Handle(UpdateLeaveAllocationCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
     {
-        var validator = new UpdateLeaveAllocationDtoValidator(_leaveTypeRepo);
-        var validationResult = await validator.ValidateAsync(request.UpdateLeaveAllocationDto);
+        var validator = new CreateLeaveAllocationDtoValidator(_leaveTypeRepo);
+        var validationResult = await validator.ValidateAsync(request.CreateLeaveAllocationDto);
+
         if (!validationResult.IsValid) throw new Exception("Validation failed");
 
-        var leaveAllocation = await _leaveAllocationRepo.Get(request.UpdateLeaveAllocationDto.Id);
-        _mapper.Map<LeaveAllocation>(request.UpdateLeaveAllocationDto);
-        await _leaveAllocationRepo.Update(leaveAllocation);
-        return Unit.Value;
+        var leaveAllocation = _mapper.Map<LeaveAllocation>(request.CreateLeaveAllocationDto);
+        leaveAllocation = await _leaveAllocationRepo.Add(leaveAllocation);
+        return leaveAllocation.Id;
     }
 }
