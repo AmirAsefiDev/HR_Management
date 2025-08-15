@@ -3,11 +3,11 @@ using HR_Management.Application.Persistence.Contracts;
 
 namespace HR_Management.Application.DTOs.LeaveRequest.Validators;
 
-public class ILeaveRequestValidator : AbstractValidator<ILeaveRequestDto>
+public class ILeaveRequestDtoValidator : AbstractValidator<ILeaveRequestDto>
 {
     private readonly ILeaveTypeRepository _leaveTypeRepo;
 
-    public ILeaveRequestValidator(ILeaveTypeRepository leaveTypeRepo)
+    public ILeaveRequestDtoValidator(ILeaveTypeRepository leaveTypeRepo)
     {
         _leaveTypeRepo = leaveTypeRepo;
         RuleFor(l => l.StartDate)

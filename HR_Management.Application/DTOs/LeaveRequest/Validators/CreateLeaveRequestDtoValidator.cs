@@ -10,6 +10,6 @@ public class CreateLeaveRequestDtoValidator : AbstractValidator<CreateLeaveReque
     public CreateLeaveRequestDtoValidator(ILeaveTypeRepository leaveTypeRepo)
     {
         _leaveTypeRepo = leaveTypeRepo;
-        Include(new ILeaveRequestValidator(_leaveTypeRepo));
+        Include(new ILeaveRequestDtoValidator(_leaveTypeRepo));
     }
 }
