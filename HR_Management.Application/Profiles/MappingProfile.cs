@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HR_Management.Application.DTOs.LeaveAllocation;
 using HR_Management.Application.DTOs.LeaveRequest;
+using HR_Management.Application.DTOs.LeaveStatus;
 using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Domain;
 
@@ -31,6 +32,14 @@ public class MappingProfile : Profile
 
         CreateMap<LeaveType, LeaveTypeDto>().ReverseMap();
         CreateMap<LeaveType, CreateLeaveTypeDto>().ReverseMap();
+
+        #endregion
+
+        #region LeaveStatus Mapping
+
+        CreateMap<LeaveStatus, LeaveStatusDto>().ReverseMap();
+        CreateMap<LeaveStatus, CreateLeaveStatusDto>().ReverseMap();
+        CreateMap<LeaveStatus, UpdateLeaveStatusDto>().ReverseMap();
 
         #endregion
     }

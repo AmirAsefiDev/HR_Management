@@ -37,7 +37,9 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
             //throw new ValidationException(validationResult);
             response.Success = false;
             response.Message = "Creation failed";
-            response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            response.Errors = validationResult.Errors
+                .Select(e => e.ErrorMessage)
+                .ToList();
         }
 
 
