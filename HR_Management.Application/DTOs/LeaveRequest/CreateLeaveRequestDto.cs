@@ -10,6 +10,7 @@ public class CreateLeaveRequestDto : BaseDto, ILeaveRequestDto
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int LeaveTypeId { get; set; }
+    public int LeaveStatusId { get; set; }
 
     //public DateTime DateActioned { get; set; }
     //public bool? Aoorived { get; set; }

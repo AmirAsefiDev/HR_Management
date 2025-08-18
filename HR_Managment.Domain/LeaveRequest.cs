@@ -11,4 +11,6 @@ public class LeaveRequest : BaseDomainEntity
     public DateTime DateActioned { get; set; }
     public bool? Aoorived { get; set; }
     public bool Cancelled { get; set; }
+    public LeaveStatus LeaveStatus { get; set; }
+    public int LeaveStatusId { get; set; }
 }
