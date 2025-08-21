@@ -4,7 +4,15 @@ namespace HR_Management.Application.Persistence.Contracts;
 
 public interface ILeaveRequestRepository : IGenericRepository<LeaveRequest>
 {
+    public enum ApprovalStatuses
+    {
+        Pending = 1,
+        Approved = 2,
+        Rejected = 3,
+        Cancelled = 4
+    }
+
     Task<LeaveRequest> GetLeaveRequestWithDetails(int id);
     Task<List<LeaveRequest>> GetLeaveRequestsWithDetails();
-    Task ChangeApprovalStatus(LeaveRequest leaveRequest, bool? approvalStatus);
+    Task ChangeApprovalStatus(LeaveRequest leaveRequest, ApprovalStatuses approvalStatuses = ApprovalStatuses.Pending);
 }
