@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HR_Management.Application\HR_Management.Application.csproj" />
+    <ProjectReference Include="..\HR_Managment.Domain\HR_Management.Domain.csproj" />
+    <ProjectReference Include="..\HR_Managment.Infrastructure\HR_Management.Infrastructure.csproj" />
+    <ProjectReference Include="..\HR_Managment.Persistence\HR_Management.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
