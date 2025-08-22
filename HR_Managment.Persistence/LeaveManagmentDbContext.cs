@@ -16,7 +16,9 @@ public class LeaveManagementDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("dbo");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
+        SeedData(modelBuilder);
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
@@ -40,5 +42,14 @@ public class LeaveManagementDbContext : DbContext
         }
 
         return base.SaveChanges();
+    }
+
+    private void SeedData(ModelBuilder modelBuilder)
+    {
+        //these are default status of each LeaveStatus
+        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 1, Name = "Pending" });
+        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 2, Name = "Approved" });
+        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 3, Name = "Rejected" });
+        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 4, Name = "Cancelled" });
     }
 }
