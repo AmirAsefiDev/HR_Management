@@ -4,6 +4,7 @@ using HR_Management.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management.Persistence.Migrations
 {
     [DbContext(typeof(LeaveManagementDbContext))]
-    partial class LeaveManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824083131_AddUserTokenUser")]
+    partial class AddUserTokenUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,11 +240,6 @@ namespace HR_Management.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -264,27 +262,12 @@ namespace HR_Management.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Mobile")
-                        .IsUnique();
-
                     b.ToTable("User", "dbo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2025, 8, 24, 20, 30, 17, 993, DateTimeKind.Local).AddTicks(3870),
-                            FullName = "Amir Asefi",
-                            IsActive = true,
-                            Mobile = "9123456789",
-                            PasswordHash = "AQAAAAEAACcQAAAAELaQ+ZNURszTKJSgtjKad7FZmubE351261A/odOknUzd5AumnBboK0TUvdl2R7SXiA==",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("HR_Management.Domain.UserToken", b =>

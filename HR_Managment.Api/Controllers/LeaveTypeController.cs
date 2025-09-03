@@ -2,12 +2,14 @@
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
 [Route("api/leave-type")]
 [ApiController]
+[Authorize]
 public class LeaveTypeController : ControllerBase
 {
     private readonly IMediator _mediator;

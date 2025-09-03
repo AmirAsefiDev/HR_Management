@@ -1,0 +1,6 @@
+﻿namespace HR_Management.Application.DTOs.Authentication.RefreshToken;
+
+public class RefreshTokenRequestDto
+{
+    public string RefreshToken { get; set; }
+}

@@ -1,0 +1,64 @@
+﻿using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
+using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Application.DTOs.Authentication.RefreshToken;
+using HR_Management.Application.DTOs.Authentication.RefreshToken.Validators;
+using HR_Management.Application.DTOs.UserToken;
+using HR_Management.Application.Features.Authentication.Requests.Commands;
+using HR_Management.Common;
+using MediatR;
+
+namespace HR_Management.Application.Features.Authentication.Handlers.Commands;
+
+public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, ResultDto<RefreshTokenResponseDto>>
+{
+    private readonly IJWTTokenService _jwt;
+    private readonly IUserTokenRepository _userTokenRepo;
+
+    public RefreshTokenCommandHandler(IUserTokenRepository userTokenRepo, IJWTTokenService jwt)
+    {
+        _userTokenRepo = userTokenRepo;
+        _jwt = jwt;
+    }
+
+    public async Task<ResultDto<RefreshTokenResponseDto>> Handle(RefreshTokenCommand request,
+        CancellationToken cancellationToken)
+    {
+        var validator = new RefreshTokenDtoValidator(_userTokenRepo);
+        var validationResult = await validator.ValidateAsync(request.RefreshTokenRequestDto, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            var errorMessage = validationResult.Errors.First().ErrorMessage;
+            if (errorMessage.Contains("منقضی") || errorMessage.Contains("یافت نشد"))
+                return ResultDto<RefreshTokenResponseDto>.Failure(errorMessage, 401);
+
+            return ResultDto<RefreshTokenResponseDto>.Failure(errorMessage);
+        }
+
+        var userToken = await _userTokenRepo.FindByRefreshToken(request.RefreshTokenRequestDto.RefreshToken);
+        var tokenProducer = await _jwt.GenerateAsync(new UserTokenInput
+        {
+            UserId = userToken.UserId,
+            Email = userToken.User.Email,
+            FullName = userToken.User.FullName,
+            Role = userToken.User.Role
+        }, cancellationToken);
+
+        await _userTokenRepo.SaveToken(new UserTokenDto
+        {
+            UserId = userToken.UserId,
+            HashedToken = SecurityHelper.GetSHA256Hash(tokenProducer.AccessToken),
+            TokenExp = tokenProducer.AccessTokenExpiresAtUtc,
+            HashedRefreshToken = tokenProducer.RefreshToken,
+            RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
+        });
+
+        return ResultDto<RefreshTokenResponseDto>.Success(
+            new RefreshTokenResponseDto
+            {
+                AccessToken = tokenProducer.AccessToken,
+                RefreshToken = tokenProducer.RefreshToken
+            },
+            "توکن جدید ساخته شد.");
+    }
+}

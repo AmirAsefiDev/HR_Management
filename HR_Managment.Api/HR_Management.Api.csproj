@@ -4,10 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>HR_Management.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
 	  <PackageReference Include="MediatR" Version="13.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -16,10 +19,13 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HR_Management.Application\HR_Management.Application.csproj" />
+    <ProjectReference Include="..\HR_Management.Common\HR_Management.Common.csproj" />
     <ProjectReference Include="..\HR_Managment.Domain\HR_Management.Domain.csproj" />
     <ProjectReference Include="..\HR_Managment.Infrastructure\HR_Management.Infrastructure.csproj" />
     <ProjectReference Include="..\HR_Managment.Persistence\HR_Management.Persistence.csproj" />

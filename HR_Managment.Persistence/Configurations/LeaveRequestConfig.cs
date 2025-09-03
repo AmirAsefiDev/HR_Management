@@ -20,12 +20,12 @@ public class LeaveRequestConfig : IEntityTypeConfiguration<LeaveRequest>
             .HasColumnType("datetime2");
 
         builder.HasOne(x => x.LeaveType)
-            .WithMany()
+            .WithMany(x => x.LeaveRequests)
             .HasForeignKey(x => x.LeaveTypeId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.LeaveStatus)
-            .WithMany()
+            .WithMany(x => x.LeaveRequests)
             .HasForeignKey(x => x.LeaveStatusId)
             .OnDelete(DeleteBehavior.NoAction);
 

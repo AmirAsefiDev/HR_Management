@@ -1,25 +1,22 @@
-﻿using HR_Management.Domain;
+﻿using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Persistence;
 
-public class LeaveManagementDbContext : DbContext
+public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
 {
     public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
     {
     }
 
-    public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
-    public DbSet<LeaveRequest> LeaveRequests { get; set; }
-    public DbSet<LeaveType> LeaveTypes { get; set; }
-    public DbSet<LeaveStatus> LeaveStatuses { get; set; }
+    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<LeaveAllocation> LeaveAllocations { get; set; }
+    public virtual DbSet<LeaveRequest> LeaveRequests { get; set; }
+    public virtual DbSet<LeaveType> LeaveTypes { get; set; }
+    public virtual DbSet<LeaveStatus> LeaveStatuses { get; set; }
+    public virtual DbSet<UserToken> UserTokens { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.HasDefaultSchema("dbo");
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
-        SeedData(modelBuilder);
-    }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = new())
@@ -44,8 +41,25 @@ public class LeaveManagementDbContext : DbContext
         return base.SaveChanges();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("dbo");
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
+        SeedData(modelBuilder);
+    }
+
     private void SeedData(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasData(new User
+        {
+            Id = 1,
+            FullName = "Amir Asefi",
+            Mobile = "9123456789",
+            PasswordHash = "AQAAAAEAACcQAAAAELaQ+ZNURszTKJSgtjKad7FZmubE351261A/odOknUzd5AumnBboK0TUvdl2R7SXiA==",
+            Role = "Admin",
+            CreatedAt = DateTime.Now
+        });
+
         //these are default status of each LeaveStatus
         modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 1, Name = "Pending" });
         modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 2, Name = "Approved" });

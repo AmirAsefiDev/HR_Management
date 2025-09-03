@@ -16,7 +16,7 @@ public class LeaveAllocationConfig : IEntityTypeConfiguration<LeaveAllocation>
         builder.Property(x => x.Period).IsRequired();
 
         builder.HasOne(x => x.LeaveType)
-            .WithMany()
+            .WithMany(x => x.LeaveAllocations)
             .HasForeignKey(x => x.LeaveTypeId)
             .OnDelete(DeleteBehavior.NoAction);
     }
