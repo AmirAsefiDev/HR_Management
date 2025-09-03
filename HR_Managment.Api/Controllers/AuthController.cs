@@ -1,4 +1,5 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Application.DTOs.Authentication.Login;
 using HR_Management.Application.DTOs.Authentication.RefreshToken;
 using HR_Management.Application.Features.Authentication.Requests.Commands;
 using HR_Management.Common;
@@ -27,6 +28,21 @@ public class AuthController : ControllerBase
         _userRepo = userRepo;
         _configuration = configuration;
         _mediator = mediator;
+    }
+
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(ResultDto<RefreshTokenResponseDto>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResultDto<RefreshTokenResponseDto>), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ResultDto<RefreshTokenResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+    {
+        var command = new LoginCommand
+        {
+            LoginRequestDto = request
+        };
+        var result = await _mediator.Send(command);
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpPost("refresh-token")]
