@@ -1,8 +1,8 @@
-﻿using HR_Management.Application.Contracts.Persistence;
+﻿using HR_Management.Application.Contracts.Persistence.Context;
 using HR_Management.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace HR_Management.Persistence;
+namespace HR_Management.Persistence.Context;
 
 public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
 {
@@ -11,6 +11,7 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
     }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
     public virtual DbSet<LeaveAllocation> LeaveAllocations { get; set; }
     public virtual DbSet<LeaveRequest> LeaveRequests { get; set; }
     public virtual DbSet<LeaveType> LeaveTypes { get; set; }
@@ -55,7 +56,7 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
             Id = 1,
             FullName = "Amir Asefi",
             Mobile = "9123456789",
-            PasswordHash = "AQAAAAEAACcQAAAAELaQ+ZNURszTKJSgtjKad7FZmubE351261A/odOknUzd5AumnBboK0TUvdl2R7SXiA==",
+            PasswordHash = "AQAAAAEAACcQAAAAECLoPiPh/lUma22MQhg2lQABEBIb/P2SIPqIBNC/Sg5QoQQMJqlXRYMclDsTIJEwIQ==",
             Role = "Admin",
             CreatedAt = DateTime.Now
         });

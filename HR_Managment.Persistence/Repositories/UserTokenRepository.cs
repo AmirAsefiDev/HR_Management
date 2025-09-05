@@ -2,6 +2,7 @@
 using HR_Management.Application.DTOs.UserToken;
 using HR_Management.Common;
 using HR_Management.Domain;
+using HR_Management.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Persistence.Repositories;
@@ -17,7 +18,9 @@ public class UserTokenRepository : IUserTokenRepository
 
     public async Task<bool> CheckExistToken(string token)
     {
-        throw new NotImplementedException();
+        var hashedToken = SecurityHelper.GetSHA256Hash(token);
+        var userToken = await _context.UserTokens.FirstOrDefaultAsync(ut => ut.HashedToken == hashedToken);
+        return userToken is not null;
     }
 
     public async Task<UserTokenDto?> FindByRefreshToken(string refreshToken)
@@ -41,7 +44,11 @@ public class UserTokenRepository : IUserTokenRepository
 
     public async Task<bool> Logout(int userId)
     {
-        throw new NotImplementedException();
+        var userTokens = await _context.UserTokens
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+        _context.UserTokens.RemoveRange(userTokens);
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task SaveToken(UserTokenDto userToken)

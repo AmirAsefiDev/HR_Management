@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using HR_Management.Application.Contracts.Persistence;
 
-namespace HR_Management.Application.DTOs.Authentication.RefreshToken.Validators;
+namespace HR_Management.Application.DTOs.Authentication.RefreshToken.Validator;
 
 public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto>
 {

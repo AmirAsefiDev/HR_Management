@@ -1,5 +1,6 @@
 ﻿using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Application.Contracts.Persistence.Context;
 using HR_Management.Application.DTOs.Authentication.Login;
 using HR_Management.Application.DTOs.Authentication.Login.Validator;
 using HR_Management.Application.DTOs.UserToken;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Application.Features.Authentication.Handlers.Commands;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<LoginResponseDto>>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<LoginDto>>
 {
     private readonly ILeaveManagementDbContext _context;
     private readonly IJWTTokenService _jwtService;
@@ -27,27 +28,27 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
         _userTokenRepo = userTokenRepo;
     }
 
-    public async Task<ResultDto<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<LoginDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var validator = new LoginValidator();
         var validatorResult = await validator.ValidateAsync(request.LoginRequestDto, cancellationToken);
         if (!validatorResult.IsValid)
         {
             var errorMessage = validatorResult.Errors.First().ErrorMessage;
-            return ResultDto<LoginResponseDto>.Failure(errorMessage);
+            return ResultDto<LoginDto>.Failure(errorMessage);
         }
 
         var formatedMobile = Convertors.ConvertMobileToRawFormat(request.LoginRequestDto.Mobile);
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
 
         if (user == null)
-            return ResultDto<LoginResponseDto>.Failure(
+            return ResultDto<LoginDto>.Failure(
                 "کاربری با این شماره تلفن ثبت نام نکرده،لطفا جهت ثبت نام اقدام نمایید.", 409);
 
         var passwordHasher = new PasswordHasher();
         var verifyPasswordResult = passwordHasher.VerifyPassword(user.PasswordHash, request.LoginRequestDto.Password);
         if (!verifyPasswordResult)
-            return ResultDto<LoginResponseDto>.Failure("شماره تلفن یا رمز عبور وارد شده نادرست است");
+            return ResultDto<LoginDto>.Failure("شماره تلفن یا رمز عبور وارد شده نادرست است");
 
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
@@ -65,10 +66,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             UserId = user.Id
         });
 
-        return ResultDto<LoginResponseDto>.Success(new LoginResponseDto
+        return ResultDto<LoginDto>.Success(new LoginDto
         {
             AccessToken = tokenProducer.AccessToken,
-            RefreshToken = tokenProducer.RefreshToken
+            RefreshToken = tokenProducer.RefreshToken,
+            RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
         }, "ورود با موفقیت انجام شد.");
     }
 }

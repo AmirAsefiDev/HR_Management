@@ -1,4 +1,5 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Persistence.Repositories;

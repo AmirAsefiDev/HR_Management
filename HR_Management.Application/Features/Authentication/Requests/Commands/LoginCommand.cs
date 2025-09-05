@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HR_Management.Application.Features.Authentication.Requests.Commands;
 
-public class LoginCommand : IRequest<ResultDto<LoginResponseDto>>
+public class LoginCommand : IRequest<ResultDto<LoginDto>>
 {
     public LoginRequestDto LoginRequestDto { get; set; }
 }

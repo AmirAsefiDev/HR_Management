@@ -1,9 +1,9 @@
-﻿using HR_Management.Application.Contracts.Infrastructure;
+﻿using ERP.Application.Interfaces.Email;
+using ERP.Infrastructure.ExternalServices.Email;
 using HR_Management.Application.Contracts.Infrastructure.Authentication;
 using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using HR_Management.Application.Models;
 using HR_Management.Infrastructure.Authentication;
-using HR_Management.Infrastructure.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +15,7 @@ public static class InfrastructureServicesRegistration
         IConfiguration configuration)
     {
         services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
-        services.AddTransient<IEmailSender, EmailSender>();
+        services.AddTransient<IEmailService, EmailService>();
 
         services.AddScoped<ITokenValidator, TokenValidator>();
         services.Configure<JwtOptions>(configuration.GetSection("JWTConfig"));

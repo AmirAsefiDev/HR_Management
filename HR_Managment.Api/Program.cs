@@ -2,9 +2,10 @@ using System.Text;
 using HR_Management.Api.Middleware;
 using HR_Management.Application;
 using HR_Management.Application.Contracts.Infrastructure.Authentication;
-using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Application.Contracts.Persistence.Context;
 using HR_Management.Infrastructure;
 using HR_Management.Persistence;
+using HR_Management.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -21,6 +22,9 @@ builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
+builder.Services.AddMediatR(config =>
+    config.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
+
 builder.Services.AddSwaggerGen(s =>
 {
     s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "HR_Management.Api.xml"), true);
@@ -28,6 +32,25 @@ builder.Services.AddSwaggerGen(s =>
     {
         Title = "HR_Management.Api",
         Version = "v1 "
+    });
+    var security = new OpenApiSecurityScheme
+    {
+        Name = "JWT Auth",
+        Description = "Please Enter your token.",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+    s.AddSecurityDefinition(security.Reference.Id, security);
+    s.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { security, new List<string>() }
     });
 });
 
@@ -124,7 +147,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthentication();
-builder.Services.AddControllers();
+// builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
@@ -148,4 +173,9 @@ app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
+app.MapRazorPages();
+app.MapControllerRoute(
+    "default",
+    "{controller:Home}/{action=Index}/{id?}"
+);
 app.Run();

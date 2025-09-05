@@ -11,5 +11,6 @@ public static class ApplicationServicesRegistration
         //services.AddAutoMapper(typeof(MappingProfile));
         // اینجا می آید در اسمبلی فعلی می گردد و هر تعداد پروفایل AutoMapper را پیدا می کند و آن ها را کانفیگ می کند.
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddHttpContextAccessor();
     }
 }

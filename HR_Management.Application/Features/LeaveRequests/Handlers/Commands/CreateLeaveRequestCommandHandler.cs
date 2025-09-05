@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
-using HR_Management.Application.Contracts.Infrastructure;
+using ERP.Application.Interfaces.Email;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveRequest.Validators;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
-using HR_Management.Application.Models;
 using HR_Management.Application.Responses;
 using HR_Management.Domain;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace HR_Management.Application.Features.LeaveRequests.Handlers.Commands;
 
 public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
 {
-    private readonly IEmailSender _emailSender;
+    private readonly IEmailService _emailService;
     private readonly ILeaveRequestRepository _leaveRequestRepo;
     private readonly ILeaveStatusRepository _leaveStatusRepo;
     private readonly ILeaveTypeRepository _leaveTypeRepo;
+    private readonly ILogger<CreateLeaveRequestCommandHandler> _logger;
     private readonly IMapper _mapper;
 
     public CreateLeaveRequestCommandHandler(
@@ -23,14 +24,15 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         IMapper mapper,
         ILeaveTypeRepository leaveTypeRepo,
         ILeaveStatusRepository leaveStatusRepo,
-        IEmailSender emailSender
-    )
+        IEmailService emailService,
+        ILogger<CreateLeaveRequestCommandHandler> logger)
     {
         _leaveRequestRepo = leaveRequestRepo;
         _mapper = mapper;
         _leaveTypeRepo = leaveTypeRepo;
         _leaveStatusRepo = leaveStatusRepo;
-        _emailSender = emailSender;
+        _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<BaseCommandResponse> Handle(CreateLeaveRequestCommand request,
@@ -59,20 +61,22 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         response.Message = "Creation successful";
         response.Id = leaveRequest.Id;
 
-        var email = new Email
+        var email = new EmailDto
         {
-            To = "amirasefi.info@gmail.com",
-            Subject = "Leave Request Submitted",
-            Body =
-                $"Your leave request for {request.CreateLeaveRequestDto.StartDate} \t\n to {request.CreateLeaveRequestDto.EndDate} has been submitted"
+            Destination = "amirasefi.info@gmail.com",
+            Title = "Leave Request Submitted",
+            MessageBody =
+                $"Your leave request for {request.CreateLeaveRequestDto.StartDate} \t\n " +
+                $"to {request.CreateLeaveRequestDto.EndDate} has been submitted"
         };
         try
         {
-            await _emailSender.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
         catch (Exception e)
         {
-            //log
+            _logger.LogError(e, "an error happened while ending email to create leaveRequest");
+            throw new Exception(e.Message);
         }
 
         return response;

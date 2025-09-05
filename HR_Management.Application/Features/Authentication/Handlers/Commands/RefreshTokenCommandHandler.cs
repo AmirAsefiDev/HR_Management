@@ -1,7 +1,7 @@
 ﻿using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.Authentication.RefreshToken;
-using HR_Management.Application.DTOs.Authentication.RefreshToken.Validators;
+using HR_Management.Application.DTOs.Authentication.RefreshToken.Validator;
 using HR_Management.Application.DTOs.UserToken;
 using HR_Management.Application.Features.Authentication.Requests.Commands;
 using HR_Management.Common;
@@ -9,7 +9,7 @@ using MediatR;
 
 namespace HR_Management.Application.Features.Authentication.Handlers.Commands;
 
-public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, ResultDto<RefreshTokenResponseDto>>
+public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, ResultDto<RefreshTokenDto>>
 {
     private readonly IJWTTokenService _jwt;
     private readonly IUserTokenRepository _userTokenRepo;
@@ -20,7 +20,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         _jwt = jwt;
     }
 
-    public async Task<ResultDto<RefreshTokenResponseDto>> Handle(RefreshTokenCommand request,
+    public async Task<ResultDto<RefreshTokenDto>> Handle(RefreshTokenCommand request,
         CancellationToken cancellationToken)
     {
         var validator = new RefreshTokenDtoValidator(_userTokenRepo);
@@ -30,9 +30,9 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         {
             var errorMessage = validationResult.Errors.First().ErrorMessage;
             if (errorMessage.Contains("منقضی") || errorMessage.Contains("یافت نشد"))
-                return ResultDto<RefreshTokenResponseDto>.Failure(errorMessage, 401);
+                return ResultDto<RefreshTokenDto>.Failure(errorMessage, 401);
 
-            return ResultDto<RefreshTokenResponseDto>.Failure(errorMessage);
+            return ResultDto<RefreshTokenDto>.Failure(errorMessage);
         }
 
         var userToken = await _userTokenRepo.FindByRefreshToken(request.RefreshTokenRequestDto.RefreshToken);
@@ -53,11 +53,12 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
             RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
         });
 
-        return ResultDto<RefreshTokenResponseDto>.Success(
-            new RefreshTokenResponseDto
+        return ResultDto<RefreshTokenDto>.Success(
+            new RefreshTokenDto
             {
                 AccessToken = tokenProducer.AccessToken,
-                RefreshToken = tokenProducer.RefreshToken
+                RefreshToken = tokenProducer.RefreshToken,
+                RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
             },
             "توکن جدید ساخته شد.");
     }

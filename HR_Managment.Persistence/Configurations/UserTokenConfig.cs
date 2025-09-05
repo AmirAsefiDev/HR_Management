@@ -8,6 +8,7 @@ public class UserTokenConfig : IEntityTypeConfiguration<UserToken>
 {
     public void Configure(EntityTypeBuilder<UserToken> builder)
     {
+        builder.ToTable("UserToken");
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.HashedToken).HasDefaultValue("nvarchar(max)");

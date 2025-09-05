@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -50,6 +51,18 @@ public class JWTTokenService : IJWTTokenService
             AccessToken = accessToken,
             AccessTokenExpiresAtUtc = accessExp
         };
+    }
+
+    public void SerRefreshTokenCookie(HttpContext httpContext, string refreshToken, DateTime expires)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = expires
+        };
+        httpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
 
     private static string GenerateSecureRefreshToken()
