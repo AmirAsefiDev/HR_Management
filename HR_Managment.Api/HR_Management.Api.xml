@@ -4,5 +4,40 @@
         <name>HR_Management.Api</name>
     </assembly>
     <members>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get">
+            <summary>
+                receive all leave types
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(System.Int32)">
+            <summary>
+                receive a leave type by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Post(HR_Management.Application.DTOs.LeaveType.CreateLeaveTypeDto)">
+            <summary>
+                Add new Leave type in Database
+            </summary>
+            <param name="leaveType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Put(System.Int32,HR_Management.Application.DTOs.LeaveType.LeaveTypeDto)">
+            <summary>
+                Edit Leave Type info
+            </summary>
+            <param name="id"></param>
+            <param name="leaveType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Delete(System.Int32)">
+            <summary>
+                Delete Leave Type with id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

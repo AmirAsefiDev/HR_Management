@@ -1,12 +1,11 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
-using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
-using HR_Management.Domain;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveTypes.Handlers.Commands;
 
-public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeCommand, Unit>
+public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeCommand, ResultDto>
 {
     private readonly ILeaveTypeRepository _leaveTypeRepo;
 
@@ -16,13 +15,12 @@ public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeComm
         _leaveTypeRepo = leaveTypeRepo;
     }
 
-    public async Task<Unit> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
     {
         var leaveType = await _leaveTypeRepo.Get(request.Id);
-        if (leaveType == null)
-            throw new NotFoundException(nameof(LeaveType), request.Id);
+        if (leaveType == null) return ResultDto.Failure("نوع مرخصی مورد نظر پیدا نشد.", request.Id);
 
         await _leaveTypeRepo.Delete(leaveType);
-        return Unit.Value;
+        return ResultDto.Success("نوع مرخصی مورد نظر با موفقیت حذف شد");
     }
 }

@@ -3,10 +3,11 @@
 public class ResultDto
 {
     public bool IsSuccess { get; set; }
-    public string Message { get; set; }
+    public string? Message { get; set; }
     public int StatusCode { get; set; } // 200, 400, 401
 
-    public static ResultDto Success(string message = "عملیات با موفقیت انجام شد", int statusCode = 200)
+    public static ResultDto Success(string message = "عملیات با موفقیت انجام شد",
+        int statusCode = 200)
     {
         return new ResultDto
         {
@@ -27,14 +28,15 @@ public class ResultDto
     }
 }
 
-public class ResultDto<T>
+public class ResultDto<T> : ResultDto
 {
-    public bool IsSuccess { get; set; }
-    public string Message { get; set; }
-    public int StatusCode { get; set; } // 200, 400, 401
-    public T Data { get; set; }
+    //public bool IsSuccess { get; set; }
+    //public string? Message { get; set; }
+    //public HttpStatusCode StatusCode { get; set; } // 200, 400, 401
+    public T? Data { get; set; }
 
-    public static ResultDto<T> Success(T data, string message = "عملیات با موفقیت انجام شد", int statusCode = 200)
+    public static ResultDto<T> Success(T data, string message = "عملیات با موفقیت انجام شد",
+        int statusCode = 200)
     {
         return new ResultDto<T>
         {

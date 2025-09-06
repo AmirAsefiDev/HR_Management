@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ResultDto<SignupDto>), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto<SignupResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Signup([FromBody] SignupRequestDto request)
+    public async Task<ActionResult> Signup([FromBody] SignupRequestDto request)
     {
         var command = new SignupCommand
         {
@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ResultDto<LoginDto>), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto<LoginResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+    public async Task<ActionResult> Login([FromBody] LoginRequestDto request)
     {
         var command = new LoginCommand
         {
@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ResultDto<RefreshTokenDto>), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<RefreshTokenResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> RefreshToken()
+    public async Task<ActionResult> RefreshToken()
     {
         var refreshToken = Request.Cookies["refreshToken"];
         if (string.IsNullOrEmpty(refreshToken))
@@ -110,7 +110,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ForgetPassword(ForgetPasswordRequestDto request)
+    public async Task<ActionResult> ForgetPassword(ForgetPasswordRequestDto request)
     {
         var command = new ForgetPasswordCommand
         {
@@ -124,7 +124,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ResetPassword(ResetPasswordRequestDto request)
+    public async Task<ActionResult> ResetPassword(ResetPasswordRequestDto request)
     {
         var command = new ResetPasswordCommand
         {
@@ -137,7 +137,7 @@ public class AuthController : ControllerBase
     [HttpPost("logout")]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [Authorize]
-    public async Task<IActionResult> Logout()
+    public async Task<ActionResult> Logout()
     {
         var userId = User.Claims.First(u => u.Type == "UserId").Value;
 

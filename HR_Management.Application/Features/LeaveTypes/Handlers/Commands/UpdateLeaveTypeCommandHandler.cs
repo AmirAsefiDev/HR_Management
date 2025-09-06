@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveType.Validators;
-using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveTypes.Handlers.Commands;
 
-public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCommand, Unit>
+public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCommand, ResultDto>
 {
     private readonly ILeaveTypeRepository _leaveTypeRepo;
     private readonly IMapper _mapper;
@@ -18,19 +18,19 @@ public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeComm
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
     {
         var validator = new UpdateLeaveTypeDtoValidator();
-        var validationResult = await validator.ValidateAsync(request.LeaveTypeDto);
+        var validationResult = await validator.ValidateAsync(request.LeaveTypeDto, cancellationToken);
 
         if (!validationResult.IsValid)
-            throw new ValidationException(validationResult);
+            return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
         var leaveType = await _leaveTypeRepo.Get(request.LeaveTypeDto.Id);
         _mapper.Map(request.LeaveTypeDto, leaveType);
 
         await _leaveTypeRepo.Update(leaveType);
 
-        return Unit.Value;
+        return ResultDto.Success("نوع مرخصی مورد نظر با موفقیت ویرایش شد.");
     }
 }

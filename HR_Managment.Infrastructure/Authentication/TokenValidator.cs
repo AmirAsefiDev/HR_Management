@@ -54,7 +54,7 @@ public class TokenValidator : ITokenValidator
         }
 
         var expirationTime = DateTimeOffset.FromUnixTimeSeconds(exp).UtcDateTime;
-        if (expirationTime < DateTime.Now)
+        if (expirationTime < DateTime.UtcNow)
         {
             context.Fail("Token has expired");
             return;
