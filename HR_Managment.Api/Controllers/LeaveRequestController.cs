@@ -73,7 +73,11 @@ public class LeaveRequestController : ControllerBase
     /// <param name="request">
     ///     The leave request data to create, including start date, end date, leave type,leave status , etc.
     /// </param>
-    /// <returns></returns>
+    /// <returns>
+    ///     - 200 (OK): Leave request created successfully
+    ///     - 400 (BadRequest): Validation failed or invalid input
+    ///     - 500 (InternalServerError): An unexpected error occurred
+    /// </returns>
     /// <remarks>
     ///     Sample request:
     ///     POST api/leave-request
@@ -85,7 +89,6 @@ public class LeaveRequestController : ControllerBase
     ///     "requestComments":"Need a leave for personal work"
     ///     }
     /// </remarks>
-    // POST api/leave-request
     [HttpPost]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
@@ -111,7 +114,7 @@ public class LeaveRequestController : ControllerBase
     ///     Updates the details of an existing leave request.
     /// </summary>
     /// <param name="id">
-    ///     The unique identifier of the leave request to be updated.
+    ///     The Id of the leave request to be updated.
     /// </param>
     /// <param name="request">
     ///     The updated leave request data (start date, end date, leave type, etc.).
@@ -132,7 +135,6 @@ public class LeaveRequestController : ControllerBase
     ///     "leaveStatusId": 2
     ///     }
     /// </remarks>
-    // PUT api/leave-request/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
@@ -189,22 +191,21 @@ public class LeaveRequestController : ControllerBase
     }
 
     /// <summary>
-    ///     Deletes an existing leave request by its unique identifier.
+    ///     Deletes an existing leave request by its Id.
     /// </summary>
     /// <param name="id">
-    ///     The unique identifier of the leave request to be deleted
+    ///     The Id of the leave request to be deleted
     /// </param>
     /// <returns>
     ///     Returns a <see cref="ResultDto" /> wrapped in an <see cref="ActionResult" />:
     ///     - 200 (OK) : Leave request successfully deleted
-    ///     - 400 (BadRequest) : Invalid request (e.g, Id is not valid)
+    ///     - 400 (BadRequest) : Invalid request (e.g, Id isn't valid)
     ///     - 500 (InternalServerError) : An unexpected error occurred
     /// </returns>
     /// <remarks>
     ///     Sample request:
     ///     DELETE /api/leave-request/5
     /// </remarks>
-    // DELETE api/leave-request/5
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]

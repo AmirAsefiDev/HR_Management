@@ -24,6 +24,6 @@ public class DeleteLeaveRequestCommandHandler : IRequestHandler<DeleteLeaveReque
             return ResultDto.Failure($"LeaveRequest with Id ={request.Id},didn't find.");
 
         await _leaveRequestRepo.Delete(leaveRequest);
-        return ResultDto.Success("LeaveRequest Deleted Correctly");
+        return ResultDto.Success("LeaveRequest deleted successfully");
     }
 }
