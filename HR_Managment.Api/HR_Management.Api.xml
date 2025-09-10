@@ -4,6 +4,74 @@
         <name>HR_Management.Api</name>
     </assembly>
     <members>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Put(System.Int32,HR_Management.Application.DTOs.LeaveRequest.UpdateLeaveRequestDto)">
+            <summary>
+                Updates the details of an existing leave request.
+            </summary>
+            <param name="id">
+                The unique identifier of the leave request to be updated.
+            </param>
+            <param name="request">
+                The updated leave request data (start date, end date, leave type, etc.).
+            </param>
+            <returns>
+                Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
+                - 200 (OK): Leave request updated successfully
+                - 400 (BadRequest): Validation failed or invalid input
+                - 500 (InternalServerError): An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                PUT /api/leave-request/5
+                {
+                "startDate": "2025-09-12",
+                "endDate": "2025-09-15",
+                "leaveTypeId": 1,
+                "leaveStatusId": 2
+                }
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.ChangeApprovalStatus(System.Int32,HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval.ChangeLeaveRequestApprovalRequestDto)">
+            <summary>
+                Updates the approval status of a specific leave request.
+            </summary>
+            <param name="id">The unique identifier of the leave request.</param>
+            <param name="request">
+                The request containing the new approval status.
+                Allowed values: Pending(1), Approved(2), Rejected(3), Cancelled(4).
+            </param>
+            <returns>
+                Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
+                - 200 (OK): Status successfully updated
+                - 400 (BadRequest): Invalid input data
+                - 500 (InternalServerError): An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                PATCH /api/leave-request/5/change-approval-status
+                {
+                "approvalStatus": "Approved"
+                }
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Delete(System.Int32)">
+            <summary>
+                Deletes an existing leave request by its unique identifier.
+            </summary>
+            <param name="id">
+                The unique identifier of the leave request to be deleted
+            </param>
+            <returns>
+                Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
+                - 200 (OK) : Leave request successfully deleted
+                - 400 (BadRequest) : Invalid request (e.g, Id is not valid)
+                - 500 (InternalServerError) : An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                DELETE /api/leave-request/5
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get">
             <summary>
                 receive all leave types

@@ -1,15 +1,17 @@
-﻿namespace HR_Management.Common;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace HR_Management.Common;
 
 public class ResultDto
 {
     public bool IsSuccess { get; set; }
     public string? Message { get; set; }
-    public int StatusCode { get; set; } // 200, 400, 401
+    public int StatusCode { get; set; } = StatusCodes.Status200OK; // 200, 400, 401 
 
     public static ResultDto Success(string message = "عملیات با موفقیت انجام شد",
-        int statusCode = 200)
+        int statusCode = StatusCodes.Status200OK)
     {
-        return new ResultDto
+        return new ResultDto()
         {
             IsSuccess = true,
             Message = message,
@@ -17,9 +19,9 @@ public class ResultDto
         };
     }
 
-    public static ResultDto Failure(string message, int statusCode = 400)
+    public static ResultDto Failure(string message, int statusCode = StatusCodes.Status400BadRequest)
     {
-        return new ResultDto
+        return new ResultDto ()
         {
             IsSuccess = false,
             Message = message,
@@ -38,7 +40,7 @@ public class ResultDto<T> : ResultDto
     public static ResultDto<T> Success(T data, string message = "عملیات با موفقیت انجام شد",
         int statusCode = 200)
     {
-        return new ResultDto<T>
+        return new ResultDto<T> ()
         {
             IsSuccess = true,
             Data = data,
@@ -49,7 +51,7 @@ public class ResultDto<T> : ResultDto
 
     public static ResultDto<T> Failure(string message, int statusCode = 400)
     {
-        return new ResultDto<T>
+        return new ResultDto<T> ()
         {
             IsSuccess = false,
             Message = message,

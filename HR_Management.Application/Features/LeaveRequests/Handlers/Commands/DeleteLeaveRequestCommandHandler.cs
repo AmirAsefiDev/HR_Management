@@ -1,12 +1,11 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
-using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
-using HR_Management.Domain;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveRequests.Handlers.Commands;
 
-public class DeleteLeaveRequestCommandHandler : IRequestHandler<DeleteLeaveRequestCommand, Unit>
+public class DeleteLeaveRequestCommandHandler : IRequestHandler<DeleteLeaveRequestCommand, ResultDto>
 {
     private readonly ILeaveRequestRepository _leaveRequestRepo;
 
@@ -15,13 +14,16 @@ public class DeleteLeaveRequestCommandHandler : IRequestHandler<DeleteLeaveReque
         _leaveRequestRepo = leaveRequestRepo;
     }
 
-    public async Task<Unit> Handle(DeleteLeaveRequestCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(DeleteLeaveRequestCommand request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+            return ResultDto.Failure("Enter LeaveRequestId Correctly.");
+
         var leaveRequest = await _leaveRequestRepo.Get(request.Id);
         if (leaveRequest == null)
-            throw new NotFoundException(nameof(LeaveRequest), request.Id);
+            return ResultDto.Failure($"LeaveRequest with Id ={request.Id},didn't find.");
 
         await _leaveRequestRepo.Delete(leaveRequest);
-        return Unit.Value;
+        return ResultDto.Success("LeaveRequest Deleted Correctly");
     }
 }

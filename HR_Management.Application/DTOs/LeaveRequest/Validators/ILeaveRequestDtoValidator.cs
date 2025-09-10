@@ -15,27 +15,29 @@ public class ILeaveRequestDtoValidator : AbstractValidator<ILeaveRequestDto>
         _leaveStatusRepo = leaveStatusRepo;
 
         RuleFor(l => l.StartDate)
-            .LessThan(l => l.EndDate).WithMessage("{PropertyName} must be before {ComparisonValue}");
+            .LessThan(l => l.EndDate)
+            .WithMessage("{PropertyName} must be before {ComparisonValue}");
 
         RuleFor(l => l.EndDate)
-            .GreaterThan(l => l.StartDate).WithMessage("{PropertyName} must be after {ComparisonValue}");
+            .GreaterThan(l => l.StartDate)
+            .WithMessage("{PropertyName} must be after {ComparisonValue}");
 
         RuleFor(l => l.LeaveTypeId)
             .GreaterThan(0)
             //optimized version
-            .MustAsync(async (id, token) => !await _leaveTypeRepo.Exist(id))
+            .MustAsync(async (id, token) => await _leaveTypeRepo.Exist(id))
             //simple version
             //.MustAsync(async (id, token) =>
             //{
             //    var leaveTypeExist = await _leaveRequestRepo.Exist(id);
-            //    return !leaveTypeExist;
+            //    return leaveTypeExist;
             //})
             .WithMessage("{PropertyName} doesn't exist");
 
         RuleFor(l => l.LeaveStatusId)
             .GreaterThan(0)
             //optimized version
-            .MustAsync(async (id, token) => !await _leaveTypeRepo.Exist(id))
+            .MustAsync(async (id, token) => await _leaveStatusRepo.Exist(id))
             .WithMessage("{PropertyName} doesn't exist");
     }
 }

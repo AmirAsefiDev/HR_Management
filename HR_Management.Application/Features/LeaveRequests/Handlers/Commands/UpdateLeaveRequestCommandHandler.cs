@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveRequest.Validators;
-using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveRequests.Handlers.Commands;
 
-public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveRequestCommand, Unit>
+public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveRequestCommand, ResultDto>
 {
     private readonly ILeaveRequestRepository _leaveRequestRepo;
     private readonly ILeaveStatusRepository _leaveStatusRepo;
@@ -26,25 +26,19 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         _leaveStatusRepo = leaveStatusRepo;
     }
 
-    public async Task<Unit> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
     {
         var validator = new UpdateLeaveRequestDtoValidator(_leaveTypeRepo, _leaveStatusRepo);
-        var validationResult = await validator.ValidateAsync(request.UpdateLeaveRequestDto);
+        var validationResult = await validator.ValidateAsync(request.UpdateLeaveRequestDto, cancellationToken);
 
-        if (!validationResult.IsValid) throw new ValidationException(validationResult);
+        if (!validationResult.IsValid) return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
         var leaveRequest = await _leaveRequestRepo.Get(request.Id);
-        if (request.UpdateLeaveRequestDto != null)
-        {
-            _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
-            await _leaveRequestRepo.Update(leaveRequest);
-            return Unit.Value;
-        }
+        if (request.UpdateLeaveRequestDto == null)
+            ResultDto.Failure($"No leave request found with Id = {request.Id}.");
 
-        if (request.ChangeLeaveRequestApprovalDto != null)
-            await _leaveRequestRepo.ChangeApprovalStatus(leaveRequest,
-                request.ChangeLeaveRequestApprovalDto.approvalStatus);
-
-        return Unit.Value;
+        _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
+        await _leaveRequestRepo.Update(leaveRequest);
+        return ResultDto.Success("LeaveRequest Updated Correctly.");
     }
 }
