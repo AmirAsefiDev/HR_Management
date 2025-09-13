@@ -4,6 +4,7 @@ using HR_Management.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management.Persistence.Migrations
 {
     [DbContext(typeof(LeaveManagementDbContext))]
-    partial class LeaveManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250911042419_AddRole")]
+    partial class AddRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,50 +117,6 @@ namespace HR_Management.Persistence.Migrations
                         {
                             t.HasCheckConstraint("CK_LeaveRequest_Date", "[StartDate] <= [EndDate]");
                         });
-                });
-
-            modelBuilder.Entity("HR_Management.Domain.LeaveRequestStatusHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChangedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LeaveRequestId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LeaveStatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChangedBy");
-
-                    b.HasIndex("LeaveRequestId");
-
-                    b.HasIndex("LeaveStatusId");
-
-                    b.ToTable("LeaveRequestStatusHistory", "dbo");
                 });
 
             modelBuilder.Entity("HR_Management.Domain.LeaveStatus", b =>
@@ -266,7 +225,7 @@ namespace HR_Management.Persistence.Migrations
                     b.Property<DateTime>("CreateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 11, 5, 24, 31, 954, DateTimeKind.Utc).AddTicks(5676));
+                        .HasDefaultValue(new DateTime(2025, 9, 11, 4, 24, 17, 612, DateTimeKind.Utc).AddTicks(5177));
 
                     b.Property<DateTime>("ExpireAt")
                         .HasColumnType("datetime2");
@@ -325,26 +284,14 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2025, 9, 11, 8, 54, 31, 955, DateTimeKind.Local).AddTicks(7109),
-                            Name = "Employee"
+                            DateCreated = new DateTime(2025, 9, 11, 7, 54, 17, 613, DateTimeKind.Local).AddTicks(4923),
+                            Name = "User"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2025, 9, 11, 8, 54, 31, 955, DateTimeKind.Local).AddTicks(7137),
+                            DateCreated = new DateTime(2025, 9, 11, 7, 54, 17, 613, DateTimeKind.Local).AddTicks(4939),
                             Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateCreated = new DateTime(2025, 9, 11, 8, 54, 31, 955, DateTimeKind.Local).AddTicks(7138),
-                            Name = "HR"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DateCreated = new DateTime(2025, 9, 11, 8, 54, 31, 955, DateTimeKind.Local).AddTicks(7140),
-                            Name = "Manager"
                         });
                 });
 
@@ -419,7 +366,7 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 9, 11, 8, 54, 31, 955, DateTimeKind.Local).AddTicks(7182),
+                            CreatedAt = new DateTime(2025, 9, 11, 7, 54, 17, 613, DateTimeKind.Local).AddTicks(4983),
                             FullName = "Amir Asefi",
                             IsActive = true,
                             Mobile = "9123456789",
@@ -494,33 +441,6 @@ namespace HR_Management.Persistence.Migrations
                     b.Navigation("LeaveType");
                 });
 
-            modelBuilder.Entity("HR_Management.Domain.LeaveRequestStatusHistory", b =>
-                {
-                    b.HasOne("HR_Management.Domain.User", "User")
-                        .WithMany("LeaveRequestStatusHistories")
-                        .HasForeignKey("ChangedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HR_Management.Domain.LeaveRequest", "LeaveRequest")
-                        .WithMany("LeaveRequestStatusHistories")
-                        .HasForeignKey("LeaveRequestId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HR_Management.Domain.LeaveStatus", "LeaveStatus")
-                        .WithMany("LeaveRequestStatusHistories")
-                        .HasForeignKey("LeaveStatusId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("LeaveRequest");
-
-                    b.Navigation("LeaveStatus");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HR_Management.Domain.PasswordResetToken", b =>
                 {
                     b.HasOne("HR_Management.Domain.User", "User")
@@ -554,15 +474,8 @@ namespace HR_Management.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HR_Management.Domain.LeaveRequest", b =>
-                {
-                    b.Navigation("LeaveRequestStatusHistories");
-                });
-
             modelBuilder.Entity("HR_Management.Domain.LeaveStatus", b =>
                 {
-                    b.Navigation("LeaveRequestStatusHistories");
-
                     b.Navigation("LeaveRequests");
                 });
 
@@ -580,8 +493,6 @@ namespace HR_Management.Persistence.Migrations
 
             modelBuilder.Entity("HR_Management.Domain.User", b =>
                 {
-                    b.Navigation("LeaveRequestStatusHistories");
-
                     b.Navigation("PasswordResetTokens");
 
                     b.Navigation("UserTokens");

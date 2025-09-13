@@ -5,11 +5,13 @@ namespace HR_Management.Application.Contracts.Persistence.Context;
 
 public interface ILeaveManagementDbContext
 {
+    public DbSet<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; }
     public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
     public DbSet<LeaveRequest> LeaveRequests { get; set; }
     public DbSet<LeaveType> LeaveTypes { get; set; }
     public DbSet<LeaveStatus> LeaveStatuses { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 

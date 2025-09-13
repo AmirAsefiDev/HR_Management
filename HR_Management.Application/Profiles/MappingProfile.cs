@@ -2,6 +2,8 @@
 using HR_Management.Application.DTOs.LeaveAllocation;
 using HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation;
 using HR_Management.Application.DTOs.LeaveRequest;
+using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
+using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
 using HR_Management.Application.DTOs.LeaveStatus;
 using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Domain;
@@ -14,8 +16,16 @@ public class MappingProfile : Profile
     {
         #region LeaveRequest Mapping
 
-        CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
-        CreateMap<LeaveRequest, LeaveRequestListDto>().ReverseMap();
+        CreateMap<LeaveRequest, LeaveRequestDto>()
+            .ForMember(dest => dest.LeaveStatusName, otp => otp.MapFrom(src => src.LeaveStatus.Name))
+            .ForMember(dest => dest.LeaveTypeName, otp => otp.MapFrom(src => src.LeaveType.Name))
+            .ReverseMap();
+
+        CreateMap<LeaveRequest, LeaveRequestListDto>()
+            .ForMember(dest => dest.LeaveStatusName, otp => otp.MapFrom(src => src.LeaveStatus.Name))
+            .ForMember(dest => dest.LeaveTypeName, otp => otp.MapFrom(src => src.LeaveType.Name))
+            .ReverseMap();
+
         CreateMap<LeaveRequest, CreateLeaveRequestDto>().ReverseMap();
         CreateMap<LeaveRequest, UpdateLeaveRequestDto>().ReverseMap();
 
@@ -23,9 +33,23 @@ public class MappingProfile : Profile
 
         #region LeaveAllocation Mapping
 
-        CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
+        CreateMap<LeaveAllocation, LeaveAllocationDto>()
+            .ForMember(dest => dest.LeaveTypeName, otp => otp.MapFrom(src => src.LeaveType.Name))
+            .ReverseMap();
+
         CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
         CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
+
+        #endregion
+
+        #region LeaveRequestStatusHistory Mapping
+
+        CreateMap<LeaveRequestStatusHistory, LeaveRequestStatusHistoryDto>()
+            .ForMember(dest => dest.ChangerName, otp => otp.MapFrom(src => src.User.FullName))
+            .ForMember(dest => dest.LeaveRequestName, otp => otp.MapFrom(src => src.LeaveRequest.RequestComments))
+            .ForMember(dest => dest.LeaveStatusName, otp => otp.MapFrom(src => src.LeaveStatus.Name))
+            .ForMember(dest => dest.ChangedAt, otp => otp.MapFrom(src => src.DateCreated))
+            .ReverseMap();
 
         #endregion
 

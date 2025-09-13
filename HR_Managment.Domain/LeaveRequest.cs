@@ -11,4 +11,9 @@ public class LeaveRequest : BaseDomainEntity
     public DateTime DateActioned { get; set; }
     public LeaveStatus LeaveStatus { get; set; }
     public int LeaveStatusId { get; set; }
+    public int UserId { get; set; }
+    public User User { get; set; }
+
+    public ICollection<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; } =
+        new List<LeaveRequestStatusHistory>();
 }

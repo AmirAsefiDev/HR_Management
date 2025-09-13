@@ -110,6 +110,16 @@
                 Sample request: GET: api/leave-request
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetMyRequest">
+            <summary>
+                Retrieves all leave requests submitted by the currently authenticated user.
+            </summary>
+            <returns>
+            </returns>
+            <remarks>
+                Sample request: GET: api/leave-request/me
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Get(System.Int32)">
             <summary>
                 Retrieves the details of a specific leave request by its Id
@@ -125,7 +135,20 @@
                 GET api/leave-request/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Post(HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetLeaveRequestStatusHistories(System.Int32)">
+            <summary>
+                Retrieves all status history of leave request with leaveRequestId
+            </summary>
+            <param name="id">
+                The Id of the leave request
+            </param>
+            <returns></returns>
+            <remarks>
+                Sample request:
+                GET api/leave-request/5/status-history
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Post(HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest.CreateLeaveRequestRequestDto)">
             <summary>
                 Creates a new leave request.
             </summary>

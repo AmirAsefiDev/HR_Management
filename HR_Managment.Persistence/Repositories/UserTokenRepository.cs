@@ -28,6 +28,7 @@ public class UserTokenRepository : IUserTokenRepository
         var hashedRefToken = SecurityHelper.GetSHA256Hash(refreshToken);
         var userToken = await _context.UserTokens
             .Include(userToken => userToken.User)
+            .Include(userToken => userToken.User.Role)
             .FirstOrDefaultAsync(t => t.HashedRefreshToken == hashedRefToken);
         return userToken == null
             ? null
@@ -38,7 +39,8 @@ public class UserTokenRepository : IUserTokenRepository
                 HashedRefreshToken = userToken.HashedRefreshToken,
                 HashedToken = userToken.HashedToken,
                 RefreshTokenExp = userToken.RefreshTokenExp,
-                TokenExp = userToken.TokenExp
+                TokenExp = userToken.TokenExp,
+                Role = userToken.User.Role
             };
     }
 

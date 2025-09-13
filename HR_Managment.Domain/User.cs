@@ -6,11 +6,19 @@ public class User : BaseDomainEntity
     public string Mobile { get; set; }
     public string? Email { get; set; }
     public string PasswordHash { get; set; }
-    public string Role { get; set; } = "User";
+
+    public int RoleId { get; set; } = 1;
+    public Role Role { get; set; }
+
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; } = true;
 
     public ICollection<UserToken> UserTokens { get; set; } = new List<UserToken>();
     public ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
+
+    public ICollection<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; } =
+        new List<LeaveRequestStatusHistory>();
+
+    public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
 }

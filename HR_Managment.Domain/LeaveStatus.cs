@@ -10,4 +10,7 @@ public class LeaveStatus : BaseDomainEntity
     public string? Description { get; set; }
 
     public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
+
+    public ICollection<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; } =
+        new List<LeaveRequestStatusHistory>();
 }

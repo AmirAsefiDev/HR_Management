@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     [HttpPost("signup")]
     [ProducesResponseType(typeof(ResultDto<SignupDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<SignupDto>), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(ResultDto<SignupResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SignupResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Signup([FromBody] SignupRequestDto request)
     {
@@ -51,14 +51,14 @@ public class AuthController : ControllerBase
 
         return Ok(new SignupResponseDto
         {
-            RefreshToken = tokenPair.AccessToken
+            AccessToken = tokenPair.AccessToken
         });
     }
 
     [HttpPost("login")]
     [ProducesResponseType(typeof(ResultDto<LoginDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<LoginDto>), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(ResultDto<LoginResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LoginResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Login([FromBody] LoginRequestDto request)
     {
@@ -81,7 +81,7 @@ public class AuthController : ControllerBase
     [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(ResultDto<RefreshTokenDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<RefreshTokenDto>), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ResultDto<RefreshTokenResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefreshTokenResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> RefreshToken()
     {

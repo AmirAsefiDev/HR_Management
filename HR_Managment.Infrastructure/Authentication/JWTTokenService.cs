@@ -26,10 +26,9 @@ public class JWTTokenService : IJWTTokenService
 
         var claims = new List<Claim>
         {
-            new("UserId", input.UserId.ToString()),
-            new("FullName", input.FullName ?? ""),
-            new("Email", input.Email ?? ""),
-            new("Role", input.Role ?? "")
+            new("sub", input.UserId.ToString()),
+            new("name", input.FullName ?? ""),
+            new("role", input.RoleName)
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_option.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

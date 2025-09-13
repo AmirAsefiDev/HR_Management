@@ -50,7 +50,7 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         var leaveRequest = _mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
         leaveRequest = await _leaveRequestRepo.Add(leaveRequest);
 
-        var user = await _userRepo.Get(request.UserId);
+        var user = await _userRepo.Get(leaveRequest.UserId);
 
         var email = new EmailDto
         {
@@ -58,7 +58,8 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
             Title = "Leave Request Submitted",
             MessageBody =
                 $"Your leave request for {request.CreateLeaveRequestDto.StartDate} \t\n " +
-                $"to {request.CreateLeaveRequestDto.EndDate} has been submitted"
+                $"to {request.CreateLeaveRequestDto.EndDate} has been submitted." +
+                $"Please wait to HR see your request after that we'll notify you the result. 🙏"
         };
         try
         {

@@ -14,7 +14,6 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.Property(x => x.FullName).HasMaxLength(200);
         builder.Property(x => x.Mobile).HasMaxLength(20);
         builder.Property(x => x.Email).HasMaxLength(150);
-        builder.Property(x => x.Role).HasMaxLength(20);
         builder.Property(x => x.PasswordHash).HasDefaultValue("nvarchar(max)");
 
         builder.Property(x => x.CreatedAt);
@@ -22,5 +21,10 @@ public class UserConfig : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.IsActive).HasDefaultValue(true);
         builder.HasIndex(x => x.Mobile).IsUnique();
+        builder.HasIndex(x => x.Email).IsUnique();
+
+        builder.HasOne(x => x.Role)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.RoleId);
     }
 }

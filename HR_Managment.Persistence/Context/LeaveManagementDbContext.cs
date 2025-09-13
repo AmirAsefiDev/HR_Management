@@ -10,6 +10,8 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
     {
     }
 
+    public virtual DbSet<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
     public virtual DbSet<LeaveAllocation> LeaveAllocations { get; set; }
@@ -51,20 +53,30 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
 
     private void SeedData(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Role>().HasData(new List<Role>
+        {
+            new() { Id = 1, Name = "Employee", DateCreated = DateTime.Now },
+            new() { Id = 2, Name = "Admin", DateCreated = DateTime.Now },
+            new() { Id = 3, Name = "HR", DateCreated = DateTime.Now },
+            new() { Id = 4, Name = "Manager", DateCreated = DateTime.Now }
+        });
         modelBuilder.Entity<User>().HasData(new User
         {
             Id = 1,
             FullName = "Amir Asefi",
             Mobile = "9123456789",
             PasswordHash = "AQAAAAEAACcQAAAAECLoPiPh/lUma22MQhg2lQABEBIb/P2SIPqIBNC/Sg5QoQQMJqlXRYMclDsTIJEwIQ==",
-            Role = "Admin",
+            RoleId = 2,
             CreatedAt = DateTime.Now
         });
 
         //these are default status of each LeaveStatus
-        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 1, Name = "Pending" });
-        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 2, Name = "Approved" });
-        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 3, Name = "Rejected" });
-        modelBuilder.Entity<LeaveStatus>().HasData(new LeaveStatus { Id = 4, Name = "Cancelled" });
+        modelBuilder.Entity<LeaveStatus>().HasData(new List<LeaveStatus>
+        {
+            new() { Id = 1, Name = "Pending" },
+            new() { Id = 2, Name = "Approved" },
+            new() { Id = 3, Name = "Rejected" },
+            new() { Id = 4, Name = "Cancelled" }
+        });
     }
 }

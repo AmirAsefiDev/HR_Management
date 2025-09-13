@@ -32,5 +32,10 @@ public class LeaveRequestConfig : IEntityTypeConfiguration<LeaveRequest>
         builder.HasIndex(x => x.DateRequested);
         builder.ToTable(t => t.HasCheckConstraint("CK_LeaveRequest_Date",
             "[StartDate] <= [EndDate]"));
+
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.LeaveRequests)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

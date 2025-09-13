@@ -1,7 +1,10 @@
 ﻿using HR_Management.Application.DTOs.LeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval;
+using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
+using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 using HR_Management.Application.Features.LeaveRequests.Requests.Queries;
+using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
 using HR_Management.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,15 +36,38 @@ public class LeaveRequestController : ControllerBase
     ///     Sample request: GET: api/leave-request
     /// </remarks>
     [HttpGet]
-    [ProducesResponseType(typeof(List<LeaveRequestDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<LeaveRequestListDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<LeaveRequestDto>>> Get()
+    public async Task<ActionResult<List<LeaveRequestListDto>>> Get()
     {
         var leaveRequests = await _mediator.Send(new GetLeaveRequestsListRequest());
         if (!leaveRequests.Any())
             return NoContent();
         return Ok(leaveRequests);
+    }
+
+    /// <summary>
+    ///     Retrieves all leave requests submitted by the currently authenticated user.
+    /// </summary>
+    /// <returns>
+    /// </returns>
+    /// <remarks>
+    ///     Sample request: GET: api/leave-request/me
+    /// </remarks>
+    [HttpGet("me")]
+    [ProducesResponseType(typeof(List<LeaveRequestDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> GetMyRequest()
+    {
+        //receive userId by Token
+        var claimUserId = User.FindFirst("sub").Value;
+        if (string.IsNullOrEmpty(claimUserId))
+            return Unauthorized();
+        var userId = int.Parse(claimUserId);
+
+        var result = await _mediator.Send(new GetMyLeaveRequestsRequest { UserId = userId });
+        return Ok(result);
     }
 
     /// <summary>
@@ -59,12 +85,39 @@ public class LeaveRequestController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LeaveRequestDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Get(int id)
     {
         var result = await _mediator.Send(new GetLeaveRequestDetailRequest { Id = id });
-        return StatusCode(result.StatusCode, result);
+        return StatusCode(result.StatusCode, result.Data);
+    }
+
+    /// <summary>
+    ///     Retrieves all status history entries of leave request by its Id.
+    /// </summary>
+    /// <param name="id">
+    ///     The Id of the leave request.
+    /// </param>
+    /// <returns></returns>
+    /// <remarks>
+    ///     Sample request:
+    ///     GET api/leave-request/5/status-history
+    /// </remarks>
+    [HttpGet("{id}/status-history")]
+    [ProducesResponseType(typeof(List<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<LeaveRequestStatusHistoryDto>>> GetLeaveRequestStatusHistories(int id)
+    {
+        var leaveRequestStatusHistories = await _mediator.Send(
+            new GetLeaveRequestStatusHistoryRequest
+            {
+                LeaveRequestId = id
+            });
+        if (!leaveRequestStatusHistories.Any())
+            return NoContent();
+        return Ok(leaveRequestStatusHistories);
     }
 
     /// <summary>
@@ -93,18 +146,26 @@ public class LeaveRequestController : ControllerBase
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Post(CreateLeaveRequestDto request)
+    public async Task<ActionResult> Post(CreateLeaveRequestRequestDto request)
     {
         //receive userId by Token
-        var claimUserId = User.FindFirst("UserId").Value;
+        var claimUserId = User.FindFirst("sub").Value;
         if (string.IsNullOrEmpty(claimUserId))
             return Unauthorized();
         var userId = int.Parse(claimUserId);
 
         var command = new CreateLeaveRequestCommand
         {
-            CreateLeaveRequestDto = request,
-            UserId = userId
+            CreateLeaveRequestDto = new CreateLeaveRequestDto
+            {
+                DateRequested = request.DateRequested,
+                EndDate = request.EndDate,
+                LeaveStatusId = 1,
+                LeaveTypeId = request.LeaveTypeId,
+                RequestComments = request.RequestComments,
+                StartDate = request.StartDate,
+                UserId = userId
+            }
         };
         var result = await _mediator.Send(command);
         return StatusCode(result.StatusCode, result);

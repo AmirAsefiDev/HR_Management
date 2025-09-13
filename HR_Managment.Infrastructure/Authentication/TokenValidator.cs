@@ -32,7 +32,7 @@ public class TokenValidator : ITokenValidator
             return;
         }
 
-        var userId = claimIdentity.FindFirst("UserId")?.Value;
+        var userId = claimIdentity.FindFirst("sub")?.Value;
         if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out var parsedId))
         {
             context.Fail("userID claim not found..");

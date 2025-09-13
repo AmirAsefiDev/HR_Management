@@ -62,10 +62,13 @@ public class LeaveAllocationController : ControllerBase
     ///     GET api/leave-allocation/5
     /// </remarks>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ResultDto<LeaveAllocationDto>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(LeaveAllocationDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Get(int id)
     {
         var result = await _mediator.Send(new GetLeaveAllocationDetailRequest { Id = id });
-        return StatusCode(result.StatusCode, result);
+        return StatusCode(result.StatusCode, result.Data);
     }
 
     /// <summary>

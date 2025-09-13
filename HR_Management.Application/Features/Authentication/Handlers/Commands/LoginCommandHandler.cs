@@ -39,7 +39,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
         }
 
         var formatedMobile = Convertors.ConvertMobileToRawFormat(request.LoginRequestDto.Mobile);
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
+        var user = await _context.Users
+            .Include(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
 
         if (user == null)
             return ResultDto<LoginDto>.Failure(
@@ -53,9 +55,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
             UserId = user.Id,
-            Email = user.Email,
             FullName = user.FullName,
-            Role = user.Role
+            RoleName = user.Role.Name
         }, cancellationToken);
         await _userTokenRepo.SaveToken(new UserTokenDto
         {

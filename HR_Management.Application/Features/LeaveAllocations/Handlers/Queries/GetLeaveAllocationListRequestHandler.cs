@@ -24,7 +24,7 @@ public class GetLeaveAllocationListRequestHandler :
     public async Task<List<LeaveAllocationDto>> Handle(GetLeaveAllocationListRequest request,
         CancellationToken cancellationToken)
     {
-        var leaveTypes = await _leaveAllocationRepo.GetLeaveAllocationsWithDetails();
-        return _mapper.Map<List<LeaveAllocationDto>>(leaveTypes);
+        var leaveAllocations = await _leaveAllocationRepo.GetLeaveAllocationsWithDetails();
+        return _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
     }
 }

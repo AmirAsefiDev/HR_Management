@@ -39,9 +39,8 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         var tokenProducer = await _jwt.GenerateAsync(new UserTokenInput
         {
             UserId = userToken.UserId,
-            Email = userToken.User.Email,
             FullName = userToken.User.FullName,
-            Role = userToken.User.Role
+            RoleName = userToken.User.Role.Name
         }, cancellationToken);
 
         await _userTokenRepo.SaveToken(new UserTokenDto

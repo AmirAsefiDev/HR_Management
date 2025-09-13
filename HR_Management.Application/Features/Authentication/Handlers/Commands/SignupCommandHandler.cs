@@ -69,9 +69,8 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
 
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
-            Email = newUser.Email,
             FullName = newUser.FullName,
-            Role = newUser.Role,
+            RoleName = newUser.Role.Name,
             UserId = newUser.Id
         }, cancellationToken);
 

@@ -24,6 +24,7 @@ public static class PersistenceServicesRegistration
         services.AddScoped<ILeaveStatusRepository, LeaveStatusRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+        services.AddScoped<ILeaveRequestStatusHistoryRepository, LeaveRequestStatusHistoryRepository>();
 
         return services;
     }
