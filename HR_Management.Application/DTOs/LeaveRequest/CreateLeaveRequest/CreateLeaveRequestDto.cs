@@ -4,7 +4,7 @@ namespace HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 
 public class CreateLeaveRequestDto : BaseDto, ILeaveRequestDto
 {
-    public DateTime DateRequested { get; set; }
+    public DateTime DateRequested { get; set; } = DateTime.UtcNow;
 
     public string RequestComments { get; set; }
     public int UserId { get; set; }

@@ -57,9 +57,14 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
             Destination = user.Email,
             Title = "Leave Request Submitted",
             MessageBody =
-                $"Your leave request for {request.CreateLeaveRequestDto.StartDate} \t\n " +
-                $"to {request.CreateLeaveRequestDto.EndDate} has been submitted." +
-                $"Please wait to HR see your request after that we'll notify you the result. 🙏"
+                $@"
+                <p>Your leave request for <b>{request.CreateLeaveRequestDto.StartDate:yyyy-MM-dd}</b> 
+                to <b>{request.CreateLeaveRequestDto.EndDate:yyyy-MM-dd}</b> has been submitted.</p>
+
+                <p>Please wait until the HR department reviews your request.  
+                After that, we will notify you of the result.</p>
+
+                <p>Thank you 🙏</p>"
         };
         try
         {
@@ -71,6 +76,6 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
             throw new Exception(e.Message, e);
         }
 
-        return ResultDto<int>.Success(leaveRequest.Id, "LeaveRequest Created Successfully");
+        return ResultDto<int>.Success(leaveRequest.Id, "LeaveRequest Created Successfully", 201);
     }
 }

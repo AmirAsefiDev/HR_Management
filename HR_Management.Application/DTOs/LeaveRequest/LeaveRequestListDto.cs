@@ -9,4 +9,6 @@ public class LeaveRequestListDto : BaseDto
     public DateTime DateRequested { get; set; }
     public int LeaveStatusId { get; set; }
     public string LeaveStatusName { get; set; }
+    public int CreatorId { get; set; }
+    public string CreatorName { get; set; }
 }

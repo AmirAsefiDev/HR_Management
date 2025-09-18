@@ -6,4 +6,5 @@ namespace HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval
 public class ChangeLeaveRequestApprovalDto : BaseDto
 {
     public ILeaveRequestRepository.ApprovalStatuses approvalStatus { get; set; }
+    public string Comment { get; set; }
 }

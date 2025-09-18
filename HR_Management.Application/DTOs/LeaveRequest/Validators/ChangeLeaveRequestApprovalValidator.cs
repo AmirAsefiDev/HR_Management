@@ -12,5 +12,7 @@ public class ChangeLeaveRequestApprovalValidator : AbstractValidator<ChangeLeave
 
         RuleFor(c => c.approvalStatus)
             .IsInEnum().WithMessage("{PropertyName} must be a valid approval status");
+        RuleFor(c => c.Comment)
+            .NotEmpty().WithMessage("Please Enter {PropertyName}.");
     }
 }

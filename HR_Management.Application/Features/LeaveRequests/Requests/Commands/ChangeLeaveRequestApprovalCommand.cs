@@ -7,4 +7,5 @@ namespace HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 public class ChangeLeaveRequestApprovalCommand : IRequest<ResultDto>
 {
     public ChangeLeaveRequestApprovalDto ChangeLeaveRequestApprovalDto { get; set; }
+    public int UserId { get; set; }
 }

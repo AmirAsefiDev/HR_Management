@@ -23,12 +23,21 @@ public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveReq
         return leaveRequest;
     }
 
-    public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails()
+    public IQueryable<LeaveRequest> GetLeaveRequestsWithDetails()
     {
-        var leaveRequests = await _context.LeaveRequests
+        var leaveRequests = _context.LeaveRequests
             .Include(l => l.LeaveStatus)
             .Include(l => l.LeaveType)
-            .ToListAsync();
+            .Include(l => l.User);
+        return leaveRequests;
+    }
+
+    public IQueryable<LeaveRequest> GetMyLeaveRequests(int userId)
+    {
+        var leaveRequests = _context.LeaveRequests
+            .Include(l => l.LeaveType)
+            .Include(l => l.LeaveStatus)
+            .Where(l => l.UserId == userId);
         return leaveRequests;
     }
 

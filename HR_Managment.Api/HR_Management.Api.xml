@@ -97,7 +97,7 @@
                 DELETE api/leave-allocation/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Get">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves list of leave requests
             </summary>
@@ -110,7 +110,7 @@
                 Sample request: GET: api/leave-request
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetMyRequest">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetMyRequest(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves all leave requests submitted by the currently authenticated user.
             </summary>
@@ -135,12 +135,12 @@
                 GET api/leave-request/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetLeaveRequestStatusHistories(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetLeaveRequestStatusHistories(System.Int32,HR_Management.Common.Pagination.PaginationDto)">
             <summary>
-                Retrieves all status history of leave request with leaveRequestId
+                Retrieves all status history entries of leave request by its Id.
             </summary>
             <param name="id">
-                The Id of the leave request
+                The Id of the leave request.
             </param>
             <returns></returns>
             <remarks>

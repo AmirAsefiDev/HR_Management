@@ -1,4 +1,5 @@
-﻿using HR_Management.Application.DTOs.LeaveRequest;
+﻿using System.Security.Claims;
+using HR_Management.Application.DTOs.LeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval;
 using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
@@ -6,6 +7,7 @@ using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 using HR_Management.Application.Features.LeaveRequests.Requests.Queries;
 using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
 using HR_Management.Common;
+using HR_Management.Common.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,13 +38,14 @@ public class LeaveRequestController : ControllerBase
     ///     Sample request: GET: api/leave-request
     /// </remarks>
     [HttpGet]
-    [ProducesResponseType(typeof(List<LeaveRequestListDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveRequestListDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<LeaveRequestListDto>>> Get()
+    public async Task<ActionResult<PagedResultDto<LeaveRequestListDto>>> Get([FromQuery] PaginationDto pagination)
     {
-        var leaveRequests = await _mediator.Send(new GetLeaveRequestsListRequest());
-        if (!leaveRequests.Any())
+        var leaveRequests = await
+            _mediator.Send(new GetLeaveRequestsListRequest { Pagination = pagination });
+        if (!leaveRequests.Items.Any())
             return NoContent();
         return Ok(leaveRequests);
     }
@@ -56,17 +59,22 @@ public class LeaveRequestController : ControllerBase
     ///     Sample request: GET: api/leave-request/me
     /// </remarks>
     [HttpGet("me")]
-    [ProducesResponseType(typeof(List<LeaveRequestDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveRequestDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetMyRequest()
+    public async Task<ActionResult> GetMyRequest([FromQuery] PaginationDto pagination)
     {
         //receive userId by Token
-        var claimUserId = User.FindFirst("sub").Value;
+        var claimUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         if (string.IsNullOrEmpty(claimUserId))
             return Unauthorized();
         var userId = int.Parse(claimUserId);
 
-        var result = await _mediator.Send(new GetMyLeaveRequestsRequest { UserId = userId });
+        var result = await _mediator.Send(
+            new GetMyLeaveRequestsRequest
+            {
+                UserId = userId,
+                Pagination = pagination
+            });
         return Ok(result);
     }
 
@@ -105,17 +113,19 @@ public class LeaveRequestController : ControllerBase
     ///     GET api/leave-request/5/status-history
     /// </remarks>
     [HttpGet("{id}/status-history")]
-    [ProducesResponseType(typeof(List<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<LeaveRequestStatusHistoryDto>>> GetLeaveRequestStatusHistories(int id)
+    public async Task<ActionResult<PagedResultDto<LeaveRequestStatusHistoryDto>>> GetLeaveRequestStatusHistories(int id,
+        [FromQuery] PaginationDto pagination)
     {
         var leaveRequestStatusHistories = await _mediator.Send(
             new GetLeaveRequestStatusHistoryRequest
             {
-                LeaveRequestId = id
+                LeaveRequestId = id,
+                Pagination = pagination
             });
-        if (!leaveRequestStatusHistories.Any())
+        if (!leaveRequestStatusHistories.Items.Any())
             return NoContent();
         return Ok(leaveRequestStatusHistories);
     }
@@ -149,7 +159,7 @@ public class LeaveRequestController : ControllerBase
     public async Task<ActionResult> Post(CreateLeaveRequestRequestDto request)
     {
         //receive userId by Token
-        var claimUserId = User.FindFirst("sub").Value;
+        var claimUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         if (string.IsNullOrEmpty(claimUserId))
             return Unauthorized();
         var userId = int.Parse(claimUserId);
@@ -158,7 +168,6 @@ public class LeaveRequestController : ControllerBase
         {
             CreateLeaveRequestDto = new CreateLeaveRequestDto
             {
-                DateRequested = request.DateRequested,
                 EndDate = request.EndDate,
                 LeaveStatusId = 1,
                 LeaveTypeId = request.LeaveTypeId,
@@ -239,13 +248,20 @@ public class LeaveRequestController : ControllerBase
     public async Task<ActionResult> ChangeApprovalStatus(int id,
         [FromBody] ChangeLeaveRequestApprovalRequestDto request)
     {
+        //receive userId by Token
+        var claimUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        if (string.IsNullOrEmpty(claimUserId))
+            return Unauthorized();
+        var userId = int.Parse(claimUserId);
         var command = new ChangeLeaveRequestApprovalCommand
         {
             ChangeLeaveRequestApprovalDto = new ChangeLeaveRequestApprovalDto
             {
                 Id = id,
-                approvalStatus = request.ApprovalStatus
-            }
+                approvalStatus = request.ApprovalStatus,
+                Comment = request.Comment
+            },
+            UserId = userId
         };
         var result = await _mediator.Send(command);
         return StatusCode(result.StatusCode, result);

@@ -13,6 +13,7 @@ public interface ILeaveRequestRepository : IGenericRepository<LeaveRequest>
     }
 
     Task<LeaveRequest> GetLeaveRequestWithDetails(int id);
-    Task<List<LeaveRequest>> GetLeaveRequestsWithDetails();
+    IQueryable<LeaveRequest> GetLeaveRequestsWithDetails();
+    IQueryable<LeaveRequest> GetMyLeaveRequests(int userId);
     Task ChangeApprovalStatus(LeaveRequest leaveRequest, ApprovalStatuses approvalStatuses = ApprovalStatuses.Pending);
 }

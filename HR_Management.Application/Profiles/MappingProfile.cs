@@ -24,6 +24,8 @@ public class MappingProfile : Profile
         CreateMap<LeaveRequest, LeaveRequestListDto>()
             .ForMember(dest => dest.LeaveStatusName, otp => otp.MapFrom(src => src.LeaveStatus.Name))
             .ForMember(dest => dest.LeaveTypeName, otp => otp.MapFrom(src => src.LeaveType.Name))
+            .ForMember(dest => dest.CreatorId, otp => otp.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.CreatorName, otp => otp.MapFrom(src => src.User.FullName))
             .ReverseMap();
 
         CreateMap<LeaveRequest, CreateLeaveRequestDto>().ReverseMap();

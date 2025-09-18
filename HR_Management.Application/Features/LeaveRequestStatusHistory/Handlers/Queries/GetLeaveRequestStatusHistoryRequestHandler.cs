@@ -1,33 +1,85 @@
 ﻿using AutoMapper;
-using HR_Management.Application.Contracts.Persistence.Context;
+using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
 using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
+using HR_Management.Common.Pagination;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Application.Features.LeaveRequestStatusHistory.Handlers.Queries;
 
 public class GetLeaveRequestStatusHistoryRequestHandler : IRequestHandler<GetLeaveRequestStatusHistoryRequest,
-    List<LeaveRequestStatusHistoryDto>>
+    PagedResultDto<LeaveRequestStatusHistoryDto>>
 {
-    private readonly ILeaveManagementDbContext _context;
+    private readonly ILeaveRequestStatusHistoryRepository _leaveRequestStatusHistoryRepo;
     private readonly IMapper _mapper;
 
-    public GetLeaveRequestStatusHistoryRequestHandler(ILeaveManagementDbContext context, IMapper mapper)
+    public GetLeaveRequestStatusHistoryRequestHandler(
+        ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo, IMapper mapper)
     {
-        _context = context;
+        _leaveRequestStatusHistoryRepo = leaveRequestStatusHistoryRepo;
         _mapper = mapper;
     }
 
-    public async Task<List<LeaveRequestStatusHistoryDto>> Handle(GetLeaveRequestStatusHistoryRequest request,
+    public async Task<PagedResultDto<LeaveRequestStatusHistoryDto>> Handle(GetLeaveRequestStatusHistoryRequest request,
         CancellationToken cancellationToken)
     {
-        var leaveRequestStatusHistories = await _context.LeaveRequestStatusHistories
-            .Include(h => h.User)
-            .Include(h => h.LeaveRequest)
-            .Include(h => h.LeaveStatus)
-            .Where(h => h.LeaveRequestId == request.LeaveRequestId)
-            .ToListAsync(cancellationToken);
-        return _mapper.Map<List<LeaveRequestStatusHistoryDto>>(leaveRequestStatusHistories);
+        var query = _leaveRequestStatusHistoryRepo
+            .GetLeaveRequestStatusHistoriesByLeaveRequestId(request.LeaveRequestId);
+        var totalCount = await query.CountAsync(cancellationToken);
+        var pagination = request.Pagination;
+        // Dynamic sorting with switch for safety 
+        var sortTypeLower = (pagination.sortType ?? string.Empty).ToLowerInvariant();
+        var isDescending = pagination.isDescending == true;
+        query = sortTypeLower switch
+        {
+            "leaverequestname" => isDescending
+                ? query.OrderByDescending(lh => lh.LeaveRequest.RequestComments)
+                : query.OrderBy(lh => lh.LeaveRequest.RequestComments),
+            "leavestatusname" => isDescending
+                ? query.OrderByDescending(lh => lh.LeaveStatus.Name)
+                : query.OrderBy(lh => lh.LeaveStatus.Name),
+            "comment" => isDescending
+                ? query.OrderByDescending(lh => lh.Comment)
+                : query.OrderBy(lh => lh.Comment),
+            "changername" => isDescending
+                ? query.OrderByDescending(lh => lh.User.FullName)
+                : query.OrderBy(lh => lh.User.FullName),
+            "changedat" => isDescending
+                ? query.OrderByDescending(lh => lh.DateCreated)
+                : query.OrderBy(lh => lh.DateCreated),
+            _ => query.OrderBy(lh => lh.Id)
+        };
+
+        //search
+        if (!string.IsNullOrWhiteSpace(pagination.searchKey))
+        {
+            var searchKey = pagination.searchKey.Trim().ToLowerInvariant();
+            query = query.Where(lh =>
+                lh.LeaveStatus.Name.ToLower().Contains(searchKey) ||
+                lh.LeaveRequest.RequestComments.ToLower().Contains(searchKey) ||
+                lh.Comment.ToLower().Contains(searchKey) ||
+                lh.User.FullName.ToLower().Contains(searchKey));
+        }
+
+        var pagedQuery = await query.ToPagedAsync(pagination.pageNumber, pagination.pageSize);
+        var leaveRequestStatusHistories = _mapper.Map<List<LeaveRequestStatusHistoryDto>>(pagedQuery.items);
+
+        return new PagedResultDto<LeaveRequestStatusHistoryDto>
+        {
+            TotalPage = pagedQuery.totalPage,
+            PageSize = pagination.pageSize,
+            CurrentPage = pagination.pageNumber,
+            Items = leaveRequestStatusHistories,
+            Filter =
+            [
+                new ResponseFilterDto
+                {
+                    Id = "all",
+                    Count = totalCount,
+                    Label = "AllOfLeaveRequestHistoriesOfLeaveRequest"
+                }
+            ]
+        };
     }
 }
