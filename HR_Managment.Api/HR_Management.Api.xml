@@ -4,7 +4,7 @@
         <name>HR_Management.Api</name>
     </assembly>
     <members>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Get">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves list of leave allocations
             </summary>
@@ -240,11 +240,14 @@
                 DELETE /api/leave-request/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 receive all leave types
             </summary>
             <returns></returns>
+            <remarks>
+                SampleRequest: GET api/leave-type/
+            </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(System.Int32)">
             <summary>
@@ -252,6 +255,9 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+            <remarks>
+                SampleRequest: GET api/leave-type/5
+            </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Post(HR_Management.Application.DTOs.LeaveType.CreateLeaveTypeDto)">
             <summary>
@@ -259,6 +265,9 @@
             </summary>
             <param name="leaveType"></param>
             <returns></returns>
+            <remarks>
+                SampleRequest:  POST api/leave-type
+            </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Put(System.Int32,HR_Management.Application.DTOs.LeaveType.LeaveTypeDto)">
             <summary>
@@ -267,6 +276,9 @@
             <param name="id"></param>
             <param name="leaveType"></param>
             <returns></returns>
+            <remarks>
+                SampleRequest: PUT api/leave-type/5
+            </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Delete(System.Int32)">
             <summary>
@@ -274,6 +286,9 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+            <remarks>
+                SampleRequest: DELETE api/leave-type/5
+            </remarks>
         </member>
     </members>
 </doc>

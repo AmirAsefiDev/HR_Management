@@ -12,4 +12,10 @@ public class LeaveTypeRepository : GenericRepository<LeaveType>, ILeaveTypeRepos
     {
         _context = context;
     }
+
+    public IQueryable<LeaveType> GetLeaveTypesWithDetails()
+    {
+        var leaveTypes = _context.LeaveTypes;
+        return leaveTypes;
+    }
 }

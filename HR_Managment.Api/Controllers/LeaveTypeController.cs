@@ -2,6 +2,7 @@
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
 using HR_Management.Common;
+using HR_Management.Common.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,21 +25,30 @@ public class LeaveTypeController : ControllerBase
     ///     receive all leave types
     /// </summary>
     /// <returns></returns>
+    /// <remarks>
+    ///     SampleRequest: GET api/leave-type/
+    /// </remarks>
     [HttpGet]
-    [ProducesResponseType(typeof(List<LeaveTypeDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveTypeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<LeaveTypeDto>>> Get()
+    public async Task<ActionResult<PagedResultDto<LeaveTypeDto>>> Get([FromQuery] PaginationDto pagination)
     {
-        var leaveTypes = await _mediator.Send(new GetLeaveTypeListRequest());
+        var leaveTypes = await _mediator.Send(
+            new GetLeaveTypeListRequest
+            {
+                Pagination = pagination
+            });
         return Ok(leaveTypes);
     }
 
-    // GET api/<LeaveTypeController>/5
     /// <summary>
     ///     receive a leave type by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
+    /// <remarks>
+    ///     SampleRequest: GET api/leave-type/5
+    /// </remarks>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(LeaveTypeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -53,7 +63,9 @@ public class LeaveTypeController : ControllerBase
     /// </summary>
     /// <param name="leaveType"></param>
     /// <returns></returns>
-    // POST api/<LeaveTypeController>
+    /// <remarks>
+    ///     SampleRequest:  POST api/leave-type
+    /// </remarks>
     [HttpPost]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
@@ -74,7 +86,9 @@ public class LeaveTypeController : ControllerBase
     /// <param name="id"></param>
     /// <param name="leaveType"></param>
     /// <returns></returns>
-    // PUT api/<LeaveTypeController>/5
+    /// <remarks>
+    ///     SampleRequest: PUT api/leave-type/5
+    /// </remarks>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
@@ -95,7 +109,9 @@ public class LeaveTypeController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    // DELETE api/<LeaveTypeController>/5
+    /// <remarks>
+    ///     SampleRequest: DELETE api/leave-type/5
+    /// </remarks>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]

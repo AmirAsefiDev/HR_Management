@@ -22,11 +22,10 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         return leaveAllocation;
     }
 
-    public async Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails()
+    public IQueryable<LeaveAllocation> GetLeaveAllocationsWithDetails()
     {
-        var leaveAllocations = await _context.LeaveAllocations
-            .Include(l => l.LeaveType)
-            .ToListAsync();
+        var leaveAllocations = _context.LeaveAllocations
+            .Include(l => l.LeaveType);
         return leaveAllocations;
     }
 }

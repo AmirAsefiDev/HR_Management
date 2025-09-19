@@ -3,6 +3,7 @@ using HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Commands;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Queries;
 using HR_Management.Common;
+using HR_Management.Common.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +35,17 @@ public class LeaveAllocationController : ControllerBase
     ///     GET: api/leave-allocation
     /// </remarks>
     [HttpGet]
-    [ProducesResponseType(typeof(List<LeaveAllocationDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveAllocationDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<LeaveAllocationDto>>> Get()
+    public async Task<ActionResult<PagedResultDto<LeaveAllocationDto>>> Get([FromQuery] PaginationDto pagination)
     {
         var leaveAllocations = await
-            _mediator.Send(new GetLeaveAllocationListRequest());
-        if (!leaveAllocations.Any())
+            _mediator.Send(new GetLeaveAllocationListRequest
+            {
+                Pagination = pagination
+            });
+        if (!leaveAllocations.Items.Any())
             return NoContent();
         return Ok(leaveAllocations);
     }
