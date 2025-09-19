@@ -69,7 +69,7 @@ public class GetLeaveTypeListRequestHandler :
                 {
                     Id = "all",
                     Count = totalCount,
-                    Label = "AllOfLeaveType"
+                    Label = "All Leave Types"
                 }
             ]
         };

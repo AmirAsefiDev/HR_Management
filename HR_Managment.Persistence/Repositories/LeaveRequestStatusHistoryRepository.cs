@@ -24,4 +24,13 @@ public class LeaveRequestStatusHistoryRepository : GenericRepository<LeaveReques
             .Where(h => h.LeaveRequestId == leaveRequestId);
         return leaveRequestStatusHistories;
     }
+
+    public IQueryable<LeaveRequestStatusHistory> GetLeaveRequestStatusHistoriesWithDetails()
+    {
+        var leaveRequestStatusHistories = _context.LeaveRequestStatusHistories
+            .Include(h => h.User)
+            .Include(h => h.LeaveRequest)
+            .Include(h => h.LeaveStatus);
+        return leaveRequestStatusHistories;
+    }
 }

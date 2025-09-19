@@ -240,6 +240,15 @@
                 DELETE /api/leave-request/5
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestStatusHistoryController.Get(HR_Management.Common.Pagination.PaginationDto)">
+            <summary>
+                Retrieves all leave request status histories as a report.
+            </summary>
+            <returns></returns>
+            <remarks>
+                Sample Request: GET: api/leave-request-status-history
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 receive all leave types

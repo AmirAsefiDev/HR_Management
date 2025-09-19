@@ -72,7 +72,7 @@ public class GetLeaveAllocationListRequestHandler :
                 {
                     Id = "all",
                     Count = totalCount,
-                    Label = "AllOfLeaveAllocation"
+                    Label = "All Leave Allocations"
                 }
             ]
         };

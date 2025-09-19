@@ -1,0 +1,42 @@
+﻿using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
+using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
+using HR_Management.Common;
+using HR_Management.Common.Pagination;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HR_Management.Api.Controllers;
+
+[Route("api/leave-request-status-history")]
+[ApiController]
+public class LeaveRequestStatusHistoryController : ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public LeaveRequestStatusHistoryController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    /// <summary>
+    ///     Retrieves all leave request status histories as a report.
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    ///     Sample Request: GET: api/leave-request-status-history
+    /// </remarks>
+    [HttpGet]
+    [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PagedResultDto<LeaveRequestStatusHistoryDto>>> Get(
+        [FromQuery] PaginationDto Pagination)
+    {
+        var leaveRequestStatusHistories = await _mediator.Send(
+            new GetLeaveRequestStatusHistoriesListRequest
+            {
+                Pagination = Pagination
+            });
+
+        return leaveRequestStatusHistories;
+    }
+}

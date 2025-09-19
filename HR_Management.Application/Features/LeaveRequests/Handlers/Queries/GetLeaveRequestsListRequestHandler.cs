@@ -71,7 +71,7 @@ public class
                 {
                     Id = "all",
                     Count = totalCount,
-                    Label = "AllOfLeaveRequests"
+                    Label = "All Leave Requests"
                 }
             ],
             Items = leaveRequests,

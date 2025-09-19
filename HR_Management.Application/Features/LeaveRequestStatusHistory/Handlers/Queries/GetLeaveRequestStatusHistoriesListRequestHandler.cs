@@ -8,27 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Application.Features.LeaveRequestStatusHistory.Handlers.Queries;
 
-public class GetLeaveRequestStatusHistoryRequestHandler : IRequestHandler<GetLeaveRequestStatusHistoryRequest,
-    PagedResultDto<LeaveRequestStatusHistoryDto>>
+public class GetLeaveRequestStatusHistoriesListRequestHandler : IRequestHandler<
+    GetLeaveRequestStatusHistoriesListRequest, PagedResultDto<LeaveRequestStatusHistoryDto>>
 {
     private readonly ILeaveRequestStatusHistoryRepository _leaveRequestStatusHistoryRepo;
     private readonly IMapper _mapper;
 
-    public GetLeaveRequestStatusHistoryRequestHandler(
-        ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo, IMapper mapper)
+    public GetLeaveRequestStatusHistoriesListRequestHandler(
+        ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo,
+        IMapper mapper)
     {
         _leaveRequestStatusHistoryRepo = leaveRequestStatusHistoryRepo;
         _mapper = mapper;
     }
 
-    public async Task<PagedResultDto<LeaveRequestStatusHistoryDto>> Handle(GetLeaveRequestStatusHistoryRequest request,
-        CancellationToken cancellationToken)
+    public async Task<PagedResultDto<LeaveRequestStatusHistoryDto>> Handle(
+        GetLeaveRequestStatusHistoriesListRequest request, CancellationToken cancellationToken)
     {
-        var query = _leaveRequestStatusHistoryRepo
-            .GetLeaveRequestStatusHistoriesByLeaveRequestId(request.LeaveRequestId);
+        var query = _leaveRequestStatusHistoryRepo.GetLeaveRequestStatusHistoriesWithDetails();
         var totalCount = await query.CountAsync(cancellationToken);
         var pagination = request.Pagination;
-        // Dynamic sorting with switch for safety 
+        // Dynamic sorting with switch for safety
         var sortTypeLower = (pagination.sortType ?? string.Empty).ToLowerInvariant();
         var isDescending = pagination.isDescending == true;
         query = sortTypeLower switch
@@ -77,7 +77,7 @@ public class GetLeaveRequestStatusHistoryRequestHandler : IRequestHandler<GetLea
                 {
                     Id = "all",
                     Count = totalCount,
-                    Label = "All Leave Request Histories"
+                    Label = "All Status Changes"
                 }
             ]
         };
