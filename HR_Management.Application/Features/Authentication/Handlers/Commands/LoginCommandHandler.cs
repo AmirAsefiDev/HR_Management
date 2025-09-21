@@ -44,13 +44,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             .FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
 
         if (user == null)
-            return ResultDto<LoginDto>.Failure(
-                "کاربری با این شماره تلفن ثبت نام نکرده،لطفا جهت ثبت نام اقدام نمایید.", 409);
+            return ResultDto<LoginDto>.Failure("No user registered with this phone number.Please proceed to sign up.",
+                409);
+
 
         var passwordHasher = new PasswordHasher();
         var verifyPasswordResult = passwordHasher.VerifyPassword(user.PasswordHash, request.LoginRequestDto.Password);
         if (!verifyPasswordResult)
-            return ResultDto<LoginDto>.Failure("شماره تلفن یا رمز عبور وارد شده نادرست است");
+            return ResultDto<LoginDto>.Failure("The phone number or password entered is incorrect.");
 
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
@@ -72,6 +73,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             AccessToken = tokenProducer.AccessToken,
             RefreshToken = tokenProducer.RefreshToken,
             RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
-        }, "ورود با موفقیت انجام شد.");
+        }, "Login was successful.");
     }
 }

@@ -8,7 +8,7 @@ public class ILeaveTypeDtoValidator : AbstractValidator<ILeaveTypeDto>
     {
         RuleFor(l => l.Name)
             .NotEmpty().WithMessage("{PropertyName} is required.")
-            .NotNull().WithMessage("{PropertyName} must not exceed 50");
+            .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50");
 
         RuleFor(p => p.DefaultDay)
             .NotEmpty().WithMessage("{PropertyName} is required")

@@ -12,7 +12,7 @@ public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto
         _userTokenRepo = userTokenRepo;
 
         RuleFor(r => r.RefreshToken)
-            .NotEmpty().WithMessage("رفرش توکن معتبر نیست.");
+            .NotEmpty().WithMessage("Refresh token isn't valid.");
 
         RuleFor(r => r.RefreshToken)
             .MustAsync(async (refToken, ct) =>
@@ -20,7 +20,7 @@ public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto
                 var userToken = await _userTokenRepo.FindByRefreshToken(refToken);
                 return userToken != null;
             })
-            .WithMessage("توکن یافت نشد یا معتبر نیست.");
+            .WithMessage("Refresh token didn't find or isn't valid.");
 
         RuleFor(r => r.RefreshToken)
             .MustAsync(async (refToken, ct) =>
@@ -29,6 +29,6 @@ public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto
                 if (userToken == null) return false;
                 return userToken.RefreshTokenExp >= DateTime.Now;
             })
-            .WithMessage("رفرش توکن منقضی شده است");
+            .WithMessage("Refresh token has been deprecated.");
     }
 }

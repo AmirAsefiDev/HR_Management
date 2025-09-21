@@ -7,23 +7,23 @@ public class SignupRequestDtoValidator : AbstractValidator<SignupRequestDto>
     public SignupRequestDtoValidator()
     {
         RuleFor(s => s.FullName)
-            .NotEmpty().WithMessage("لطفا نام و فامیلی را وارد کنید.");
+            .NotEmpty().WithMessage("Please enter your first and last name.");
 
         RuleFor(l => l.Mobile)
-            .NotEmpty().WithMessage("لطفا شماره تلفن را وارد کنید.")
+            .NotEmpty().WithMessage("Please enter phone number.")
             .Matches(@"^(?:0|98|\+98|\+980|0098|098|00980)?(9\d{9})$")
-            .WithMessage("شماره موبایل خود را به درستی وارد نمایید");
+            .WithMessage("Please enter your phone number correctly.");
 
         RuleFor(l => l.Email)
-            .NotEmpty().WithMessage("لطفا ایمیل را وارد کنید.")
-            .EmailAddress().WithMessage("لطفا ایمیل خود را به درستی وارد نمایید.");
+            .NotEmpty().WithMessage("Pleas enter email.")
+            .EmailAddress().WithMessage("Please enter your email correctly.");
 
-        RuleFor(l => l.Password)
-            .NotEmpty().WithMessage("لطفا رمز عبور را وارد کنید.")
-            .MinimumLength(6).WithMessage("رمز عبور باید حداقل 6 کاراکتر باشد")
-            .Matches(@"[A-Z]").WithMessage("رمز عبور باید حداقل یک حرف بزرگ داشته باشد.")
-            .Matches(@"[a-z]").WithMessage("رمز عبور باید حداقل یک حرف کوچک داشته باشد.")
-            .Matches(@"\d").WithMessage("رمز عبور باید حداقل یک عدد داشته باشد.")
-            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("رمز عبور باید حداقل یک کاراکتر خاص داشته باشد.");
+        RuleFor(p => p.Password)
+            .NotEmpty().WithMessage("Please enter password.")
+            .MinimumLength(6).WithMessage("Password must be at least 6 characters long.")
+            .Matches(@"[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
+            .Matches(@"[a-z]").WithMessage("Password must contain at lease one lowercase letter.")
+            .Matches(@"\d").WithMessage("Password must contain at least one number.")
+            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("Password must contain at least one special character.");
     }
 }

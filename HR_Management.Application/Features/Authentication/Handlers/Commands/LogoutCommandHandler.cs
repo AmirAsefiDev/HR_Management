@@ -17,6 +17,6 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, ResultDto>
     public async Task<ResultDto> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
         await _userTokenRepo.Logout(request.UserId);
-        return ResultDto.Success("کاربر با موفقیت از سیستم خارج شد.");
+        return ResultDto.Success("The user has been successfully logged out.");
     }
 }

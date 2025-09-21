@@ -45,13 +45,13 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
         //prevent user to record repeatedly Email & Mobile
         var isUserExists = await _context.Users.FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
         if (isUserExists != null)
-            return ResultDto<SignupDto>.Failure(
-                "شما قبلا ثبت نام کردید، جهت ورود به فرم 'ورود' مراجعه فرمایید.", 409);
+            return ResultDto<SignupDto>.Failure("You have already registered.Please go to the 'Login' from to sign in.",
+                409);
         var isEmailExists =
             await _context.Users.FirstOrDefaultAsync(u => u.Email == request.SignupRequestDto.Email, cancellationToken);
         if (isEmailExists != null)
-            return ResultDto<SignupDto>.Failure(
-                "شما قبلا ثبت نام کردید، جهت ورود به فرم 'ورود' مراجعه فرمایید.", 409);
+            return ResultDto<SignupDto>.Failure("You have already registered.Please go to the 'Login' from to sign in.",
+                409);
 
         var passwordHasher = new PasswordHasher();
         var hashedPassword = passwordHasher.HashPassword(request.SignupRequestDto.Password);
@@ -88,6 +88,6 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
             AccessToken = tokenProducer.AccessToken,
             RefreshToken = tokenProducer.RefreshToken,
             RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
-        }, "شما با موفقیت ثبت نام شدید.");
+        }, "You have successfully registered.");
     }
 }

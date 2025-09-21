@@ -7,13 +7,13 @@ public class ResetPasswordValidator : AbstractValidator<ResetPasswordRequestDto>
     public ResetPasswordValidator()
     {
         RuleFor(p => p.NewPassword)
-            .NotEmpty().WithMessage("لطفا رمز عبور را وارد کنید.")
-            .MinimumLength(6).WithMessage("رمز عبور باید حداقل 6 کاراکتر باشد")
-            .Matches(@"[A-Z]").WithMessage("رمز عبور باید حداقل یک حرف بزرگ داشته باشد.")
-            .Matches(@"[a-z]").WithMessage("رمز عبور باید حداقل یک حرف کوچک داشته باشد.")
-            .Matches(@"\d").WithMessage("رمز عبور باید حداقل یک عدد داشته باشد.")
-            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("رمز عبور باید حداقل یک کاراکتر خاص داشته باشد.");
+            .NotEmpty().WithMessage("Please enter password.")
+            .MinimumLength(6).WithMessage("Password must be at least 6 characters long.")
+            .Matches(@"[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
+            .Matches(@"[a-z]").WithMessage("Password must contain at lease one lowercase letter.")
+            .Matches(@"\d").WithMessage("Password must contain at least one number.")
+            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("Password must contain at least one special character.");
 
-        RuleFor(p => p.Token).NotEmpty().WithMessage("لطفا توکن را وارد کنید.");
+        RuleFor(p => p.Token).NotEmpty().WithMessage("Please enter token.");
     }
 }

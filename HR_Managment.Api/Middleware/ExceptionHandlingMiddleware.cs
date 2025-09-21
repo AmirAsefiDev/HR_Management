@@ -25,7 +25,7 @@ public class ExceptionHandlingMiddleware
 
             context.Response.StatusCode = 500;
             context.Response.ContentType = "application/json";
-            var response = ResultDto.Failure("خطای داخلی سرور رخ داده است.", 500);
+            var response = ResultDto.Failure("An internal server error has occurred.", 500);
             await context.Response.WriteAsJsonAsync(response);
         }
     }

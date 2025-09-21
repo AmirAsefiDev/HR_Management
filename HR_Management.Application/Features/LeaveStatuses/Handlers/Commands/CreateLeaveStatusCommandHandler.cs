@@ -25,7 +25,7 @@ public class CreateLeaveStatusCommandHandler : IRequestHandler<CreateLeaveStatus
         var response = new BaseCommandResponse();
 
         var validator = new CreateLeaveStatusDtoValidator();
-        var validationResult = await validator.ValidateAsync(request.CreateLeaveStatusDto);
+        var validationResult = await validator.ValidateAsync(request.CreateLeaveStatusDto, cancellationToken);
         if (!validationResult.IsValid)
         {
             response.Success = false;

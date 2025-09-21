@@ -29,7 +29,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
         if (!validationResult.IsValid)
         {
             var errorMessage = validationResult.Errors.First().ErrorMessage;
-            if (errorMessage.Contains("منقضی") || errorMessage.Contains("یافت نشد"))
+            if (errorMessage.Contains("deprecated") || errorMessage.Contains("didn't find"))
                 return ResultDto<RefreshTokenDto>.Failure(errorMessage, 401);
 
             return ResultDto<RefreshTokenDto>.Failure(errorMessage);
@@ -58,7 +58,6 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
                 AccessToken = tokenProducer.AccessToken,
                 RefreshToken = tokenProducer.RefreshToken,
                 RefreshTokenExp = tokenProducer.RefreshTokenExpiresAtUtc
-            },
-            "توکن جدید ساخته شد.");
+            }, "A new token has been successfully generated.");
     }
 }

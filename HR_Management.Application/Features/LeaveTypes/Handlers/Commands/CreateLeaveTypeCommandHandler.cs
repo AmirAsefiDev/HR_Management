@@ -34,6 +34,6 @@ public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeComm
 
         var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
         leaveType = await _leaveTypeRepo.Add(leaveType);
-        return ResultDto<int>.Success(leaveType.Id, "نوع مرخصی مورد نظر با موفقیت ساخته شد.", 201);
+        return ResultDto<int>.Success(leaveType.Id, "The leave type has been successfully.", 201);
     }
 }

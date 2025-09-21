@@ -21,9 +21,9 @@ public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeComm
             return ResultDto.Failure("Please Enter LeaveTypeId Correctly");
 
         var leaveType = await _leaveTypeRepo.Get(request.Id);
-        if (leaveType == null) return ResultDto.Failure("نوع مرخصی مورد نظر پیدا نشد.");
+        if (leaveType == null) return ResultDto.Failure("The requested leave type was not found.");
 
         await _leaveTypeRepo.Delete(leaveType);
-        return ResultDto.Success("نوع مرخصی مورد نظر با موفقیت حذف شد");
+        return ResultDto.Success("The requested leave type has been successfully deleted.");
     }
 }

@@ -31,6 +31,6 @@ public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeComm
 
         await _leaveTypeRepo.Update(leaveType);
 
-        return ResultDto.Success("نوع مرخصی مورد نظر با موفقیت ویرایش شد.");
+        return ResultDto.Success("The requested leave type has been successfully updated.");
     }
 }

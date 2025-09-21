@@ -7,7 +7,7 @@ public class ForgetPasswordValidator : AbstractValidator<ForgetPasswordRequestDt
     public ForgetPasswordValidator()
     {
         RuleFor(l => l.Email)
-            .NotEmpty().WithMessage("لطفا ایمیل را وارد کنید.")
-            .EmailAddress().WithMessage("لطفا ایمیل خود را به درستی وارد نمایید.");
+            .NotEmpty().WithMessage("Please enter your email. ")
+            .EmailAddress().WithMessage("Please enter your email correctly.");
     }
 }

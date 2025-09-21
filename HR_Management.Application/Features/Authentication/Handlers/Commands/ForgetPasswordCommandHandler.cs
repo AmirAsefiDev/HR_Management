@@ -43,7 +43,7 @@ public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordComman
         var formatedEmail = request.ForgetPasswordRequestDto.Email.Trim().ToLower();
         var isUserExists = await _context.Users.FirstOrDefaultAsync(u => u.Email == formatedEmail, cancellationToken);
         if (isUserExists == null)
-            return ResultDto.Failure("کاربری با این ایمیل نشده، لطفا ثبت نام نمایید.");
+            return ResultDto.Failure("No user registered with this email.Please sign up.");
         var secureToken = GenerateSecureToken();
         var passwordResetToken = new PasswordResetToken
         {
@@ -96,7 +96,7 @@ public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordComman
             throw new Exception(e.Message);
         }
 
-        return ResultDto.Success("لینک تغییر رمز عبور با موفقیت به ایمیل شما ارسال شد.");
+        return ResultDto.Success("The password reset link has been successfully sent to your email.");
     }
 
     private string GenerateSecureToken()

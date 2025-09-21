@@ -27,11 +27,11 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
             .FirstOrDefaultAsync(t => t.Token == request.ResetPasswordRequestDto.Token, cancellationToken);
 
         if (resetToken == null || resetToken.IsUsed || resetToken.ExpireAt < DateTime.UtcNow)
-            return ResultDto.Failure("توکن معتبر نیست یا منقضی شده است.");
+            return ResultDto.Failure("Token isn't valid or is deprecated.");
 
-        var user = await _context.Users.FindAsync(resetToken.UserId);
+        var user = await _context.Users.FindAsync(resetToken.UserId, cancellationToken);
         if (user == null)
-            return ResultDto.Failure("کاربر یافت نشد.");
+            return ResultDto.Failure("No user found.");
 
         var passwordHasher = new PasswordHasher();
 
@@ -40,6 +40,6 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
 
         await _context.SaveChangesAsync(true, cancellationToken);
 
-        return ResultDto.Success("رمز عبور با موفقیت تغییر یافت.");
+        return ResultDto.Success("Password has been successfully changed.");
     }
 }
