@@ -3,7 +3,7 @@ using HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval;
 
 namespace HR_Management.Application.DTOs.LeaveRequest.Validators;
 
-public class ChangeLeaveRequestApprovalValidator : AbstractValidator<ChangeLeaveRequestApprovalDto>
+public class ChangeLeaveRequestApprovalValidator : AbstractValidator<ChangeLeaveRequestChangeStatusDto>
 {
     public ChangeLeaveRequestApprovalValidator()
     {

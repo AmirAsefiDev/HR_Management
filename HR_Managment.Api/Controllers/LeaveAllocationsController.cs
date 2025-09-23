@@ -4,20 +4,20 @@ using HR_Management.Application.Features.LeaveAllocations.Requests.Commands;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Queries;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
+using HR_Management.Common.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
-[Route("api/leave-allocation")]
+[Route("api/leave-allocations")]
 [ApiController]
-[Authorize]
-public class LeaveAllocationController : ControllerBase
+public class LeaveAllocationsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public LeaveAllocationController(IMediator mediator)
+    public LeaveAllocationsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -35,6 +35,7 @@ public class LeaveAllocationController : ControllerBase
     ///     GET: api/leave-allocation
     /// </remarks>
     [HttpGet]
+    [Authorize(Policy = Permissions.LeaveAllocationReadList)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveAllocationDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -66,6 +67,7 @@ public class LeaveAllocationController : ControllerBase
     ///     GET api/leave-allocation/5
     /// </remarks>
     [HttpGet("{id}")]
+    [Authorize(Policy = Permissions.LeaveAllocationRead)]
     [ProducesResponseType(typeof(ResultDto<LeaveAllocationDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(LeaveAllocationDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -96,6 +98,7 @@ public class LeaveAllocationController : ControllerBase
     ///     }
     /// </remarks>
     [HttpPost]
+    [Authorize(Policy = Permissions.LeaveAllocationCreate)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -131,6 +134,7 @@ public class LeaveAllocationController : ControllerBase
     ///     }
     /// </remarks>
     [HttpPut("{id}")]
+    [Authorize(Policy = Permissions.LeaveAllocationUpdate)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -166,6 +170,7 @@ public class LeaveAllocationController : ControllerBase
     ///     DELETE api/leave-allocation/5
     /// </remarks>
     [HttpDelete("{id}")]
+    [Authorize(Policy = Permissions.LeaveAllocationDelete)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]

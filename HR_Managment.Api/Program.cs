@@ -31,7 +31,7 @@ builder.Services.AddSwaggerGen(s =>
     s.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "HR_Management.Api",
-        Version = "v1 "
+        Version = "v1"
     });
     var security = new OpenApiSecurityScheme
     {
@@ -146,7 +146,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthentication();
 // builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

@@ -14,12 +14,19 @@ public static class InfrastructureServicesRegistration
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
+        // Email
         services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
         services.AddTransient<IEmailService, EmailService>();
 
+        // Auth
         services.AddScoped<ITokenValidator, TokenValidator>();
+        services.AddSingleton<IRolePermissionService, RolePermissionService>();
         services.Configure<JwtOptions>(configuration.GetSection("JWTConfig"));
         services.AddScoped<IJWTTokenService, JWTTokenService>();
+
+        // Permission Policies
+        services.AddAuthorization(options => { options.AddPermissionPolicies(); });
+
         return services;
     }
 }

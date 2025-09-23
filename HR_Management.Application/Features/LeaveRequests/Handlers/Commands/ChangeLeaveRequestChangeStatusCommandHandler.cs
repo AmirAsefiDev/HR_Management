@@ -8,17 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace HR_Management.Application.Features.LeaveRequests.Handlers.Commands;
 
-public class ChangeLeaveRequestApprovalCommandHandler : IRequestHandler<ChangeLeaveRequestApprovalCommand, ResultDto>
+public class
+    ChangeLeaveRequestChangeStatusCommandHandler : IRequestHandler<ChangeLeaveRequestChangeStatusCommand, ResultDto>
 {
     private readonly IEmailService _emailService;
     private readonly ILeaveRequestRepository _leaveRequestRepo;
     private readonly ILeaveRequestStatusHistoryRepository _leaveRequestStatusHistoryRepo;
-    private readonly ILogger<ChangeLeaveRequestApprovalCommandHandler> _logger;
+    private readonly ILogger<ChangeLeaveRequestChangeStatusCommandHandler> _logger;
 
-    public ChangeLeaveRequestApprovalCommandHandler(
+    public ChangeLeaveRequestChangeStatusCommandHandler(
         ILeaveRequestRepository leaveRequestRepo,
         IEmailService emailService,
-        ILogger<ChangeLeaveRequestApprovalCommandHandler> logger,
+        ILogger<ChangeLeaveRequestChangeStatusCommandHandler> logger,
         ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo)
     {
         _leaveRequestRepo = leaveRequestRepo;
@@ -27,37 +28,40 @@ public class ChangeLeaveRequestApprovalCommandHandler : IRequestHandler<ChangeLe
         _leaveRequestStatusHistoryRepo = leaveRequestStatusHistoryRepo;
     }
 
-    public async Task<ResultDto> Handle(ChangeLeaveRequestApprovalCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(ChangeLeaveRequestChangeStatusCommand request,
+        CancellationToken cancellationToken)
     {
         var validator = new ChangeLeaveRequestApprovalValidator();
-        var validationResult = await validator.ValidateAsync(request.ChangeLeaveRequestApprovalDto, cancellationToken);
+        var validationResult =
+            await validator.ValidateAsync(request.ChangeLeaveRequestChangeStatusDto, cancellationToken);
 
         if (!validationResult.IsValid)
             return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveRequest = await _leaveRequestRepo.Get(request.ChangeLeaveRequestApprovalDto.Id);
+        var leaveRequest = await _leaveRequestRepo.Get(request.ChangeLeaveRequestChangeStatusDto.Id);
         if (leaveRequest == null)
-            return ResultDto.Failure($"No leave request found with Id = {request.ChangeLeaveRequestApprovalDto.Id}.");
+            return ResultDto.Failure(
+                $"No leave request found with Id = {request.ChangeLeaveRequestChangeStatusDto.Id}.");
 
         await _leaveRequestRepo.ChangeApprovalStatus(leaveRequest,
-            request.ChangeLeaveRequestApprovalDto.approvalStatus);
+            request.ChangeLeaveRequestChangeStatusDto.approvalStatus);
 
         await _leaveRequestStatusHistoryRepo.Add(new Domain.LeaveRequestStatusHistory
         {
             ChangedBy = request.UserId,
             CreatedBy = leaveRequest.User.FullName,
-            LeaveRequestId = request.ChangeLeaveRequestApprovalDto.Id,
-            LeaveStatusId = (int)request.ChangeLeaveRequestApprovalDto.approvalStatus,
-            Comment = request.ChangeLeaveRequestApprovalDto.Comment
+            LeaveRequestId = request.ChangeLeaveRequestChangeStatusDto.Id,
+            LeaveStatusId = (int)request.ChangeLeaveRequestChangeStatusDto.approvalStatus,
+            Comment = request.ChangeLeaveRequestChangeStatusDto.Comment
         });
 
-        var statusText = request.ChangeLeaveRequestApprovalDto.approvalStatus switch
+        var statusText = request.ChangeLeaveRequestChangeStatusDto.approvalStatus switch
         {
             ILeaveRequestRepository.ApprovalStatuses.Pending => "Pending ⏳",
             ILeaveRequestRepository.ApprovalStatuses.Approved => "Approved ✅",
             ILeaveRequestRepository.ApprovalStatuses.Rejected => "Rejected ❌",
             ILeaveRequestRepository.ApprovalStatuses.Cancelled => "Cancelled 📴",
-            _ => request.ChangeLeaveRequestApprovalDto.approvalStatus.ToString()
+            _ => request.ChangeLeaveRequestChangeStatusDto.approvalStatus.ToString()
         };
 
         try

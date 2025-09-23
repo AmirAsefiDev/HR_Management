@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using HR_Management.Application.Contracts.Infrastructure.Authentication;
 using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -12,9 +13,11 @@ namespace HR_Management.Infrastructure.Authentication;
 public class JWTTokenService : IJWTTokenService
 {
     private readonly JwtOptions _option;
+    private readonly IRolePermissionService _rolePermissionService;
 
-    public JWTTokenService(IOptions<JwtOptions> option)
+    public JWTTokenService(IOptions<JwtOptions> option, IRolePermissionService rolePermissionService)
     {
+        _rolePermissionService = rolePermissionService;
         _option = option.Value;
     }
 
@@ -30,6 +33,10 @@ public class JWTTokenService : IJWTTokenService
             new("name", input.FullName ?? ""),
             new("role", input.RoleName)
         };
+        //add permission dynamically by role
+        var permissions = _rolePermissionService.GetPermissionsByRole(input.RoleName);
+        foreach (var permission in permissions) claims.Add(new Claim("permission", permission));
+
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_option.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var jwt = new JwtSecurityToken(

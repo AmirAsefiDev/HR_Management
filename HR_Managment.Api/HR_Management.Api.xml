@@ -4,7 +4,7 @@
         <name>HR_Management.Api</name>
     </assembly>
     <members>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Get(HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves list of leave allocations
             </summary>
@@ -18,7 +18,7 @@
                 GET: api/leave-allocation
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Get(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Get(System.Int32)">
             <summary>
                 Retrieves the details of specific leave allocation by its Id
             </summary>
@@ -35,7 +35,7 @@
                 GET api/leave-allocation/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Post(HR_Management.Application.DTOs.LeaveAllocation.CreateLeaveAllocationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Post(HR_Management.Application.DTOs.LeaveAllocation.CreateLeaveAllocationDto)">
             <summary>
                 Creates a new leave allocation.
             </summary>
@@ -57,7 +57,7 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Put(System.Int32,HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation.UpdateLeaveAllocationRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Put(System.Int32,HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation.UpdateLeaveAllocationRequestDto)">
             <summary>
                 Updates the details of an existing leave allocation
             </summary>
@@ -80,7 +80,7 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationController.Delete(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Delete(System.Int32)">
             <summary>
                 Deletes an existing leave allocation by its Id
             </summary>
@@ -97,7 +97,7 @@
                 DELETE api/leave-allocation/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Get(HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves list of leave requests
             </summary>
@@ -110,7 +110,7 @@
                 Sample request: GET: api/leave-request
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetMyRequest(HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.GetMyRequest(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves all leave requests submitted by the currently authenticated user.
             </summary>
@@ -120,7 +120,7 @@
                 Sample request: GET: api/leave-request/me
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Get(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Get(System.Int32)">
             <summary>
                 Retrieves the details of a specific leave request by its Id
             </summary>
@@ -135,7 +135,7 @@
                 GET api/leave-request/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.GetLeaveRequestStatusHistories(System.Int32,HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.GetLeaveRequestStatusHistories(System.Int32,HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves all status history entries of leave request by its Id.
             </summary>
@@ -148,7 +148,7 @@
                 GET api/leave-request/5/status-history
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Post(HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest.CreateLeaveRequestRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Post(HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest.CreateLeaveRequestRequestDto)">
             <summary>
                 Creates a new leave request.
             </summary>
@@ -172,7 +172,7 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Put(System.Int32,HR_Management.Application.DTOs.LeaveRequest.UpdateLeaveRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Put(System.Int32,HR_Management.Application.DTOs.LeaveRequest.UpdateLeaveRequestDto)">
             <summary>
                 Updates the details of an existing leave request.
             </summary>
@@ -199,7 +199,7 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.ChangeApprovalStatus(System.Int32,HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval.ChangeLeaveRequestApprovalRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.ChangeStatus(System.Int32,HR_Management.Application.DTOs.LeaveRequest.ChangeLeaveRequestApproval.ChangeLeaveRequestChangeStatusRequestDto)">
             <summary>
                 Updates the approval status of a specific leave request.
             </summary>
@@ -222,7 +222,7 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestController.Delete(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Delete(System.Int32)">
             <summary>
                 Deletes an existing leave request by its Id.
             </summary>
@@ -240,7 +240,7 @@
                 DELETE /api/leave-request/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveRequestStatusHistoryController.Get(HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveRequestStatusHistoriesController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves all leave request status histories as a report.
             </summary>
@@ -249,7 +249,7 @@
                 Sample Request: GET: api/leave-request-status-history
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(HR_Management.Common.Pagination.PaginationDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 receive all leave types
             </summary>
@@ -258,7 +258,7 @@
                 SampleRequest: GET api/leave-type/
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Get(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(System.Int32)">
             <summary>
                 receive a leave type by id
             </summary>
@@ -268,7 +268,7 @@
                 SampleRequest: GET api/leave-type/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Post(HR_Management.Application.DTOs.LeaveType.CreateLeaveTypeDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Post(HR_Management.Application.DTOs.LeaveType.CreateLeaveTypeDto)">
             <summary>
                 Add new Leave type in Database
             </summary>
@@ -278,7 +278,7 @@
                 SampleRequest:  POST api/leave-type
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Put(System.Int32,HR_Management.Application.DTOs.LeaveType.LeaveTypeDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Put(System.Int32,HR_Management.Application.DTOs.LeaveType.LeaveTypeDto)">
             <summary>
                 Edit Leave Type info
             </summary>
@@ -289,7 +289,7 @@
                 SampleRequest: PUT api/leave-type/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveTypeController.Delete(System.Int32)">
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Delete(System.Int32)">
             <summary>
                 Delete Leave Type with id
             </summary>

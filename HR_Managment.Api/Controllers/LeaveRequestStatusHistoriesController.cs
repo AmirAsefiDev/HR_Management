@@ -2,18 +2,20 @@
 using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
+using HR_Management.Common.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
-[Route("api/leave-request-status-history")]
+[Route("api/leave-request-status-histories")]
 [ApiController]
-public class LeaveRequestStatusHistoryController : ControllerBase
+public class LeaveRequestStatusHistoriesController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public LeaveRequestStatusHistoryController(IMediator mediator)
+    public LeaveRequestStatusHistoriesController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -26,6 +28,7 @@ public class LeaveRequestStatusHistoryController : ControllerBase
     ///     Sample Request: GET: api/leave-request-status-history
     /// </remarks>
     [HttpGet]
+    [Authorize(Policy = Permissions.LeaveRequestStatusHistoryReadList)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<LeaveRequestStatusHistoryDto>>> Get(

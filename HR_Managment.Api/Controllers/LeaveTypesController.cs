@@ -3,20 +3,20 @@ using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
+using HR_Management.Common.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
-[Route("api/leave-type")]
+[Route("api/leave-types")]
 [ApiController]
-[Authorize]
-public class LeaveTypeController : ControllerBase
+public class LeaveTypesController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public LeaveTypeController(IMediator mediator)
+    public LeaveTypesController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -29,6 +29,7 @@ public class LeaveTypeController : ControllerBase
     ///     SampleRequest: GET api/leave-type/
     /// </remarks>
     [HttpGet]
+    [Authorize(Policy = Permissions.LeaveTypeReadList)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveTypeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<LeaveTypeDto>>> Get([FromQuery] PaginationDto pagination)
@@ -50,6 +51,7 @@ public class LeaveTypeController : ControllerBase
     ///     SampleRequest: GET api/leave-type/5
     /// </remarks>
     [HttpGet("{id}")]
+    [Authorize(Policy = Permissions.LeaveTypeRead)]
     [ProducesResponseType(typeof(LeaveTypeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<LeaveTypeDto>> Get(int id)
@@ -67,6 +69,7 @@ public class LeaveTypeController : ControllerBase
     ///     SampleRequest:  POST api/leave-type
     /// </remarks>
     [HttpPost]
+    [Authorize(Policy = Permissions.LeaveTypeCreate)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -90,6 +93,7 @@ public class LeaveTypeController : ControllerBase
     ///     SampleRequest: PUT api/leave-type/5
     /// </remarks>
     [HttpPut("{id}")]
+    [Authorize(Policy = Permissions.LeaveTypeUpdate)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -113,6 +117,7 @@ public class LeaveTypeController : ControllerBase
     ///     SampleRequest: DELETE api/leave-type/5
     /// </remarks>
     [HttpDelete("{id}")]
+    [Authorize(Policy = Permissions.LeaveTypeDelete)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
