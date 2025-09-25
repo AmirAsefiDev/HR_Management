@@ -16,7 +16,9 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveRequestRead,
                 Permissions.LeaveTypeReadList,
                 Permissions.MyLeaveRequestsList,
-                Permissions.LeaveRequestStatusHistoryRead
+                Permissions.LeaveRequestStatusHistoryRead,
+                Permissions.UserEditProfile,
+                Permissions.UserRead
             },
             "Manager" => new[]
             {
@@ -47,7 +49,11 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveStatusUpdate,
                 Permissions.LeaveStatusReadList,
                 Permissions.LeaveStatusRead,
-                Permissions.LeaveStatusDelete
+                Permissions.LeaveStatusDelete,
+
+                Permissions.UserEditProfile,
+                Permissions.UserRead,
+                Permissions.UserReadList
             },
             "HR" => new[]
             {
@@ -69,7 +75,10 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveRequestStatusHistoryRead,
 
                 Permissions.LeaveStatusReadList,
-                Permissions.LeaveStatusRead
+                Permissions.LeaveStatusRead,
+
+                Permissions.UserEditProfile,
+                Permissions.UserRead
             },
             "Admin" => new[]
             {
@@ -100,7 +109,11 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveStatusUpdate,
                 Permissions.LeaveStatusReadList,
                 Permissions.LeaveStatusRead,
-                Permissions.LeaveStatusDelete
+                Permissions.LeaveStatusDelete,
+
+                Permissions.UserEditProfile,
+                Permissions.UserRead,
+                Permissions.UserReadList
             },
             _ => Array.Empty<string>()
         };

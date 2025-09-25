@@ -299,5 +299,15 @@
                 SampleRequest: DELETE api/leave-type/5
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.UsersController.GetUserInfo">
+            <summary>
+                Retrieves the details of authenticated user for profile page.
+            </summary>
+            <returns>User Profile details.</returns>
+            <remarks>
+                Sample Request:
+                Get api/users/me
+            </remarks>
+        </member>
     </members>
 </doc>

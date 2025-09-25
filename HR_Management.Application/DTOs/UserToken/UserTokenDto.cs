@@ -10,7 +10,7 @@ public class UserTokenDto
     public DateTime TokenExp { get; set; }
     public DateTime RefreshTokenExp { get; set; }
 
-    public User User { get; set; }
+    public Domain.User User { get; set; }
     public int UserId { get; set; }
     public Role Role { get; set; }
 }

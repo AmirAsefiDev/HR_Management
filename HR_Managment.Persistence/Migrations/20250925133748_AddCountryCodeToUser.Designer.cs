@@ -4,6 +4,7 @@ using HR_Management.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management.Persistence.Migrations
 {
     [DbContext(typeof(LeaveManagementDbContext))]
-    partial class LeaveManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250925133748_AddCountryCodeToUser")]
+    partial class AddCountryCodeToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,25 +208,25 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1765),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1474),
                             Name = "Pending"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1768),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1477),
                             Name = "Approved"
                         },
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1770),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1478),
                             Name = "Rejected"
                         },
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1771),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1480),
                             Name = "Cancelled"
                         });
                 });
@@ -275,7 +278,7 @@ namespace HR_Management.Persistence.Migrations
                     b.Property<DateTime>("CreateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 25, 16, 59, 26, 0, DateTimeKind.Utc).AddTicks(8639));
+                        .HasDefaultValue(new DateTime(2025, 9, 25, 13, 37, 47, 193, DateTimeKind.Utc).AddTicks(460));
 
                     b.Property<DateTime>("ExpireAt")
                         .HasColumnType("datetime2");
@@ -334,25 +337,25 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1554),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1309),
                             Name = "Employee"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1558),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1313),
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1560),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1314),
                             Name = "HR"
                         },
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1562),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1316),
                             Name = "Manager"
                         });
                 });
@@ -378,7 +381,6 @@ namespace HR_Management.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
@@ -402,6 +404,7 @@ namespace HR_Management.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Mobile")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -420,11 +423,11 @@ namespace HR_Management.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("Mobile")
-                        .IsUnique()
-                        .HasFilter("[Mobile] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("RoleId");
 
@@ -434,10 +437,9 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CountryCode = 98,
-                            CreatedAt = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1612),
-                            DateCreated = new DateTime(2025, 9, 25, 20, 29, 26, 2, DateTimeKind.Local).AddTicks(1607),
-                            Email = "amirasefi.info@gmail.com",
+                            CountryCode = 0,
+                            CreatedAt = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1355),
+                            DateCreated = new DateTime(2025, 9, 25, 17, 7, 47, 194, DateTimeKind.Local).AddTicks(1352),
                             FullName = "Amir Asefi",
                             IsActive = true,
                             Mobile = "9123456789",

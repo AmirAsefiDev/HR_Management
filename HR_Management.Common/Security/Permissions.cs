@@ -31,10 +31,7 @@ public static class Permissions
     public const string LeaveStatusRead = "LeaveStatus.Read";
     public const string LeaveStatusDelete = "LeaveStatus.Delete";
 
-    /*public const string LeaveViewMyRequests = "Leave.View.MyRequests";
-    public const string LeaveViewTeamRequests = "Leave.View.TeamRequests";
-    public const string LeaveApprove = "Leave.Approve";
-    public const string LeaveViewAll = "Leave.View.All";
-    public const string LeaveManageAllocations = "Leave.ManageAllocations";
-    public const string LeaveManageSystem = "Leave.Manage.System";*/
+    public const string UserEditProfile = "User.EditProfile";
+    public const string UserReadList = "User.ReadList";
+    public const string UserRead = "User.Read";
 }

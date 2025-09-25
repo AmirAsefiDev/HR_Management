@@ -6,6 +6,8 @@ using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
 using HR_Management.Application.DTOs.LeaveStatus;
 using HR_Management.Application.DTOs.LeaveType;
+using HR_Management.Application.DTOs.User;
+using HR_Management.Application.DTOs.User.EditProfile;
 using HR_Management.Domain;
 
 namespace HR_Management.Application.Profiles;
@@ -67,6 +69,19 @@ public class MappingProfile : Profile
         CreateMap<LeaveStatus, LeaveStatusDto>().ReverseMap();
         CreateMap<LeaveStatus, CreateLeaveStatusDto>().ReverseMap();
         CreateMap<LeaveStatus, UpdateLeaveStatusDto>().ReverseMap();
+
+        #endregion
+
+        #region User Mapping
+
+        CreateMap<User, GetUserDto>()
+            .ForMember(dest => dest.Mobile,
+                otp =>
+                    otp.MapFrom(src =>
+                        !string.IsNullOrWhiteSpace(src.Mobile) ? $"{src.CountryCode}{src.Mobile}" : null))
+            .ReverseMap();
+
+        CreateMap<User, EditProfileDto>().ReverseMap();
 
         #endregion
     }

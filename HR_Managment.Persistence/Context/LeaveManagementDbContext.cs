@@ -65,6 +65,8 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
             Id = 1,
             FullName = "Amir Asefi",
             Mobile = "9123456789",
+            CountryCode = 98,
+            Email = "amirasefi.info@gmail.com",
             PasswordHash = "AQAAAAEAACcQAAAAECLoPiPh/lUma22MQhg2lQABEBIb/P2SIPqIBNC/Sg5QoQQMJqlXRYMclDsTIJEwIQ==",
             RoleId = 2,
             CreatedAt = DateTime.Now

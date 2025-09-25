@@ -30,6 +30,7 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveTypeReadList)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveTypeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<LeaveTypeDto>>> Get([FromQuery] PaginationDto pagination)
@@ -52,6 +53,7 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeRead)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(LeaveTypeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<LeaveTypeDto>> Get(int id)
@@ -70,6 +72,7 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveTypeCreate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -94,6 +97,7 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeUpdate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -118,6 +122,7 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeDelete)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]

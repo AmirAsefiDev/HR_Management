@@ -53,6 +53,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
         if (!verifyPasswordResult)
             return ResultDto<LoginDto>.Failure("The phone number or password entered is incorrect.");
 
+        user.LastLogin = DateTime.UtcNow;
+        await _context.SaveChangesAsync(true, cancellationToken);
+
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
             UserId = user.Id,

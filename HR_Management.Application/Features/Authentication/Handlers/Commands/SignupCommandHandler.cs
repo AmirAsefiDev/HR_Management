@@ -6,7 +6,6 @@ using HR_Management.Application.DTOs.Authentication.Signup.Validator;
 using HR_Management.Application.DTOs.UserToken;
 using HR_Management.Application.Features.Authentication.Requests.Commands;
 using HR_Management.Common;
-using HR_Management.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +39,13 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
             return ResultDto<SignupDto>.Failure(errorMessage);
         }
 
-        var formatedMobile = Convertors.ConvertMobileToRawFormat(request.SignupRequestDto.Mobile);
+        string? formatedMobile = null;
+        var countryCode = 0;
+        if (string.IsNullOrWhiteSpace(request.SignupRequestDto.Mobile))
+        {
+            formatedMobile = Convertors.ToRawNationalNumber(request.SignupRequestDto.Mobile);
+            countryCode = Convertors.GetCountryCode(request.SignupRequestDto.Mobile);
+        }
 
         //prevent user to record repeatedly Email & Mobile
         var isUserExists = await _context.Users.FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
@@ -56,14 +61,17 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
         var passwordHasher = new PasswordHasher();
         var hashedPassword = passwordHasher.HashPassword(request.SignupRequestDto.Password);
 
-        var newUser = new User
+        var newUser = new Domain.User
         {
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
             Email = request.SignupRequestDto.Email.Trim().ToLower(),
             Mobile = formatedMobile,
+            CountryCode = countryCode,
             FullName = request.SignupRequestDto.FullName.Trim(),
-            PasswordHash = hashedPassword
+            PasswordHash = hashedPassword,
+            LastLogin = DateTime.UtcNow
         };
+
         await _context.Users.AddAsync(newUser, cancellationToken);
         await _context.SaveChangesAsync(true, cancellationToken);
 

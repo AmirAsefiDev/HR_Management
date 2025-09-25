@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HR_Management.Application.DTOs.User.Validator;
 
 namespace HR_Management.Application.DTOs.Authentication.Signup.Validator;
 
@@ -10,9 +11,10 @@ public class SignupRequestDtoValidator : AbstractValidator<SignupRequestDto>
             .NotEmpty().WithMessage("Please enter your first and last name.");
 
         RuleFor(l => l.Mobile)
-            .NotEmpty().WithMessage("Please enter phone number.")
-            .Matches(@"^(?:0|98|\+98|\+980|0098|098|00980)?(9\d{9})$")
-            .WithMessage("Please enter your phone number correctly.");
+            .Must(PhoneNumberValidator.IsValidInternationalNumber)
+            .When(x => !string.IsNullOrWhiteSpace(x.Mobile))
+            .WithMessage(
+                "Please enter a valid international phone number with country code (e.g., +1..., +44..., +98...).");
 
         RuleFor(l => l.Email)
             .NotEmpty().WithMessage("Pleas enter email.")

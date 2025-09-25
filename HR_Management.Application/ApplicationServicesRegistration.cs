@@ -7,9 +7,11 @@ public static class ApplicationServicesRegistration
 {
     public static void ConfigureApplicationServices(this IServiceCollection services)
     {
-        // اینجا به صورت تکی اضافه میشود.
+        //It's added here individually.
         //services.AddAutoMapper(typeof(MappingProfile));
-        // اینجا می آید در اسمبلی فعلی می گردد و هر تعداد پروفایل AutoMapper را پیدا می کند و آن ها را کانفیگ می کند.
+
+        //here it's come to find in current assembly to each Profile of AutoMapper.
+        //after found them config them in Program.cs.
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddHttpContextAccessor();
     }

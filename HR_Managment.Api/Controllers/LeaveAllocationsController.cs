@@ -36,6 +36,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveAllocationReadList)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveAllocationDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -68,6 +69,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveAllocationRead)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<LeaveAllocationDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(LeaveAllocationDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -99,6 +101,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveAllocationCreate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -135,6 +138,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveAllocationUpdate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -171,6 +175,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveAllocationDelete)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]

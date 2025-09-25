@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
-[Route("api/leave-requests")]
+[Route("api/leave-requestss")]
 [ApiController]
 public class LeaveRequestsController : ControllerBase
 {
@@ -35,10 +35,11 @@ public class LeaveRequestsController : ControllerBase
     ///     - 500 (InternalServerError) : An unexpected error occurred
     /// </returns>
     /// <remarks>
-    ///     Sample request: GET: api/leave-request
+    ///     Sample request: GET: api/leave-requests
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveRequestReadList)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestListDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -57,10 +58,11 @@ public class LeaveRequestsController : ControllerBase
     /// <returns>
     /// </returns>
     /// <remarks>
-    ///     Sample request: GET: api/leave-request/me
+    ///     Sample request: GET: api/leave-requests/me
     /// </remarks>
     [HttpGet("me")]
     [Authorize(Policy = Permissions.MyLeaveRequestsList)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetMyRequest([FromQuery] PaginationDto pagination)
@@ -91,10 +93,11 @@ public class LeaveRequestsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     GET api/leave-request/5
+    ///     GET api/leave-requests/5
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestRead)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(LeaveRequestDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -113,10 +116,11 @@ public class LeaveRequestsController : ControllerBase
     /// <returns></returns>
     /// <remarks>
     ///     Sample request:
-    ///     GET api/leave-request/5/status-history
+    ///     GET api/leave-requests/5/status-history
     /// </remarks>
     [HttpGet("{id}/status-history")]
     [Authorize(Policy = Permissions.LeaveRequestStatusHistoryRead)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -147,7 +151,7 @@ public class LeaveRequestsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     POST api/leave-request
+    ///     POST api/leave-requests
     ///     {
     ///     "startDate":"2025-09-10",
     ///     "endDate":"2025-09-10",
@@ -158,6 +162,7 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveRequestCreate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -202,7 +207,7 @@ public class LeaveRequestsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     PUT /api/leave-request/5
+    ///     PUT /api/leave-requests/5
     ///     {
     ///     "startDate": "2025-09-12",
     ///     "endDate": "2025-09-15",
@@ -212,6 +217,7 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestUpdate)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -242,13 +248,14 @@ public class LeaveRequestsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     PATCH /api/leave-request/5/change-approval-status
+    ///     PATCH /api/leave-requests/5/change-status
     ///     {
     ///     "approvalStatus": "Approved"
     ///     }
     /// </remarks>
     [HttpPatch("{id}/change-status")]
     [Authorize(Policy = Permissions.LeaveRequestChangeStatus)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -288,10 +295,11 @@ public class LeaveRequestsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     DELETE /api/leave-request/5
+    ///     DELETE /api/leave-requests/5
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestDelete)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
