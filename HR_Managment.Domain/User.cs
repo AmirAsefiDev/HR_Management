@@ -11,6 +11,7 @@ public class User : BaseDomainEntity
     public int RoleId { get; set; } = 1;
     public Role Role { get; set; }
 
+    public string Picture { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public DateTime? LastLogin { get; set; }

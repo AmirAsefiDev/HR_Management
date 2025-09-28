@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HR_Management.Api.Controllers;
 
-[Route("api/leave-requestss")]
+[Route("api/leave-requests")]
 [ApiController]
 public class LeaveRequestsController : ControllerBase
 {

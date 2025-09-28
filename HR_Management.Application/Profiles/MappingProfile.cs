@@ -78,8 +78,21 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Mobile,
                 otp =>
                     otp.MapFrom(src =>
-                        !string.IsNullOrWhiteSpace(src.Mobile) ? $"{src.CountryCode}{src.Mobile}" : null))
+                        !string.IsNullOrWhiteSpace(src.Mobile) ? $"+{src.CountryCode}{src.Mobile}" : null))
+            .ForMember(dest => dest.RoleName,
+                otp => otp.MapFrom(src => src.Role.Name))
             .ReverseMap();
+
+
+        CreateMap<User, GetUsersDto>()
+            .ForMember(dest => dest.Mobile,
+                otp =>
+                    otp.MapFrom(src =>
+                        !string.IsNullOrWhiteSpace(src.Mobile) ? $"+{src.CountryCode}{src.Mobile}" : null))
+            .ForMember(dest => dest.RoleName,
+                otp => otp.MapFrom(src => src.Role.Name))
+            .ReverseMap();
+
 
         CreateMap<User, EditProfileDto>().ReverseMap();
 

@@ -32,7 +32,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     GET: api/leave-allocation
+    ///     GET: api/leave-allocations
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveAllocationReadList)]
@@ -65,7 +65,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     GET api/leave-allocation/5
+    ///     GET api/leave-allocations/5
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveAllocationRead)]
@@ -92,7 +92,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     POST api/leave-allocation
+    ///     POST api/leave-allocations
     ///     {
     ///     "leaveTypeId":1,
     ///     "period":1,
@@ -129,7 +129,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     PUT api/leave-allocation/5
+    ///     PUT api/leave-allocations/5
     ///     {
     ///     "leaveTypeId":1,
     ///     "period":1,
@@ -171,7 +171,7 @@ public class LeaveAllocationsController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     Sample request:
-    ///     DELETE api/leave-allocation/5
+    ///     DELETE api/leave-allocations/5
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveAllocationDelete)]

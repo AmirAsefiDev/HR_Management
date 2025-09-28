@@ -2,8 +2,10 @@
 using ERP.Infrastructure.ExternalServices.Email;
 using HR_Management.Application.Contracts.Infrastructure.Authentication;
 using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
+using HR_Management.Application.Contracts.Infrastructure.Path;
 using HR_Management.Application.Models;
 using HR_Management.Infrastructure.Authentication;
+using HR_Management.Infrastructure.Path;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +28,8 @@ public static class InfrastructureServicesRegistration
 
         // Permission Policies
         services.AddAuthorization(options => { options.AddPermissionPolicies(); });
+
+        services.AddScoped<IPathService, PathService>();
 
         return services;
     }

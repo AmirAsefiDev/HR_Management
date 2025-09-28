@@ -8,10 +8,10 @@ public class ResultDto
     public string? Message { get; set; }
     public int StatusCode { get; set; } = StatusCodes.Status200OK; // 200, 400, 401 
 
-    public static ResultDto Success(string message = "عملیات با موفقیت انجام شد",
+    public static ResultDto Success(string message = "The operation was completed successfully.",
         int statusCode = StatusCodes.Status200OK)
     {
-        return new ResultDto()
+        return new ResultDto
         {
             IsSuccess = true,
             Message = message,
@@ -21,7 +21,7 @@ public class ResultDto
 
     public static ResultDto Failure(string message, int statusCode = StatusCodes.Status400BadRequest)
     {
-        return new ResultDto ()
+        return new ResultDto
         {
             IsSuccess = false,
             Message = message,
@@ -37,10 +37,10 @@ public class ResultDto<T> : ResultDto
     //public HttpStatusCode StatusCode { get; set; } // 200, 400, 401
     public T? Data { get; set; }
 
-    public static ResultDto<T> Success(T data, string message = "عملیات با موفقیت انجام شد",
+    public static ResultDto<T> Success(T data, string message = "the operation was completed successfully.",
         int statusCode = 200)
     {
-        return new ResultDto<T> ()
+        return new ResultDto<T>
         {
             IsSuccess = true,
             Data = data,
@@ -51,7 +51,7 @@ public class ResultDto<T> : ResultDto
 
     public static ResultDto<T> Failure(string message, int statusCode = 400)
     {
-        return new ResultDto<T> ()
+        return new ResultDto<T>
         {
             IsSuccess = false,
             Message = message,

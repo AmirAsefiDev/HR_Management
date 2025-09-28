@@ -19,7 +19,7 @@ public class GetUserDetailRequestHandler : IRequestHandler<GetUserDetailRequest,
 
     public async Task<GetUserDto> Handle(GetUserDetailRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepo.Get(request.UserId);
+        var user = await _userRepo.GetUserWithDetails(request.UserId);
         return _mapper.Map<GetUserDto>(user);
     }
 }

@@ -69,7 +69,8 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
             CountryCode = countryCode,
             FullName = request.SignupRequestDto.FullName.Trim(),
             PasswordHash = hashedPassword,
-            LastLogin = DateTime.UtcNow
+            LastLogin = DateTime.UtcNow,
+            Picture = "/images/user/default_profile.jpg"
         };
 
         await _context.Users.AddAsync(newUser, cancellationToken);

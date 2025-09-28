@@ -168,6 +168,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.UseCors("CorsPolicy");
 
 app.MapControllers();

@@ -69,7 +69,8 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
             Email = "amirasefi.info@gmail.com",
             PasswordHash = "AQAAAAEAACcQAAAAECLoPiPh/lUma22MQhg2lQABEBIb/P2SIPqIBNC/Sg5QoQQMJqlXRYMclDsTIJEwIQ==",
             RoleId = 2,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
+            Picture = "/images/user/default_profile.jpg"
         });
 
         //these are default status of each LeaveStatus

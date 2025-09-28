@@ -26,7 +26,7 @@ public class LeaveTypesController : ControllerBase
     /// </summary>
     /// <returns></returns>
     /// <remarks>
-    ///     SampleRequest: GET api/leave-type/
+    ///     SampleRequest: GET api/leave-types/
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveTypeReadList)]
@@ -49,7 +49,7 @@ public class LeaveTypesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     /// <remarks>
-    ///     SampleRequest: GET api/leave-type/5
+    ///     SampleRequest: GET api/leave-types/5
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeRead)]
@@ -68,7 +68,7 @@ public class LeaveTypesController : ControllerBase
     /// <param name="leaveType"></param>
     /// <returns></returns>
     /// <remarks>
-    ///     SampleRequest:  POST api/leave-type
+    ///     SampleRequest:  POST api/leave-types
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveTypeCreate)]
@@ -93,7 +93,7 @@ public class LeaveTypesController : ControllerBase
     /// <param name="leaveType"></param>
     /// <returns></returns>
     /// <remarks>
-    ///     SampleRequest: PUT api/leave-type/5
+    ///     SampleRequest: PUT api/leave-types/5
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeUpdate)]
@@ -118,7 +118,7 @@ public class LeaveTypesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     /// <remarks>
-    ///     SampleRequest: DELETE api/leave-type/5
+    ///     SampleRequest: DELETE api/leave-types/5
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeDelete)]

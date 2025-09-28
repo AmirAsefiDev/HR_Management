@@ -15,7 +15,7 @@
             </returns>
             <remarks>
                 Sample request:
-                GET: api/leave-allocation
+                GET: api/leave-allocations
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Get(System.Int32)">
@@ -32,7 +32,7 @@
             </returns>
             <remarks>
                 Sample request:
-                GET api/leave-allocation/5
+                GET api/leave-allocations/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Post(HR_Management.Application.DTOs.LeaveAllocation.CreateLeaveAllocationDto)">
@@ -49,7 +49,7 @@
             </returns>
             <remarks>
                 Sample request:
-                POST api/leave-allocation
+                POST api/leave-allocations
                 {
                 "leaveTypeId":1,
                 "period":1,
@@ -72,7 +72,7 @@
             </returns>
             <remarks>
                 Sample request:
-                PUT api/leave-allocation/5
+                PUT api/leave-allocations/5
                 {
                 "leaveTypeId":1,
                 "period":1,
@@ -94,7 +94,7 @@
             </returns>
             <remarks>
                 Sample request:
-                DELETE api/leave-allocation/5
+                DELETE api/leave-allocations/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Get(HR_Management.Common.Pagination.PaginationDto)">
@@ -107,7 +107,7 @@
                 - 500 (InternalServerError) : An unexpected error occurred
             </returns>
             <remarks>
-                Sample request: GET: api/leave-request
+                Sample request: GET: api/leave-requests
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.GetMyRequest(HR_Management.Common.Pagination.PaginationDto)">
@@ -117,7 +117,7 @@
             <returns>
             </returns>
             <remarks>
-                Sample request: GET: api/leave-request/me
+                Sample request: GET: api/leave-requests/me
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Get(System.Int32)">
@@ -132,7 +132,7 @@
             </returns>
             <remarks>
                 Sample request:
-                GET api/leave-request/5
+                GET api/leave-requests/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.GetLeaveRequestStatusHistories(System.Int32,HR_Management.Common.Pagination.PaginationDto)">
@@ -145,7 +145,7 @@
             <returns></returns>
             <remarks>
                 Sample request:
-                GET api/leave-request/5/status-history
+                GET api/leave-requests/5/status-history
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Post(HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest.CreateLeaveRequestRequestDto)">
@@ -162,7 +162,7 @@
             </returns>
             <remarks>
                 Sample request:
-                POST api/leave-request
+                POST api/leave-requests
                 {
                 "startDate":"2025-09-10",
                 "endDate":"2025-09-10",
@@ -190,7 +190,7 @@
             </returns>
             <remarks>
                 Sample request:
-                PUT /api/leave-request/5
+                PUT /api/leave-requests/5
                 {
                 "startDate": "2025-09-12",
                 "endDate": "2025-09-15",
@@ -216,7 +216,7 @@
             </returns>
             <remarks>
                 Sample request:
-                PATCH /api/leave-request/5/change-approval-status
+                PATCH /api/leave-requests/5/change-status
                 {
                 "approvalStatus": "Approved"
                 }
@@ -237,7 +237,7 @@
             </returns>
             <remarks>
                 Sample request:
-                DELETE /api/leave-request/5
+                DELETE /api/leave-requests/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestStatusHistoriesController.Get(HR_Management.Common.Pagination.PaginationDto)">
@@ -246,7 +246,7 @@
             </summary>
             <returns></returns>
             <remarks>
-                Sample Request: GET: api/leave-request-status-history
+                Sample Request: GET: api/leave-request-status-histories
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(HR_Management.Common.Pagination.PaginationDto)">
@@ -255,7 +255,7 @@
             </summary>
             <returns></returns>
             <remarks>
-                SampleRequest: GET api/leave-type/
+                SampleRequest: GET api/leave-types/
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(System.Int32)">
@@ -265,7 +265,7 @@
             <param name="id"></param>
             <returns></returns>
             <remarks>
-                SampleRequest: GET api/leave-type/5
+                SampleRequest: GET api/leave-types/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Post(HR_Management.Application.DTOs.LeaveType.CreateLeaveTypeDto)">
@@ -275,7 +275,7 @@
             <param name="leaveType"></param>
             <returns></returns>
             <remarks>
-                SampleRequest:  POST api/leave-type
+                SampleRequest:  POST api/leave-types
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Put(System.Int32,HR_Management.Application.DTOs.LeaveType.LeaveTypeDto)">
@@ -286,7 +286,7 @@
             <param name="leaveType"></param>
             <returns></returns>
             <remarks>
-                SampleRequest: PUT api/leave-type/5
+                SampleRequest: PUT api/leave-types/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Delete(System.Int32)">
@@ -296,7 +296,7 @@
             <param name="id"></param>
             <returns></returns>
             <remarks>
-                SampleRequest: DELETE api/leave-type/5
+                SampleRequest: DELETE api/leave-types/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.UsersController.GetUserInfo">
@@ -307,6 +307,22 @@
             <remarks>
                 Sample Request:
                 Get api/users/me
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.UsersController.EditProfile(HR_Management.Application.DTOs.User.EditProfile.EditProfileRequestDto)">
+            <summary>
+                Updates the authenticated user page information.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+            <remarks>
+                Sample request:
+                PUT api/users
+                {
+                "fullName":"Amir Asefi",
+                "email":"amirasefi.info@gmail.com",
+                "mobile":"+989123456789"
+                }
             </remarks>
         </member>
     </members>

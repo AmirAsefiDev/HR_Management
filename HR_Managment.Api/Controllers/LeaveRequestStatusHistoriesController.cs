@@ -25,7 +25,7 @@ public class LeaveRequestStatusHistoriesController : ControllerBase
     /// </summary>
     /// <returns></returns>
     /// <remarks>
-    ///     Sample Request: GET: api/leave-request-status-history
+    ///     Sample Request: GET: api/leave-request-status-histories
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveRequestStatusHistoryReadList)]

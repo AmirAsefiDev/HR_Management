@@ -25,6 +25,17 @@ public class EditProfileCommandHandler : IRequestHandler<EditProfileCommand, Res
         if (!validationResult.IsValid) return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
         var user = await _userRepo.Get(request.EditProfileDto.Id);
+        if (user == null)
+            return ResultDto.Failure("The user was not found.");
+
+        if (!string.IsNullOrWhiteSpace(request.EditProfileDto.Mobile))
+        {
+            var formatedMobile = Convertors.ToRawNationalNumber(request.EditProfileDto.Mobile);
+            var countryCode = Convertors.GetCountryCode(request.EditProfileDto.Mobile);
+            request.EditProfileDto.Mobile = formatedMobile;
+            request.EditProfileDto.CountryCode = countryCode;
+        }
+
         _mapper.Map(request.EditProfileDto, user);
         await _userRepo.Update(user);
 
