@@ -38,20 +38,20 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             return ResultDto<LoginDto>.Failure(errorMessage);
         }
 
-        var formatedMobile = Convertors.ConvertMobileToRawFormat(request.LoginRequestDto.Mobile);
+        var formatedEmail = request.LoginRequestDto.Email.ToLower().Trim();
         var user = await _context.Users
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.Mobile == formatedMobile, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Email == formatedEmail, cancellationToken);
 
         if (user == null)
-            return ResultDto<LoginDto>.Failure("No user registered with this phone number.Please proceed to sign up.",
+            return ResultDto<LoginDto>.Failure("No user registered with this email number.Please proceed to sign up.",
                 409);
 
 
         var passwordHasher = new PasswordHasher();
         var verifyPasswordResult = passwordHasher.VerifyPassword(user.PasswordHash, request.LoginRequestDto.Password);
         if (!verifyPasswordResult)
-            return ResultDto<LoginDto>.Failure("The phone number or password entered is incorrect.");
+            return ResultDto<LoginDto>.Failure("The email or password entered is incorrect.");
 
         user.LastLogin = DateTime.UtcNow;
         await _context.SaveChangesAsync(true, cancellationToken);
@@ -62,6 +62,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             FullName = user.FullName,
             RoleName = user.Role.Name
         }, cancellationToken);
+
         await _userTokenRepo.SaveToken(new UserTokenDto
         {
             HashedToken = SecurityHelper.GetSHA256Hash(tokenProducer.AccessToken),

@@ -325,5 +325,36 @@
                 }
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.UsersController.UpdateUserPicture(HR_Management.Application.DTOs.User.UpdateUserPicture.UpdateUserPictureRequestDto)">
+            <summary>
+                Uploads or updates the profile picture of the authenticated user.
+            </summary>
+            <param name="request">
+                The request containing the profile picture file to be uploaded (sent as form-data).
+            </param>
+            <remarks>
+                Sample request:
+                PATCH api/users/upload-profile-picture
+                Content-Type: multipart/form-data
+                Form-data:
+                {
+                "picture": [binary file e.g. profile.jpg]
+                }
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.UsersController.DeleteProfilePicture(System.String)">
+            <summary>
+                Deletes the profile picture of the authenticated user.
+            </summary>
+            <param name="picture">
+                The file name or path of the picture to delete (provided as a query parameter).
+            </param>
+            <returns></returns>
+            <remarks>
+                Sample request:
+                DELETE api/users/delete-profile-picture?picture=default_profile.jpg
+            </remarks>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HR_Management.Api.Controllers.UsersController.Get(HR_Management.Common.Pagination.PaginationDto)" -->
     </members>
 </doc>
