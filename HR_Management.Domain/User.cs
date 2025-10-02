@@ -24,4 +24,5 @@ public class User : BaseDomainEntity
         new List<LeaveRequestStatusHistory>();
 
     public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
+    public ICollection<LeaveAllocation> LeaveAllocations { get; set; } = new List<LeaveAllocation>();
 }

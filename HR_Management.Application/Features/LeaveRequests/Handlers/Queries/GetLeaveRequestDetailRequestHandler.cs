@@ -25,7 +25,7 @@ public class
         var getLeaveRequest = await _leaveRequestRepo.GetLeaveRequestWithDetails(request.Id);
 
         if (getLeaveRequest == null)
-            return ResultDto<LeaveRequestDto>.Failure("درخواست مرخصی مورد نظر پیدا نشد.", 404);
+            return ResultDto<LeaveRequestDto>.Failure("No leave request found.", 404);
 
         return ResultDto<LeaveRequestDto>.Success(_mapper.Map<LeaveRequestDto>(getLeaveRequest));
     }

@@ -27,9 +27,13 @@
   <ItemGroup>
     <ProjectReference Include="..\HR_Management.Application\HR_Management.Application.csproj" />
     <ProjectReference Include="..\HR_Management.Common\HR_Management.Common.csproj" />
-    <ProjectReference Include="..\HR_Managment.Domain\HR_Management.Domain.csproj" />
-    <ProjectReference Include="..\HR_Managment.Infrastructure\HR_Management.Infrastructure.csproj" />
-    <ProjectReference Include="..\HR_Managment.Persistence\HR_Management.Persistence.csproj" />
+    <ProjectReference Include="..\HR_Management.Domain\HR_Management.Domain.csproj" />
+    <ProjectReference Include="..\HR_Management.Infrastructure\HR_Management.Infrastructure.csproj" />
+    <ProjectReference Include="..\HR_Management.Persistence\HR_Management.Persistence.csproj" />
+    <ProjectReference Include="..\HR_Management.Infrastructure\HR_Management.Infrastructure.csproj" />
+    <ProjectReference Include="..\HR_Management.Persistence\HR_Management.Persistence.csproj" />
+    <ProjectReference Include="..\HR_Management.Infrastructure\HR_Management.Infrastructure.csproj" />
+    <ProjectReference Include="..\HR_Management.Persistence\HR_Management.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

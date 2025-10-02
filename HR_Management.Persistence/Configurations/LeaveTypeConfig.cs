@@ -17,7 +17,7 @@ public class LeaveTypeConfig : IEntityTypeConfiguration<LeaveType>
 
         builder.HasIndex(x => x.Name).IsUnique();
 
-        builder.Property(x => x.DefaultDay)
-            .IsRequired();
+        builder.Property(x => x.DefaultDay).IsRequired();
+        builder.Property(x => x.HoursPerDay).IsRequired().HasDefaultValue(8);
     }
 }

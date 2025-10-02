@@ -44,9 +44,9 @@ public class GetLeaveAllocationListRequestHandler :
             "period" => isDescending
                 ? query.OrderByDescending(l => l.Period)
                 : query.OrderBy(l => l.Period),
-            "numberofdays" => isDescending
-                ? query.OrderByDescending(l => l.NumberOfDays)
-                : query.OrderBy(l => l.NumberOfDays),
+            "totaldays" => isDescending
+                ? query.OrderByDescending(l => l.TotalDays)
+                : query.OrderBy(l => l.TotalDays),
             _ => query.OrderByDescending(la => la.Id)
         };
 

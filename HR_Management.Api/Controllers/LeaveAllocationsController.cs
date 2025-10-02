@@ -150,7 +150,7 @@ public class LeaveAllocationsController : ControllerBase
             {
                 Id = id,
                 LeaveTypeId = request.LeaveTypeId,
-                NumberOfDays = request.NumberOfDays,
+                TotalDays = request.TotalDays,
                 Period = request.Period
             }
         };

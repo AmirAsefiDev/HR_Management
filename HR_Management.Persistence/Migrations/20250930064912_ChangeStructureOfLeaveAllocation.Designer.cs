@@ -4,6 +4,7 @@ using HR_Management.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management.Persistence.Migrations
 {
     [DbContext(typeof(LeaveManagementDbContext))]
-    partial class LeaveManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250930064912_ChangeStructureOfLeaveAllocation")]
+    partial class ChangeStructureOfLeaveAllocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,25 @@ namespace HR_Management.Persistence.Migrations
                     b.Property<int>("Period")
                         .HasColumnType("int");
 
+                    b.Property<int>("RemainingDays")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("int")
+                        .HasComputedColumnSql("[TotalDays] - [UsedDays]", true);
+
+                    b.Property<int>("TotalDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsedDays")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LeaveTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("LeaveAllocation", "dbo");
                 });
@@ -205,25 +224,25 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2025, 9, 26, 8, 16, 17, 869, DateTimeKind.Utc).AddTicks(8474),
+                            DateCreated = new DateTime(2025, 9, 30, 6, 49, 12, 183, DateTimeKind.Utc).AddTicks(3978),
                             Name = "Pending"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2025, 9, 26, 8, 16, 17, 869, DateTimeKind.Utc).AddTicks(8482),
+                            DateCreated = new DateTime(2025, 9, 30, 6, 49, 12, 183, DateTimeKind.Utc).AddTicks(3982),
                             Name = "Approved"
                         },
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2025, 9, 26, 8, 16, 17, 869, DateTimeKind.Utc).AddTicks(8486),
+                            DateCreated = new DateTime(2025, 9, 30, 6, 49, 12, 183, DateTimeKind.Utc).AddTicks(3983),
                             Name = "Rejected"
                         },
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2025, 9, 26, 8, 16, 17, 869, DateTimeKind.Utc).AddTicks(8490),
+                            DateCreated = new DateTime(2025, 9, 30, 6, 49, 12, 183, DateTimeKind.Utc).AddTicks(4024),
                             Name = "Cancelled"
                         });
                 });
@@ -275,7 +294,7 @@ namespace HR_Management.Persistence.Migrations
                     b.Property<DateTime>("CreateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 26, 8, 16, 17, 867, DateTimeKind.Utc).AddTicks(2809));
+                        .HasDefaultValue(new DateTime(2025, 9, 30, 6, 49, 12, 182, DateTimeKind.Utc).AddTicks(2746));
 
                     b.Property<DateTime>("ExpireAt")
                         .HasColumnType("datetime2");
@@ -334,25 +353,25 @@ namespace HR_Management.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2025, 9, 26, 11, 46, 17, 869, DateTimeKind.Local).AddTicks(7996),
+                            DateCreated = new DateTime(2025, 9, 30, 10, 19, 12, 183, DateTimeKind.Local).AddTicks(3805),
                             Name = "Employee"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2025, 9, 26, 11, 46, 17, 869, DateTimeKind.Local).AddTicks(8016),
+                            DateCreated = new DateTime(2025, 9, 30, 10, 19, 12, 183, DateTimeKind.Local).AddTicks(3817),
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2025, 9, 26, 11, 46, 17, 869, DateTimeKind.Local).AddTicks(8020),
+                            DateCreated = new DateTime(2025, 9, 30, 10, 19, 12, 183, DateTimeKind.Local).AddTicks(3819),
                             Name = "HR"
                         },
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2025, 9, 26, 11, 46, 17, 869, DateTimeKind.Local).AddTicks(8024),
+                            DateCreated = new DateTime(2025, 9, 30, 10, 19, 12, 183, DateTimeKind.Local).AddTicks(3821),
                             Name = "Manager"
                         });
                 });
@@ -439,8 +458,8 @@ namespace HR_Management.Persistence.Migrations
                         {
                             Id = 1,
                             CountryCode = 98,
-                            CreatedAt = new DateTime(2025, 9, 26, 11, 46, 17, 869, DateTimeKind.Local).AddTicks(8098),
-                            DateCreated = new DateTime(2025, 9, 26, 8, 16, 17, 869, DateTimeKind.Utc).AddTicks(8091),
+                            CreatedAt = new DateTime(2025, 9, 30, 10, 19, 12, 183, DateTimeKind.Local).AddTicks(3859),
+                            DateCreated = new DateTime(2025, 9, 30, 6, 49, 12, 183, DateTimeKind.Utc).AddTicks(3855),
                             Email = "amirasefi.info@gmail.com",
                             FullName = "Amir Asefi",
                             IsActive = true,
@@ -495,7 +514,14 @@ namespace HR_Management.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("HR_Management.Domain.User", "User")
+                        .WithMany("LeaveAllocations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("LeaveType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HR_Management.Domain.LeaveRequest", b =>
@@ -611,6 +637,8 @@ namespace HR_Management.Persistence.Migrations
 
             modelBuilder.Entity("HR_Management.Domain.User", b =>
                 {
+                    b.Navigation("LeaveAllocations");
+
                     b.Navigation("LeaveRequestStatusHistories");
 
                     b.Navigation("LeaveRequests");

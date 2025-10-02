@@ -6,6 +6,7 @@ using HR_Management.Application.DTOs.Authentication.Signup.Validator;
 using HR_Management.Application.DTOs.UserToken;
 using HR_Management.Application.Features.Authentication.Requests.Commands;
 using HR_Management.Common;
+using HR_Management.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,17 +16,23 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
 {
     private readonly ILeaveManagementDbContext _context;
     private readonly IJWTTokenService _jwtService;
+    private readonly ILeaveAllocationRepository _leaveAllocationRepo;
+    private readonly ILeaveTypeRepository _leaveTypeRepo;
     private readonly IUserTokenRepository _userTokenRepo;
 
     public SignupCommandHandler(
         ILeaveManagementDbContext context,
         IJWTTokenService jwtService,
-        IUserTokenRepository userTokenRepo
+        IUserTokenRepository userTokenRepo,
+        ILeaveTypeRepository leaveTypeRepo,
+        ILeaveAllocationRepository leaveAllocationRepo
     )
     {
         _context = context;
         _jwtService = jwtService;
         _userTokenRepo = userTokenRepo;
+        _leaveTypeRepo = leaveTypeRepo;
+        _leaveAllocationRepo = leaveAllocationRepo;
     }
 
     public async Task<ResultDto<SignupDto>> Handle(SignupCommand request, CancellationToken cancellationToken)
@@ -75,6 +82,16 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
 
         await _context.Users.AddAsync(newUser, cancellationToken);
         await _context.SaveChangesAsync(true, cancellationToken);
+
+        var leaveTypes = await _leaveTypeRepo.GetAll();
+        foreach (var leaveType in leaveTypes)
+            await _leaveAllocationRepo.Add(new LeaveAllocation
+            {
+                LeaveTypeId = leaveType.Id,
+                TotalDays = leaveType.DefaultDay,
+                UserId = newUser.Id,
+                Period = DateTime.UtcNow.Year
+            });
 
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {

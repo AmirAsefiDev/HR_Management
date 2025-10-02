@@ -16,6 +16,6 @@ public class ILeaveAllocationDtoValidator : AbstractValidator<ILeaveAllocationDt
             .WithMessage("{PropertyName} doesn't exist");
 
         RuleFor(x => x.Period).GreaterThan(0).WithMessage("Period must be greater than 0.");
-        RuleFor(x => x.NumberOfDays).GreaterThan(0).WithMessage("Number of days must be greater than 0.");
+        RuleFor(x => x.TotalDays).GreaterThan(0).WithMessage("Number of days must be greater than 0.");
     }
 }

@@ -12,12 +12,20 @@ public class LeaveAllocationConfig : IEntityTypeConfiguration<LeaveAllocation>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.NumberOfDays).IsRequired();
+        builder.Property(x => x.TotalDays).IsRequired();
         builder.Property(x => x.Period).IsRequired();
 
         builder.HasOne(x => x.LeaveType)
             .WithMany(x => x.LeaveAllocations)
             .HasForeignKey(x => x.LeaveTypeId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.LeaveAllocations)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Property(x => x.RemainingDays)
+            .HasComputedColumnSql("[TotalDays] - [UsedDays]", true);
     }
 }

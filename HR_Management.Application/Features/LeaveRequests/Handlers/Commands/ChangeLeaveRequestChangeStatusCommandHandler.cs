@@ -12,6 +12,7 @@ public class
     ChangeLeaveRequestChangeStatusCommandHandler : IRequestHandler<ChangeLeaveRequestChangeStatusCommand, ResultDto>
 {
     private readonly IEmailService _emailService;
+    private readonly ILeaveAllocationRepository _leaveAllocationRepo;
     private readonly ILeaveRequestRepository _leaveRequestRepo;
     private readonly ILeaveRequestStatusHistoryRepository _leaveRequestStatusHistoryRepo;
     private readonly ILogger<ChangeLeaveRequestChangeStatusCommandHandler> _logger;
@@ -20,12 +21,14 @@ public class
         ILeaveRequestRepository leaveRequestRepo,
         IEmailService emailService,
         ILogger<ChangeLeaveRequestChangeStatusCommandHandler> logger,
-        ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo)
+        ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo,
+        ILeaveAllocationRepository leaveAllocationRepo)
     {
         _leaveRequestRepo = leaveRequestRepo;
         _emailService = emailService;
         _logger = logger;
         _leaveRequestStatusHistoryRepo = leaveRequestStatusHistoryRepo;
+        _leaveAllocationRepo = leaveAllocationRepo;
     }
 
     public async Task<ResultDto> Handle(ChangeLeaveRequestChangeStatusCommand request,
@@ -45,6 +48,31 @@ public class
 
         await _leaveRequestRepo.ChangeApprovalStatus(leaveRequest,
             request.ChangeLeaveRequestChangeStatusDto.approvalStatus);
+
+        if (request.ChangeLeaveRequestChangeStatusDto.approvalStatus ==
+            ILeaveRequestRepository.ApprovalStatuses.Approved)
+        {
+            double requestedAmount;
+            if (leaveRequest.StartDate.Date == leaveRequest.EndDate.Date)
+                //Hourly leave
+                requestedAmount = (leaveRequest.EndDate - leaveRequest.StartDate).TotalHours;
+            else
+                //Daily leave
+                //calculate and receive total days with considering last day of leave request.
+                requestedAmount = (leaveRequest.EndDate.Date - leaveRequest.StartDate.Date).TotalDays + 1;
+
+            var allocation = await
+                _leaveAllocationRepo.GetUserAllocation(leaveRequest.UserId, leaveRequest.LeaveTypeId,
+                    (int)requestedAmount);
+            if (allocation == null)
+                return ResultDto.Failure("No leave allocation found for this user for leave type.");
+            if (allocation.RemainingDays < requestedAmount)
+                return ResultDto.Failure("Insufficient leave allocation.");
+
+            allocation.UsedDays += (int)requestedAmount;
+
+            await _leaveAllocationRepo.Update(allocation);
+        }
 
         await _leaveRequestStatusHistoryRepo.Add(new Domain.LeaveRequestStatusHistory
         {

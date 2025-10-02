@@ -73,6 +73,16 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
             Picture = "/images/user/default_profile.jpg"
         });
 
+        modelBuilder.Entity<LeaveType>().HasData(new List<LeaveType>
+        {
+            new() { Id = 1, Name = "Annual Leave", DefaultDay = 26 },
+            new() { Id = 2, Name = "Sick Leave", DefaultDay = 7 },
+            new() { Id = 3, Name = "Hourly Leave", DefaultDay = 0 },
+            new() { Id = 4, Name = "Marriage & Bereavement Leave", DefaultDay = 3 },
+            new() { Id = 5, Name = "Maternity Leave", DefaultDay = 90 },
+            new() { Id = 6, Name = "Unpaid Leave", DefaultDay = 30 }
+        });
+
         //these are default status of each LeaveStatus
         modelBuilder.Entity<LeaveStatus>().HasData(new List<LeaveStatus>
         {

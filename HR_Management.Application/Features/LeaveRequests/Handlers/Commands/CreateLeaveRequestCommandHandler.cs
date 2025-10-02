@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ERP.Application.Interfaces.Email;
 using HR_Management.Application.Contracts.Persistence;
+using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequest.Validators;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 using HR_Management.Common;
@@ -13,6 +14,7 @@ namespace HR_Management.Application.Features.LeaveRequests.Handlers.Commands;
 public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, ResultDto<int>>
 {
     private readonly IEmailService _emailService;
+    private readonly ILeaveAllocationRepository _leaveAllocationRepo;
     private readonly ILeaveRequestRepository _leaveRequestRepo;
     private readonly ILeaveStatusRepository _leaveStatusRepo;
     private readonly ILeaveTypeRepository _leaveTypeRepo;
@@ -27,7 +29,8 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         ILeaveStatusRepository leaveStatusRepo,
         IEmailService emailService,
         ILogger<CreateLeaveRequestCommandHandler> logger,
-        IUserRepository userRepo)
+        IUserRepository userRepo,
+        ILeaveAllocationRepository leaveAllocationRepo)
     {
         _leaveRequestRepo = leaveRequestRepo;
         _mapper = mapper;
@@ -36,6 +39,7 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         _emailService = emailService;
         _logger = logger;
         _userRepo = userRepo;
+        _leaveAllocationRepo = leaveAllocationRepo;
     }
 
     public async Task<ResultDto<int>> Handle(CreateLeaveRequestCommand request,
@@ -46,6 +50,38 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
 
         if (!validationResult.IsValid) return ResultDto<int>.Failure(validationResult.Errors.First().ErrorMessage);
 
+
+        double requestedAmount;
+        switch (request.CreateLeaveRequestDto.LeaveMeasureType)
+        {
+            //calculate and receive total days with considering last day of leave request.
+            case LeaveMeasureType.DayBased:
+                requestedAmount = (request.CreateLeaveRequestDto.EndDate.Date -
+                                   request.CreateLeaveRequestDto.StartDate.Date).TotalDays + 1;
+                break;
+            case LeaveMeasureType.HourBased:
+
+                var leaveType = await _leaveTypeRepo.Get(request.CreateLeaveRequestDto.LeaveTypeId);
+                var totalHours = (request.CreateLeaveRequestDto.EndDate - request.CreateLeaveRequestDto.StartDate)
+                    .TotalHours;
+
+                if (leaveType.HoursPerDay <= 0)
+                    throw new Exception("Leave type must define valid HoursPerDay for hourly calculation.");
+
+                requestedAmount = totalHours / leaveType.HoursPerDay;
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        var hasSufficientAllocation = await _leaveAllocationRepo.HasSufficientAllocation(
+            request.CreateLeaveRequestDto.UserId,
+            request.CreateLeaveRequestDto.LeaveTypeId,
+            (int)requestedAmount);
+
+        if (!hasSufficientAllocation)
+            return ResultDto<int>.Failure("You don't have enough leave allocation for this request.");
 
         var leaveRequest = _mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
         leaveRequest = await _leaveRequestRepo.Add(leaveRequest);

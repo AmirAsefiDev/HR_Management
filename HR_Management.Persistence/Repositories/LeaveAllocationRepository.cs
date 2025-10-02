@@ -22,6 +22,22 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         return leaveAllocation;
     }
 
+    public async Task<bool> HasSufficientAllocation(int userId, int leaveTypeId, int requestedAmount)
+    {
+        var allocation = await _context.LeaveAllocations
+            .FirstOrDefaultAsync(la => la.UserId == userId && la.LeaveTypeId == leaveTypeId);
+        if (allocation == null)
+            return false;
+        return allocation.RemainingDays >= requestedAmount;
+    }
+
+    public async Task<LeaveAllocation> GetUserAllocation(int userId, int leaveTypeId, int requestedAmount)
+    {
+        var userAllocation = await _context.LeaveAllocations
+            .FirstOrDefaultAsync(la => la.UserId == userId && la.LeaveTypeId == leaveTypeId);
+        return userAllocation;
+    }
+
     public IQueryable<LeaveAllocation> GetLeaveAllocationsWithDetails()
     {
         var leaveAllocations = _context.LeaveAllocations

@@ -143,6 +143,8 @@ public class LeaveRequestsController : ControllerBase
     /// </summary>
     /// <param name="request">
     ///     The leave request data to create, including start date, end date, leave type,leave status , etc.
+    ///     The request containing the new leave measure type.
+    ///     Allowed values: DayBased(1), HourBased(2).
     /// </param>
     /// <returns>
     ///     - 200 (OK): Leave request created successfully
@@ -183,7 +185,8 @@ public class LeaveRequestsController : ControllerBase
                 LeaveTypeId = request.LeaveTypeId,
                 RequestComments = request.RequestComments,
                 StartDate = request.StartDate,
-                UserId = userId
+                UserId = userId,
+                LeaveMeasureType = request.LeaveMeasureType
             }
         };
         var result = await _mediator.Send(command);

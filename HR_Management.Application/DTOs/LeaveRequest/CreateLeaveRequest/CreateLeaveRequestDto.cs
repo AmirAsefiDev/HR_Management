@@ -8,8 +8,15 @@ public class CreateLeaveRequestDto : BaseDto, ILeaveRequestDto
 
     public string RequestComments { get; set; }
     public int UserId { get; set; }
+    public LeaveMeasureType LeaveMeasureType { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int LeaveTypeId { get; set; }
     public int LeaveStatusId { get; set; } = 1;
+}
+
+public enum LeaveMeasureType
+{
+    DayBased = 1,
+    HourBased = 2
 }
