@@ -25,7 +25,7 @@ public class ILeaveRequestDtoValidator : AbstractValidator<ILeaveRequestDto>
         RuleFor(l => l.LeaveTypeId)
             .GreaterThan(0)
             //optimized version
-            .MustAsync(async (id, token) => await _leaveTypeRepo.Exist(id))
+            .MustAsync(async (id, token) => await _leaveTypeRepo.ExistAsync(id))
             //simple version
             //.MustAsync(async (id, token) =>
             //{
@@ -37,7 +37,7 @@ public class ILeaveRequestDtoValidator : AbstractValidator<ILeaveRequestDto>
         RuleFor(l => l.LeaveStatusId)
             .GreaterThan(0)
             //optimized version
-            .MustAsync(async (id, token) => await _leaveStatusRepo.Exist(id))
+            .MustAsync(async (id, token) => await _leaveStatusRepo.ExistAsync(id))
             .WithMessage("{PropertyName} doesn't exist");
     }
 }

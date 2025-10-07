@@ -12,4 +12,10 @@ public class LeaveStatusRepository : GenericRepository<LeaveStatus>, ILeaveStatu
     {
         _context = context;
     }
+
+    public IQueryable<LeaveStatus> GetLeaveStatusesWithDetails()
+    {
+        var leaveStatuses = _context.LeaveStatuses.AsQueryable();
+        return leaveStatuses;
+    }
 }

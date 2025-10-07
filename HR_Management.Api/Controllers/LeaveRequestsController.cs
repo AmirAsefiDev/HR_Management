@@ -5,7 +5,7 @@ using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 using HR_Management.Application.Features.LeaveRequests.Requests.Queries;
-using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
+using HR_Management.Application.Features.LeaveRequestStatusHistories.Requests.Queries;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
 using HR_Management.Common.Security;
@@ -89,6 +89,7 @@ public class LeaveRequestsController : ControllerBase
     /// <returns>
     ///     - 200 (Ok) : Leave request found
     ///     - 400 (BadRequest) : Invalid Id
+    ///     - 404 (NotFound) : leave request couldn't find
     ///     - 500 (InternalServerError) : An unexpected error occurred
     /// </returns>
     /// <remarks>
@@ -99,6 +100,7 @@ public class LeaveRequestsController : ControllerBase
     [Authorize(Policy = Permissions.LeaveRequestRead)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(LeaveRequestDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Get(int id)
@@ -147,7 +149,7 @@ public class LeaveRequestsController : ControllerBase
     ///     Allowed values: DayBased(1), HourBased(2).
     /// </param>
     /// <returns>
-    ///     - 200 (OK): Leave request created successfully
+    ///     - 201 (Created): Leave request created successfully
     ///     - 400 (BadRequest): Validation failed or invalid input
     ///     - 500 (InternalServerError): An unexpected error occurred
     /// </returns>
@@ -159,7 +161,8 @@ public class LeaveRequestsController : ControllerBase
     ///     "endDate":"2025-09-10",
     ///     "leaveTypeId":1,
     ///     "leaveStatusId":1,
-    ///     "requestComments":"Need a leave for personal work"
+    ///     "requestComments":"Need a leave for personal work",
+    ///     "leaveMeasureType":1
     ///     }
     /// </remarks>
     [HttpPost]
@@ -304,6 +307,7 @@ public class LeaveRequestsController : ControllerBase
     [Authorize(Policy = Permissions.LeaveRequestDelete)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Delete(int id)

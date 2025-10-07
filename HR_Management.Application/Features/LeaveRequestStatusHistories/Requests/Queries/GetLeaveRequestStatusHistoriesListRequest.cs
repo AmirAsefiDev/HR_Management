@@ -2,7 +2,7 @@
 using HR_Management.Common.Pagination;
 using MediatR;
 
-namespace HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
+namespace HR_Management.Application.Features.LeaveRequestStatusHistories.Requests.Queries;
 
 public class GetLeaveRequestStatusHistoriesListRequest : IRequest<PagedResultDto<LeaveRequestStatusHistoryDto>>
 {

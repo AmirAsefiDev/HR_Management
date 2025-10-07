@@ -3,6 +3,7 @@ using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveRequest.Validators;
 using HR_Management.Application.Features.LeaveRequests.Requests.Commands;
 using HR_Management.Common;
+using HR_Management.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -41,12 +42,12 @@ public class
         if (!validationResult.IsValid)
             return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveRequest = await _leaveRequestRepo.Get(request.ChangeLeaveRequestChangeStatusDto.Id);
+        var leaveRequest = await _leaveRequestRepo.GetAsync(request.ChangeLeaveRequestChangeStatusDto.Id);
         if (leaveRequest == null)
             return ResultDto.Failure(
                 $"No leave request found with Id = {request.ChangeLeaveRequestChangeStatusDto.Id}.");
 
-        await _leaveRequestRepo.ChangeApprovalStatus(leaveRequest,
+        await _leaveRequestRepo.ChangeApprovalStatusAsync(leaveRequest,
             request.ChangeLeaveRequestChangeStatusDto.approvalStatus);
 
         if (request.ChangeLeaveRequestChangeStatusDto.approvalStatus ==
@@ -62,7 +63,7 @@ public class
                 requestedAmount = (leaveRequest.EndDate.Date - leaveRequest.StartDate.Date).TotalDays + 1;
 
             var allocation = await
-                _leaveAllocationRepo.GetUserAllocation(leaveRequest.UserId, leaveRequest.LeaveTypeId,
+                _leaveAllocationRepo.GetUserAllocationAsync(leaveRequest.UserId, leaveRequest.LeaveTypeId,
                     (int)requestedAmount);
             if (allocation == null)
                 return ResultDto.Failure("No leave allocation found for this user for leave type.");
@@ -71,10 +72,10 @@ public class
 
             allocation.UsedDays += (int)requestedAmount;
 
-            await _leaveAllocationRepo.Update(allocation);
+            await _leaveAllocationRepo.UpdateAsync(allocation);
         }
 
-        await _leaveRequestStatusHistoryRepo.Add(new Domain.LeaveRequestStatusHistory
+        await _leaveRequestStatusHistoryRepo.AddAsync(new LeaveRequestStatusHistory
         {
             ChangedBy = request.UserId,
             CreatedBy = leaveRequest.User.FullName,

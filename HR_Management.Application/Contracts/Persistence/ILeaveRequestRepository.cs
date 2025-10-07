@@ -12,8 +12,13 @@ public interface ILeaveRequestRepository : IGenericRepository<LeaveRequest>
         Cancelled = 4
     }
 
-    Task<LeaveRequest> GetLeaveRequestWithDetails(int id);
+    Task<LeaveRequest> GetLeaveRequestWithDetailsAsync(int id);
     IQueryable<LeaveRequest> GetLeaveRequestsWithDetails();
     IQueryable<LeaveRequest> GetMyLeaveRequests(int userId);
-    Task ChangeApprovalStatus(LeaveRequest leaveRequest, ApprovalStatuses approvalStatuses = ApprovalStatuses.Pending);
+
+    Task ChangeApprovalStatusAsync(LeaveRequest leaveRequest,
+        ApprovalStatuses approvalStatuses = ApprovalStatuses.Pending);
+
+    Task<bool> HasAnyLeaveRequestWithStatusIdAsync(int leaveStatusId);
+    Task<bool> HasAnyLeaveRequestWithTypeIdAsync(int leaveTypeId);
 }

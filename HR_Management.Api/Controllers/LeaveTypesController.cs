@@ -124,6 +124,7 @@ public class LeaveTypesController : ControllerBase
     [Authorize(Policy = Permissions.LeaveTypeDelete)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Delete(int id)

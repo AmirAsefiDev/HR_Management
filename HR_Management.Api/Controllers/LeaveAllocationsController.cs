@@ -1,5 +1,4 @@
 ﻿using HR_Management.Application.DTOs.LeaveAllocation;
-using HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Commands;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Queries;
 using HR_Management.Common;
@@ -110,49 +109,6 @@ public class LeaveAllocationsController : ControllerBase
         var command = new CreateLeaveAllocationCommand
         {
             CreateLeaveAllocationDto = request
-        };
-        var result = await _mediator.Send(command);
-        return StatusCode(result.StatusCode, result);
-    }
-
-    /// <summary>
-    ///     Updates the details of an existing leave allocation
-    /// </summary>
-    /// <param name="id">
-    ///     The Id of the leave allocation to be updated
-    /// </param>
-    /// <param name="request"></param>
-    /// <returns>
-    ///     - 200 (OK): Leave allocation updated successfully
-    ///     - 400 (BadRequest): Validation failed or invalid input
-    ///     - 500 (InternalServerError): An unexpected error occurred
-    /// </returns>
-    /// <remarks>
-    ///     Sample request:
-    ///     PUT api/leave-allocations/5
-    ///     {
-    ///     "leaveTypeId":1,
-    ///     "period":1,
-    ///     "numberOfDays":1
-    ///     }
-    /// </remarks>
-    [HttpPut("{id}")]
-    [Authorize(Policy = Permissions.LeaveAllocationUpdate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Put(int id, [FromBody] UpdateLeaveAllocationRequestDto request)
-    {
-        var command = new UpdateLeaveAllocationCommand
-        {
-            UpdateLeaveAllocationDto = new UpdateLeaveAllocationDto
-            {
-                Id = id,
-                LeaveTypeId = request.LeaveTypeId,
-                TotalDays = request.TotalDays,
-                Period = request.Period
-            }
         };
         var result = await _mediator.Send(command);
         return StatusCode(result.StatusCode, result);

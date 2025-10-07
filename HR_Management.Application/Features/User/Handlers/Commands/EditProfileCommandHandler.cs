@@ -24,7 +24,7 @@ public class EditProfileCommandHandler : IRequestHandler<EditProfileCommand, Res
         var validationResult = await validator.ValidateAsync(request.EditProfileDto, cancellationToken);
         if (!validationResult.IsValid) return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var user = await _userRepo.Get(request.EditProfileDto.Id);
+        var user = await _userRepo.GetAsync(request.EditProfileDto.Id);
         if (user == null)
             return ResultDto.Failure("The user was not found.");
 
@@ -37,7 +37,7 @@ public class EditProfileCommandHandler : IRequestHandler<EditProfileCommand, Res
         }
 
         _mapper.Map(request.EditProfileDto, user);
-        await _userRepo.Update(user);
+        await _userRepo.UpdateAsync(user);
 
         return ResultDto.Success("Profile Updated Correctly.");
     }

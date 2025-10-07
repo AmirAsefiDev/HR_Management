@@ -39,7 +39,7 @@ public class TokenValidator : ITokenValidator
             return;
         }
 
-        var user = await _userRepo.Get(parsedId);
+        var user = await _userRepo.GetAsync(parsedId);
         if (!user.IsActive)
         {
             context.Fail("user is not active..");
@@ -66,7 +66,7 @@ public class TokenValidator : ITokenValidator
             return;
         }
 
-        if (!await _userTokenRepo.CheckExistToken(jsonWebToken.EncodedToken))
+        if (!await _userTokenRepo.CheckExistTokenAsync(jsonWebToken.EncodedToken))
         {
             context.Fail("Token is not valid or is deprecated");
             return;

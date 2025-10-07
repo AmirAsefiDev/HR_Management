@@ -1,4 +1,5 @@
-﻿using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
+﻿using System.Security.Claims;
+using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.Authentication.ForgetPassword;
 using HR_Management.Application.DTOs.Authentication.Login;
@@ -139,10 +140,11 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<ActionResult> Logout()
     {
-        var userId = User.Claims.First(u => u.Type == "UserId").Value;
-
-        var command = new LogoutCommand { UserId = int.Parse(userId) };
-        var result = _mediator.Send(command);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+        var command = new LogoutCommand { UserId = userId };
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }

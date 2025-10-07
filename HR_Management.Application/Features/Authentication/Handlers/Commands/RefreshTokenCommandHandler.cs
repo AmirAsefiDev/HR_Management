@@ -35,7 +35,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
             return ResultDto<RefreshTokenDto>.Failure(errorMessage);
         }
 
-        var userToken = await _userTokenRepo.FindByRefreshToken(request.RefreshTokenRequestDto.RefreshToken);
+        var userToken = await _userTokenRepo.FindByRefreshTokenAsync(request.RefreshTokenRequestDto.RefreshToken);
         var tokenProducer = await _jwt.GenerateAsync(new UserTokenInput
         {
             UserId = userToken.UserId,
@@ -43,7 +43,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
             RoleName = userToken.User.Role.Name
         }, cancellationToken);
 
-        await _userTokenRepo.SaveToken(new UserTokenDto
+        await _userTokenRepo.SaveTokenAsync(new UserTokenDto
         {
             UserId = userToken.UserId,
             HashedToken = SecurityHelper.GetSHA256Hash(tokenProducer.AccessToken),

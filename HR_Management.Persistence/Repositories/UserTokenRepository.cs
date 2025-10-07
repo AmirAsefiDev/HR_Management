@@ -16,14 +16,14 @@ public class UserTokenRepository : IUserTokenRepository
         _context = context;
     }
 
-    public async Task<bool> CheckExistToken(string token)
+    public async Task<bool> CheckExistTokenAsync(string token)
     {
         var hashedToken = SecurityHelper.GetSHA256Hash(token);
         var userToken = await _context.UserTokens.FirstOrDefaultAsync(ut => ut.HashedToken == hashedToken);
         return userToken is not null;
     }
 
-    public async Task<UserTokenDto?> FindByRefreshToken(string refreshToken)
+    public async Task<UserTokenDto?> FindByRefreshTokenAsync(string refreshToken)
     {
         var hashedRefToken = SecurityHelper.GetSHA256Hash(refreshToken);
         var userToken = await _context.UserTokens
@@ -44,7 +44,7 @@ public class UserTokenRepository : IUserTokenRepository
             };
     }
 
-    public async Task<bool> Logout(int userId)
+    public async Task<bool> LogoutAsync(int userId)
     {
         var userTokens = await _context.UserTokens
             .Where(t => t.UserId == userId)
@@ -53,7 +53,7 @@ public class UserTokenRepository : IUserTokenRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task SaveToken(UserTokenDto userToken)
+    public async Task SaveTokenAsync(UserTokenDto userToken)
     {
         await _context.UserTokens.AddAsync(new UserToken
         {

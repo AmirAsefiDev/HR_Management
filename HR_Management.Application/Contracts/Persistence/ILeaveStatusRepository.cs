@@ -4,4 +4,5 @@ namespace HR_Management.Application.Contracts.Persistence;
 
 public interface ILeaveStatusRepository : IGenericRepository<LeaveStatus>
 {
+    IQueryable<LeaveStatus> GetLeaveStatusesWithDetails();
 }

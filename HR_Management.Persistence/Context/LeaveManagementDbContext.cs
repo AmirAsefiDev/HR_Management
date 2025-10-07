@@ -26,8 +26,8 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
     {
         foreach (var entry in ChangeTracker.Entries<BaseDomainEntity>())
         {
-            entry.Entity.LastModifiedDate = DateTime.Now;
-            if (entry.State == EntityState.Added) entry.Entity.DateCreated = DateTime.Now;
+            entry.Entity.LastModifiedDate = DateTime.UtcNow;
+            if (entry.State == EntityState.Added) entry.Entity.DateCreated = DateTime.UtcNow;
         }
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -90,6 +90,40 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
             new() { Id = 2, Name = "Approved" },
             new() { Id = 3, Name = "Rejected" },
             new() { Id = 4, Name = "Cancelled" }
+        });
+
+        modelBuilder.Entity<LeaveAllocation>().HasData(new List<LeaveAllocation>
+        {
+            new()
+            {
+                Id = 1, LeaveTypeId = 1, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 26,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 2, LeaveTypeId = 2, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 7,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 3, LeaveTypeId = 3, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 0,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 4, LeaveTypeId = 4, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 3,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 5, LeaveTypeId = 5, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 90,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 6, LeaveTypeId = 6, Period = DateTime.UtcNow.Year, DateCreated = DateTime.UtcNow, TotalDays = 30,
+                UserId = 1
+            }
         });
     }
 }

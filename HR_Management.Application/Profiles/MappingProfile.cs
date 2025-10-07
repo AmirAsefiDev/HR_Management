@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HR_Management.Application.DTOs.LeaveAllocation;
-using HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation;
 using HR_Management.Application.DTOs.LeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequest.CreateLeaveRequest;
 using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
@@ -39,10 +38,10 @@ public class MappingProfile : Profile
 
         CreateMap<LeaveAllocation, LeaveAllocationDto>()
             .ForMember(dest => dest.LeaveTypeName, otp => otp.MapFrom(src => src.LeaveType.Name))
+            .ForMember(dest => dest.FullName, otp => otp.MapFrom(src => src.User.FullName))
             .ReverseMap();
 
         CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
-        CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
 
         #endregion
 
@@ -95,6 +94,7 @@ public class MappingProfile : Profile
 
 
         CreateMap<User, EditProfileDto>().ReverseMap();
+        CreateMap<User, GetUsersLookupDto>().ReverseMap();
 
         #endregion
     }

@@ -12,11 +12,13 @@ public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeComm
 {
     private readonly ILeaveTypeRepository _leaveTypeRepo;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepo, IMapper mapper)
+    public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepo, IMapper mapper, IMediator mediator)
     {
         _leaveTypeRepo = leaveTypeRepo;
         _mapper = mapper;
+        _mediator = mediator;
     }
 
     public async Task<ResultDto<int>> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
@@ -33,7 +35,11 @@ public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeComm
 
 
         var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
-        leaveType = await _leaveTypeRepo.Add(leaveType);
+        leaveType = await _leaveTypeRepo.AddAsync(leaveType);
+
+        //this handler add leave allocation to all to users which doesn't have leave allocation with this leave type.
+        await _mediator.Publish(new LeaveTypeCreatedEvent(leaveType.Id, leaveType.DefaultDay), cancellationToken);
+
         return ResultDto<int>.Success(leaveType.Id, "The leave type has been successfully.", 201);
     }
 }

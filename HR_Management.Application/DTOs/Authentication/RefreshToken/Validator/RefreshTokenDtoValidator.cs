@@ -17,7 +17,7 @@ public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto
         RuleFor(r => r.RefreshToken)
             .MustAsync(async (refToken, ct) =>
             {
-                var userToken = await _userTokenRepo.FindByRefreshToken(refToken);
+                var userToken = await _userTokenRepo.FindByRefreshTokenAsync(refToken);
                 return userToken != null;
             })
             .WithMessage("Refresh token didn't find or isn't valid.");
@@ -25,7 +25,7 @@ public class RefreshTokenDtoValidator : AbstractValidator<RefreshTokenRequestDto
         RuleFor(r => r.RefreshToken)
             .MustAsync(async (refToken, ct) =>
             {
-                var userToken = await _userTokenRepo.FindByRefreshToken(refToken);
+                var userToken = await _userTokenRepo.FindByRefreshTokenAsync(refToken);
                 if (userToken == null) return false;
                 return userToken.RefreshTokenExp >= DateTime.Now;
             })

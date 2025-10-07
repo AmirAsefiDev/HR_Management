@@ -1,5 +1,5 @@
 ﻿using HR_Management.Application.DTOs.LeaveRequestStatusHistory;
-using HR_Management.Application.Features.LeaveRequestStatusHistory.Requests.Queries;
+using HR_Management.Application.Features.LeaveRequestStatusHistories.Requests.Queries;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
 using HR_Management.Common.Security;

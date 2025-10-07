@@ -14,15 +14,16 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         _context = context;
     }
 
-    public async Task<LeaveAllocation> GetLeaveAllocationWithDetails(int id)
+    public async Task<LeaveAllocation> GetLeaveAllocationWithDetailsAsync(int id)
     {
         var leaveAllocation = await _context.LeaveAllocations
             .Include(l => l.LeaveType)
+            .Include(l => l.User)
             .FirstOrDefaultAsync(l => l.Id == id);
         return leaveAllocation;
     }
 
-    public async Task<bool> HasSufficientAllocation(int userId, int leaveTypeId, int requestedAmount)
+    public async Task<bool> HasSufficientAllocationAsync(int userId, int leaveTypeId, int requestedAmount)
     {
         var allocation = await _context.LeaveAllocations
             .FirstOrDefaultAsync(la => la.UserId == userId && la.LeaveTypeId == leaveTypeId);
@@ -31,7 +32,7 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         return allocation.RemainingDays >= requestedAmount;
     }
 
-    public async Task<LeaveAllocation> GetUserAllocation(int userId, int leaveTypeId, int requestedAmount)
+    public async Task<LeaveAllocation> GetUserAllocationAsync(int userId, int leaveTypeId, int requestedAmount)
     {
         var userAllocation = await _context.LeaveAllocations
             .FirstOrDefaultAsync(la => la.UserId == userId && la.LeaveTypeId == leaveTypeId);
@@ -41,7 +42,16 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
     public IQueryable<LeaveAllocation> GetLeaveAllocationsWithDetails()
     {
         var leaveAllocations = _context.LeaveAllocations
-            .Include(l => l.LeaveType);
+            .Include(l => l.LeaveType)
+            .Include(l => l.User)
+            .AsQueryable();
         return leaveAllocations;
+    }
+
+    public async Task<bool> HasAnyLeaveAllocationWithTypeIdAsync(int leaveTypeId)
+    {
+        var isExistsLeaveAllocationWithTypeId =
+            await _context.LeaveAllocations.AnyAsync(lr => lr.LeaveTypeId == leaveTypeId);
+        return isExistsLeaveAllocationWithTypeId;
     }
 }

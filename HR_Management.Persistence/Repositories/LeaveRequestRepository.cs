@@ -14,7 +14,7 @@ public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveReq
         _context = context;
     }
 
-    public async Task<LeaveRequest> GetLeaveRequestWithDetails(int id)
+    public async Task<LeaveRequest> GetLeaveRequestWithDetailsAsync(int id)
     {
         var leaveRequest = await _context.LeaveRequests
             .Include(l => l.LeaveStatus)
@@ -28,7 +28,8 @@ public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveReq
         var leaveRequests = _context.LeaveRequests
             .Include(l => l.LeaveStatus)
             .Include(l => l.LeaveType)
-            .Include(l => l.User);
+            .Include(l => l.User)
+            .AsQueryable();
         return leaveRequests;
     }
 
@@ -37,15 +38,30 @@ public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveReq
         var leaveRequests = _context.LeaveRequests
             .Include(l => l.LeaveType)
             .Include(l => l.LeaveStatus)
-            .Where(l => l.UserId == userId);
+            .Where(l => l.UserId == userId)
+            .AsQueryable();
         return leaveRequests;
     }
 
-    public async Task ChangeApprovalStatus(LeaveRequest leaveRequest,
+    public async Task ChangeApprovalStatusAsync(LeaveRequest leaveRequest,
         ILeaveRequestRepository.ApprovalStatuses approvalStatus = ILeaveRequestRepository.ApprovalStatuses.Pending)
     {
         leaveRequest.LeaveStatusId = (int)approvalStatus;
         _context.Entry(leaveRequest).State = EntityState.Modified;
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> HasAnyLeaveRequestWithStatusIdAsync(int leaveStatusId)
+    {
+        var isExistsLeaveRequestWithStatusId =
+            await _context.LeaveRequests.AnyAsync(lr => lr.LeaveStatusId == leaveStatusId);
+        return isExistsLeaveRequestWithStatusId;
+    }
+
+    public async Task<bool> HasAnyLeaveRequestWithTypeIdAsync(int leaveTypeId)
+    {
+        var isExistsLeaveRequestWithTypeId =
+            await _context.LeaveRequests.AnyAsync(lr => lr.LeaveStatusId == leaveTypeId);
+        return isExistsLeaveRequestWithTypeId;
     }
 }

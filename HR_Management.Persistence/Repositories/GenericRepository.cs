@@ -13,36 +13,36 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<T> Get(int id)
+    public async Task<T> GetAsync(int id)
     {
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task<IReadOnlyList<T>> GetAll()
+    public async Task<IReadOnlyList<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
     }
 
-    public async Task<bool> Exist(int id)
+    public async Task<bool> ExistAsync(int id)
     {
-        var entity = await Get(id);
+        var entity = await GetAsync(id);
         return entity != null;
     }
 
-    public async Task<T> Add(T entity)
+    public async Task<T> AddAsync(T entity)
     {
         await _context.AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity;
     }
 
-    public async Task Update(T entity)
+    public async Task UpdateAsync(T entity)
     {
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(T entity)
+    public async Task DeleteAsync(T entity)
     {
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();

@@ -33,12 +33,12 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
 
         if (!validationResult.IsValid) return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveRequest = await _leaveRequestRepo.Get(request.Id);
+        var leaveRequest = await _leaveRequestRepo.GetAsync(request.Id);
         if (request.UpdateLeaveRequestDto == null)
             ResultDto.Failure($"No leave request found with Id = {request.Id}.");
 
         _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
-        await _leaveRequestRepo.Update(leaveRequest);
-        return ResultDto.Success("LeaveRequest Updated Correctly.");
+        await _leaveRequestRepo.UpdateAsync(leaveRequest);
+        return ResultDto.Success("Leave request successfully updated.");
     }
 }

@@ -6,4 +6,7 @@ public interface ILeaveRequestStatusHistoryRepository : IGenericRepository<Leave
 {
     IQueryable<LeaveRequestStatusHistory> GetLeaveRequestStatusHistoriesByLeaveRequestId(int leaveRequestId);
     IQueryable<LeaveRequestStatusHistory> GetLeaveRequestStatusHistoriesWithDetails();
+
+    Task<bool> HasAnyLeaveHistoryWithRequestIdAsync(int leaveRequestId);
+    Task<bool> HasAnyLeaveHistoryWithStatusIdAsync(int leaveStatusId);
 }

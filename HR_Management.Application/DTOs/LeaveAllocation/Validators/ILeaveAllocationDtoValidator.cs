@@ -10,12 +10,14 @@ public class ILeaveAllocationDtoValidator : AbstractValidator<ILeaveAllocationDt
     public ILeaveAllocationDtoValidator(ILeaveTypeRepository leaveTypeRepo)
     {
         _leaveTypeRepo = leaveTypeRepo;
-        RuleFor(x => x.LeaveTypeId)
+
+        RuleFor(la => la.LeaveTypeId)
             .NotNull().WithMessage("Leave Type Id is required.")
-            .MustAsync(async (id, token) => await _leaveTypeRepo.Exist(id))
+            .MustAsync(async (id, token) => await _leaveTypeRepo.ExistAsync(id))
             .WithMessage("{PropertyName} doesn't exist");
 
-        RuleFor(x => x.Period).GreaterThan(0).WithMessage("Period must be greater than 0.");
-        RuleFor(x => x.TotalDays).GreaterThan(0).WithMessage("Number of days must be greater than 0.");
+        RuleFor(la => la.UserId)
+            .NotNull().WithMessage("{PropertyName} is required.")
+            .GreaterThanOrEqualTo(0).WithMessage("Please enter {PropertyName} correctly.");
     }
 }

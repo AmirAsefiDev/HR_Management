@@ -17,11 +17,12 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     public IQueryable<User> GetUsersWithDetails()
     {
         var users = _context.Users
-            .Include(u => u.Role);
+            .Include(u => u.Role)
+            .AsQueryable();
         return users;
     }
 
-    public async Task<User> GetUserWithDetails(int id)
+    public async Task<User> GetUserWithDetailsAsync(int id)
     {
         var user = await _context.Users
             .Include(u => u.Role)

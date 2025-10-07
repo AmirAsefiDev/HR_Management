@@ -63,7 +63,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultDto<Login
             RoleName = user.Role.Name
         }, cancellationToken);
 
-        await _userTokenRepo.SaveToken(new UserTokenDto
+        await _userTokenRepo.SaveTokenAsync(new UserTokenDto
         {
             HashedToken = SecurityHelper.GetSHA256Hash(tokenProducer.AccessToken),
             TokenExp = tokenProducer.AccessTokenExpiresAtUtc,

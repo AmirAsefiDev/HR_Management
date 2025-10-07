@@ -4,8 +4,8 @@ namespace HR_Management.Application.Contracts.Persistence;
 
 public interface IUserTokenRepository
 {
-    Task SaveToken(UserTokenDto userToken);
-    Task<bool> CheckExistToken(string token);
-    Task<UserTokenDto?> FindByRefreshToken(string refreshToken);
-    Task<bool> Logout(int userId);
+    Task SaveTokenAsync(UserTokenDto userToken);
+    Task<bool> CheckExistTokenAsync(string token);
+    Task<UserTokenDto?> FindByRefreshTokenAsync(string refreshToken);
+    Task<bool> LogoutAsync(int userId);
 }

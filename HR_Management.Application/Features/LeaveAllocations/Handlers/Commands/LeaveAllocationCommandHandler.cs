@@ -20,7 +20,7 @@ public class LeaveAllocationCommandHandler : IRequestHandler<LeaveAllocationComm
     public async Task<int> Handle(LeaveAllocationCommand request, CancellationToken cancellationToken)
     {
         var leaveAllocation = _mapper.Map<LeaveAllocation>(request.LeaveAllocationDto);
-        leaveAllocation = await _leaveAllocationRepo.Add(leaveAllocation);
+        leaveAllocation = await _leaveAllocationRepo.AddAsync(leaveAllocation);
         return leaveAllocation.Id;
     }
 }

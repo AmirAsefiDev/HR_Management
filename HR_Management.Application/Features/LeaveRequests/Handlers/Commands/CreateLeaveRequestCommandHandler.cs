@@ -61,7 +61,7 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 break;
             case LeaveMeasureType.HourBased:
 
-                var leaveType = await _leaveTypeRepo.Get(request.CreateLeaveRequestDto.LeaveTypeId);
+                var leaveType = await _leaveTypeRepo.GetAsync(request.CreateLeaveRequestDto.LeaveTypeId);
                 var totalHours = (request.CreateLeaveRequestDto.EndDate - request.CreateLeaveRequestDto.StartDate)
                     .TotalHours;
 
@@ -75,7 +75,7 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 throw new ArgumentOutOfRangeException();
         }
 
-        var hasSufficientAllocation = await _leaveAllocationRepo.HasSufficientAllocation(
+        var hasSufficientAllocation = await _leaveAllocationRepo.HasSufficientAllocationAsync(
             request.CreateLeaveRequestDto.UserId,
             request.CreateLeaveRequestDto.LeaveTypeId,
             (int)requestedAmount);
@@ -84,9 +84,9 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
             return ResultDto<int>.Failure("You don't have enough leave allocation for this request.");
 
         var leaveRequest = _mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
-        leaveRequest = await _leaveRequestRepo.Add(leaveRequest);
+        leaveRequest = await _leaveRequestRepo.AddAsync(leaveRequest);
 
-        var user = await _userRepo.Get(leaveRequest.UserId);
+        var user = await _userRepo.GetAsync(leaveRequest.UserId);
 
         var email = new EmailDto
         {

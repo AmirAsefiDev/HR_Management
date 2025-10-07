@@ -26,7 +26,7 @@ public class
         if (request.Id <= 0)
             return ResultDto<LeaveAllocationDto>.Failure("Enter Valid Leave Allocation Id.");
 
-        var getLeaveAllocation = await _leaveAllocationRepo.GetLeaveAllocationWithDetails(request.Id);
+        var getLeaveAllocation = await _leaveAllocationRepo.GetLeaveAllocationWithDetailsAsync(request.Id);
 
         if (getLeaveAllocation == null)
             return ResultDto<LeaveAllocationDto>.Failure($"No leave allocation with Id = {request.Id}.", 404);

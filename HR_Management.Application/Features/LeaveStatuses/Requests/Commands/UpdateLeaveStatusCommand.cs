@@ -1,9 +1,10 @@
 ﻿using HR_Management.Application.DTOs.LeaveStatus;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveStatuses.Requests.Commands;
 
-public class UpdateLeaveStatusCommand : IRequest<Unit>
+public class UpdateLeaveStatusCommand : IRequest<ResultDto>
 {
     public UpdateLeaveStatusDto UpdateLeaveStatusDto { get; set; }
 }

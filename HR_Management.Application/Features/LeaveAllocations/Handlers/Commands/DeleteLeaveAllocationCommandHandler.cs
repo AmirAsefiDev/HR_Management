@@ -1,5 +1,4 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
-using HR_Management.Application.DTOs.LeaveAllocation;
 using HR_Management.Application.Features.LeaveAllocations.Requests.Commands;
 using HR_Management.Common;
 using MediatR;
@@ -17,14 +16,16 @@ public class DeleteLeaveAllocationCommandHandler : IRequestHandler<DeleteLeaveAl
 
     public async Task<ResultDto> Handle(DeleteLeaveAllocationCommand request, CancellationToken cancellationToken)
     {
-        if (request.Id <= 0)
-            return ResultDto<LeaveAllocationDto>.Failure("Enter Leave Allocation Id Correctly.");
+        if (request.Id == 0)
+            return ResultDto.Failure("Please enter leave allocation id.");
+        if (request.Id < 0)
+            return ResultDto.Failure("Please enter leave allocation id correctly.");
 
-        var leaveAllocation = await _leaveAllocationRepo.Get(request.Id);
+        var leaveAllocation = await _leaveAllocationRepo.GetAsync(request.Id);
         if (leaveAllocation == null)
             ResultDto.Failure($"No leave allocation found with Id = {request.Id}.");
 
-        await _leaveAllocationRepo.Delete(leaveAllocation);
+        await _leaveAllocationRepo.DeleteAsync(leaveAllocation);
         return ResultDto.Success("Leave allocation deleted successfully.");
     }
 }

@@ -5,7 +5,8 @@ namespace HR_Management.Application.Contracts.Persistence;
 public interface ILeaveAllocationRepository : IGenericRepository<LeaveAllocation>
 {
     IQueryable<LeaveAllocation> GetLeaveAllocationsWithDetails();
-    Task<LeaveAllocation> GetLeaveAllocationWithDetails(int id);
-    Task<bool> HasSufficientAllocation(int userId, int leaveTypeId, int requestedAmount);
-    Task<LeaveAllocation> GetUserAllocation(int userId, int leaveTypeId, int requestedAmount);
+    Task<LeaveAllocation> GetLeaveAllocationWithDetailsAsync(int id);
+    Task<bool> HasSufficientAllocationAsync(int userId, int leaveTypeId, int requestedAmount);
+    Task<LeaveAllocation> GetUserAllocationAsync(int userId, int leaveTypeId, int requestedAmount);
+    Task<bool> HasAnyLeaveAllocationWithTypeIdAsync(int leaveTypeId);
 }

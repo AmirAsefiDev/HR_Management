@@ -37,7 +37,7 @@ public class CreateLeaveRequestDtoValidator : AbstractValidator<CreateLeaveReque
                     }
 
                     var hoursRequested = (dto.EndDate - dto.StartDate).TotalHours;
-                    var leaveType = await _leaveTypeRepo.Get(dto.LeaveTypeId);
+                    var leaveType = await _leaveTypeRepo.GetAsync(dto.LeaveTypeId);
                     if (leaveType == null)
                     {
                         context.AddFailure("Invalid leave type.");

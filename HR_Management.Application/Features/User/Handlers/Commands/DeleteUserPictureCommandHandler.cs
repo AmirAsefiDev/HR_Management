@@ -23,7 +23,7 @@ public class DeleteUserPictureCommandHandler : IRequestHandler<DeleteUserPicture
         if (string.IsNullOrWhiteSpace(request.Picture))
             return ResultDto.Failure("No picture path was provided.");
 
-        var user = await _userRepo.Get(request.UserId);
+        var user = await _userRepo.GetAsync(request.UserId);
         if (user == null)
             return ResultDto.Failure("User not found.");
 
@@ -41,7 +41,7 @@ public class DeleteUserPictureCommandHandler : IRequestHandler<DeleteUserPicture
             }
 
         user.Picture = DefaultProfilePicturePath;
-        await _userRepo.Update(user);
+        await _userRepo.UpdateAsync(user);
 
         return ResultDto.Success("Your picture successfully deleted.");
     }

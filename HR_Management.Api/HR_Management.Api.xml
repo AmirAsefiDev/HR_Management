@@ -57,29 +57,6 @@
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Put(System.Int32,HR_Management.Application.DTOs.LeaveAllocation.UpdateLeaveAllocation.UpdateLeaveAllocationRequestDto)">
-            <summary>
-                Updates the details of an existing leave allocation
-            </summary>
-            <param name="id">
-                The Id of the leave allocation to be updated
-            </param>
-            <param name="request"></param>
-            <returns>
-                - 200 (OK): Leave allocation updated successfully
-                - 400 (BadRequest): Validation failed or invalid input
-                - 500 (InternalServerError): An unexpected error occurred
-            </returns>
-            <remarks>
-                Sample request:
-                PUT api/leave-allocations/5
-                {
-                "leaveTypeId":1,
-                "period":1,
-                "numberOfDays":1
-                }
-            </remarks>
-        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.Delete(System.Int32)">
             <summary>
                 Deletes an existing leave allocation by its Id
@@ -128,6 +105,7 @@
             <returns>
                 - 200 (Ok) : Leave request found
                 - 400 (BadRequest) : Invalid Id
+                - 404 (NotFound) : leave request couldn't find
                 - 500 (InternalServerError) : An unexpected error occurred
             </returns>
             <remarks>
@@ -158,7 +136,7 @@
                 Allowed values: DayBased(1), HourBased(2).
             </param>
             <returns>
-                - 200 (OK): Leave request created successfully
+                - 201 (Created): Leave request created successfully
                 - 400 (BadRequest): Validation failed or invalid input
                 - 500 (InternalServerError): An unexpected error occurred
             </returns>
@@ -170,7 +148,8 @@
                 "endDate":"2025-09-10",
                 "leaveTypeId":1,
                 "leaveStatusId":1,
-                "requestComments":"Need a leave for personal work"
+                "requestComments":"Need a leave for personal work",
+                "leaveMeasureType":1
                 }
             </remarks>
         </member>
@@ -251,6 +230,101 @@
                 Sample Request: GET: api/leave-request-status-histories
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Get(HR_Management.Common.Pagination.PaginationDto)">
+            <summary>
+                Retrieves list of leave statuses
+            </summary>
+            <returns>
+                - 200 (OK) : List of leave statuses
+                - 204 (NoContent) : No leave statuses is available to retrieve
+                - 401 (UnAuthorized) : User token expired,they have to log in again or refresh the token.
+                - 500 (InternalServerError) : An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request: GET: api/leave-statuses
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Get(System.Int32)">
+            <summary>
+                Retrieves the details of a specific leave status by its Id
+            </summary>
+            <param name="id">The Id of the leave status</param>
+            <returns>
+                - 200 (Ok) : Leave status found
+                - 400 (BadRequest) : Invalid Id
+                - 404 (NotFound) : leave request couldn't find
+                - 500 (InternalServerError) : An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                GET api/leave-statuses/5
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Post(HR_Management.Application.DTOs.LeaveStatus.CreateLeaveStatusDto)">
+            <summary>
+                Creates a new leave status.
+            </summary>
+            <param name="request">
+                The leave status data to create, including name, description
+            </param>
+            <returns>
+                - 201 (Created): Leave status created successfully
+                - 400 (BadRequest): Validation failed or invalid input
+                - 500 (InternalServerError): An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                POST api/leave-statuses
+                {
+                "name":"emergency",
+                "description":"(Optional)Using for accepted leave request.",
+                }
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Put(System.Int32,HR_Management.Application.DTOs.LeaveRequest.UpdateLeaveRequestDto)">
+            <summary>
+                Updates the details of an existing leave request.
+            </summary>
+            <param name="id">
+                The Id of the leave request to be updated.
+            </param>
+            <param name="request">
+                The updated leave request data (start date, end date, leave type, etc.).
+            </param>
+            <returns>
+                Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
+                - 200 (OK): Leave status updated successfully
+                - 400 (BadRequest): Validation failed or invalid input
+                - 500 (InternalServerError): An unexpected error occurred
+            </returns>
+            <remarks>
+                Sample request:
+                PUT /api/leave-status
+                {
+                "id":1,
+                "name":"emergency",
+                "description":"(Optional)Using for accepted leave request.",
+                }
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Put(System.Int32,System.String)">
+            <summary>
+                PUT api/leave-statuses/5
+            </summary>
+            <param name="id"></param>
+            <remarks>
+                Sample request:
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Delete(System.Int32)">
+            <summary>
+                DELETE api/leave-statuses/5
+            </summary>
+            <param name="id"></param>
+            <remarks>
+                Sample request:
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 receive all leave types
@@ -309,6 +383,22 @@
             <remarks>
                 Sample Request:
                 Get api/users/me
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.UsersController.GetUsersLookup(HR_Management.Common.Pagination.PaginationDto)">
+            <summary>
+                Retrieves a paginated list of users as lookup data (for dropdowns, selectors, etc.).
+            </summary>
+            <param name="pagination">
+                Pagination parameters including page number and page size.
+            </param>
+            <returns>
+                This endpoint returns a simplified list of users (e.g., Id and FullName)
+                intended for lookup scenarios such as dropdowns or autocomplete fields.
+            </returns>
+            <remarks>
+                Sample Request:
+                Get api/users/lookup
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.UsersController.EditProfile(HR_Management.Application.DTOs.User.EditProfile.EditProfileRequestDto)">

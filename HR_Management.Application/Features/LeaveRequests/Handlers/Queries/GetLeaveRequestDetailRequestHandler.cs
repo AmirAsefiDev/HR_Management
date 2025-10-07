@@ -22,7 +22,10 @@ public class
     public async Task<ResultDto<LeaveRequestDto>> Handle(GetLeaveRequestDetailRequest request,
         CancellationToken cancellationToken)
     {
-        var getLeaveRequest = await _leaveRequestRepo.GetLeaveRequestWithDetails(request.Id);
+        if (request.Id <= 0)
+            return ResultDto<LeaveRequestDto>.Failure("Enter valid leave request Id.");
+
+        var getLeaveRequest = await _leaveRequestRepo.GetLeaveRequestWithDetailsAsync(request.Id);
 
         if (getLeaveRequest == null)
             return ResultDto<LeaveRequestDto>.Failure("No leave request found.", 404);

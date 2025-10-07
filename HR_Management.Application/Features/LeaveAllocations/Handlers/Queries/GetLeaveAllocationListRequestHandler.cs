@@ -36,17 +36,20 @@ public class GetLeaveAllocationListRequestHandler :
         query = sortTypeLower switch
         {
             "leavetypename" => isDescending
-                ? query.OrderByDescending(l => l.LeaveType.Name)
+                ? query.OrderByDescending(la => la.LeaveType.Name)
                 : query.OrderBy(l => l.LeaveType.Name),
             "datecreated" => isDescending
-                ? query.OrderByDescending(lr => lr.DateCreated)
+                ? query.OrderByDescending(la => la.DateCreated)
                 : query.OrderBy(lr => lr.DateCreated),
             "period" => isDescending
-                ? query.OrderByDescending(l => l.Period)
-                : query.OrderBy(l => l.Period),
+                ? query.OrderByDescending(la => la.Period)
+                : query.OrderBy(la => la.Period),
             "totaldays" => isDescending
-                ? query.OrderByDescending(l => l.TotalDays)
-                : query.OrderBy(l => l.TotalDays),
+                ? query.OrderByDescending(la => la.TotalDays)
+                : query.OrderBy(la => la.TotalDays),
+            "fullname" => isDescending
+                ? query.OrderByDescending(la => la.User.FullName)
+                : query.OrderBy(la => la.User.FullName),
             _ => query.OrderByDescending(la => la.Id)
         };
 
@@ -54,7 +57,9 @@ public class GetLeaveAllocationListRequestHandler :
         if (!string.IsNullOrWhiteSpace(pagination.searchKey))
         {
             var searchKey = pagination.searchKey.Trim().ToLowerInvariant();
-            query = query.Where(la => la.LeaveType.Name.ToLower().Contains(searchKey));
+            query = query.Where(la =>
+                la.LeaveType.Name.ToLower().Contains(searchKey) ||
+                la.User.FullName.ToLower().Contains(searchKey));
         }
 
         var pagedQuery = await query.ToPagedAsync(pagination.pageNumber, pagination.pageSize);

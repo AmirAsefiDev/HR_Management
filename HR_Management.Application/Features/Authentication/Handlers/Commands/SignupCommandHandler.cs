@@ -48,7 +48,7 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
 
         string? formatedMobile = null;
         var countryCode = 0;
-        if (string.IsNullOrWhiteSpace(request.SignupRequestDto.Mobile))
+        if (!string.IsNullOrWhiteSpace(request.SignupRequestDto.Mobile))
         {
             formatedMobile = Convertors.ToRawNationalNumber(request.SignupRequestDto.Mobile);
             countryCode = Convertors.GetCountryCode(request.SignupRequestDto.Mobile);
@@ -83,9 +83,9 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
         await _context.Users.AddAsync(newUser, cancellationToken);
         await _context.SaveChangesAsync(true, cancellationToken);
 
-        var leaveTypes = await _leaveTypeRepo.GetAll();
+        var leaveTypes = await _leaveTypeRepo.GetAllAsync();
         foreach (var leaveType in leaveTypes)
-            await _leaveAllocationRepo.Add(new LeaveAllocation
+            await _leaveAllocationRepo.AddAsync(new LeaveAllocation
             {
                 LeaveTypeId = leaveType.Id,
                 TotalDays = leaveType.DefaultDay,
@@ -93,14 +93,16 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, ResultDto<Sig
                 Period = DateTime.UtcNow.Year
             });
 
+        var role = await _context.Roles.FindAsync(newUser.Id, cancellationToken);
+
         var tokenProducer = await _jwtService.GenerateAsync(new UserTokenInput
         {
             FullName = newUser.FullName,
-            RoleName = newUser.Role.Name,
+            RoleName = role.Name,
             UserId = newUser.Id
         }, cancellationToken);
 
-        await _userTokenRepo.SaveToken(new UserTokenDto
+        await _userTokenRepo.SaveTokenAsync(new UserTokenDto
         {
             HashedToken = SecurityHelper.GetSHA256Hash(tokenProducer.AccessToken),
             TokenExp = tokenProducer.AccessTokenExpiresAtUtc,

@@ -30,8 +30,19 @@ public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAl
 
         if (!validationResult.IsValid) return ResultDto<int>.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveAllocation = _mapper.Map<LeaveAllocation>(request.CreateLeaveAllocationDto);
-        leaveAllocation = await _leaveAllocationRepo.Add(leaveAllocation);
+        // var leaveAllocation = _mapper.Map<LeaveAllocation>(request.CreateLeaveAllocationDto);
+        // leaveAllocation = await _leaveAllocationRepo.Add(leaveAllocation);
+
+        var leaveType = await _leaveTypeRepo.GetAsync(request.CreateLeaveAllocationDto.LeaveTypeId);
+        var leaveAllocation = new LeaveAllocation
+        {
+            LeaveTypeId = leaveType.Id,
+            UserId = request.CreateLeaveAllocationDto.UserId,
+            Period = DateTime.UtcNow.Year,
+            TotalDays = leaveType.DefaultDay
+        };
+
+        await _leaveAllocationRepo.AddAsync(leaveAllocation);
         return ResultDto<int>.Success(leaveAllocation.Id, "Leave Allocation Created Successfully.", 201);
     }
 }

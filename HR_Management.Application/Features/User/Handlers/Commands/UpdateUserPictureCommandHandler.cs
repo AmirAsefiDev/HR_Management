@@ -29,7 +29,7 @@ public class UpdateUserPictureCommandHandler :
         if (!validationResult.IsValid)
             return ResultDto<UpdateUserPictureResponseDto>.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var user = await _userRepo.Get(request.UpdateUserPictureDto.UserId);
+        var user = await _userRepo.GetAsync(request.UpdateUserPictureDto.UserId);
         if (user == null)
             return ResultDto<UpdateUserPictureResponseDto>.Failure("The user was not found.");
 
@@ -37,7 +37,7 @@ public class UpdateUserPictureCommandHandler :
         var uploadResult = await uploader.UploadFile(request.UpdateUserPictureDto.Picture, "/images/user/");
 
         user.Picture = uploadResult.FileNameAddress;
-        await _userRepo.Update(user);
+        await _userRepo.UpdateAsync(user);
 
         return ResultDto<UpdateUserPictureResponseDto>.Success(
             new UpdateUserPictureResponseDto

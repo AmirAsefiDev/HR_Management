@@ -15,7 +15,7 @@ public class LeaveTypeRepository : GenericRepository<LeaveType>, ILeaveTypeRepos
 
     public IQueryable<LeaveType> GetLeaveTypesWithDetails()
     {
-        var leaveTypes = _context.LeaveTypes;
+        var leaveTypes = _context.LeaveTypes.AsQueryable();
         return leaveTypes;
     }
 }

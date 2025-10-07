@@ -21,7 +21,7 @@ public class LeaveRequestCommandHandler : IRequestHandler<LeaveRequestCommand, i
     public async Task<int> Handle(LeaveRequestCommand request, CancellationToken cancellationToken)
     {
         var leaveRequest = _mapper.Map<LeaveRequest>(request.LeaveRequestDto);
-        leaveRequest = await _leaveRequestRepo.Add(leaveRequest);
+        leaveRequest = await _leaveRequestRepo.AddAsync(leaveRequest);
         return leaveRequest.Id;
     }
 }

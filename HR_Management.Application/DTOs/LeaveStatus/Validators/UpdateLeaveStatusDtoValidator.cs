@@ -6,7 +6,9 @@ public class UpdateLeaveStatusDtoValidator : AbstractValidator<UpdateLeaveStatus
 {
     public UpdateLeaveStatusDtoValidator()
     {
-        RuleFor(l => l.Id).NotNull().WithMessage("{PropertyName} is required.");
+        RuleFor(l => l.Id)
+            .NotNull().WithMessage("{PropertyName} is required.")
+            .GreaterThan(0).WithMessage("Please Enter Id Correctly");
         Include(new ILeaveStatusDtoValidator());
     }
 }

@@ -26,10 +26,10 @@ public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeComm
         if (!validationResult.IsValid)
             return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveType = await _leaveTypeRepo.Get(request.LeaveTypeDto.Id);
+        var leaveType = await _leaveTypeRepo.GetAsync(request.LeaveTypeDto.Id);
         _mapper.Map(request.LeaveTypeDto, leaveType);
 
-        await _leaveTypeRepo.Update(leaveType);
+        await _leaveTypeRepo.UpdateAsync(leaveType);
 
         return ResultDto.Success("The requested leave type has been successfully updated.");
     }

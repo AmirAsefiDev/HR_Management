@@ -52,6 +52,38 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
+    ///     Retrieves a paginated list of users as lookup data (for dropdowns, selectors, etc.).
+    /// </summary>
+    /// <param name="pagination">
+    ///     Pagination parameters including page number and page size.
+    /// </param>
+    /// <returns>
+    ///     This endpoint returns a simplified list of users (e.g., Id and FullName)
+    ///     intended for lookup scenarios such as dropdowns or autocomplete fields.
+    /// </returns>
+    /// <remarks>
+    ///     Sample Request:
+    ///     Get api/users/lookup
+    /// </remarks>
+    [HttpGet("lookup")]
+    [Authorize(Policy = Permissions.UserReadList)]
+    [ProducesResponseType(typeof(PagedResultDto<GetUsersLookupDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PagedResultDto<GetUsersLookupDto>>> GetUsersLookup(
+        [FromQuery] PaginationDto pagination)
+    {
+        var result = await _mediator.Send(new GetUsersLookupRequest
+        {
+            Pagination = pagination
+        });
+        if (!result.Items.Any())
+            return NoContent();
+        return Ok(result);
+    }
+
+    /// <summary>
     ///     Updates the authenticated user page information.
     /// </summary>
     /// <param name="request"></param>

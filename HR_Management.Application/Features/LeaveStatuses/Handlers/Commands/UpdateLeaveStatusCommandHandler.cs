@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveStatus.Validators;
-using HR_Management.Application.Exceptions;
 using HR_Management.Application.Features.LeaveStatuses.Requests.Commands;
-using HR_Management.Domain;
-using MediatR;
+using HR_Management.Common;
 
 namespace HR_Management.Application.Features.LeaveStatuses.Handlers.Commands;
 
@@ -19,20 +17,21 @@ public class UpdateLeaveStatusCommandHandler
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateLeaveStatusCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto> Handle(UpdateLeaveStatusCommand request, CancellationToken cancellationToken)
     {
         var validator = new UpdateLeaveStatusDtoValidator();
-        var validationResult = await validator.ValidateAsync(request.UpdateLeaveStatusDto);
+        var validationResult = await validator.ValidateAsync(request.UpdateLeaveStatusDto, cancellationToken);
 
-        if (!validationResult.IsValid) throw new ValidationException(validationResult);
+        if (!validationResult.IsValid)
+            return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
-        var leaveStatus = await _leaveStatusRepo.Get(request.UpdateLeaveStatusDto.Id);
+        var leaveStatus = await _leaveStatusRepo.GetAsync(request.UpdateLeaveStatusDto.Id);
         if (leaveStatus == null)
-            throw new NotFoundException(nameof(LeaveStatus), request.UpdateLeaveStatusDto.Id);
+            return ResultDto.Failure("The leave status not found to edit.");
 
         _mapper.Map(request.UpdateLeaveStatusDto, leaveStatus);
-        await _leaveStatusRepo.Update(leaveStatus);
+        await _leaveStatusRepo.UpdateAsync(leaveStatus);
 
-        return Unit.Value;
+        return ResultDto.Success("Leave status successfully updated.");
     }
 }
