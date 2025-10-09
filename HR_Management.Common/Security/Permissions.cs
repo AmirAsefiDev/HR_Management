@@ -19,6 +19,7 @@ public static class Permissions
     public const string LeaveTypeCreate = "LeaveType.Create";
     public const string LeaveTypeUpdate = "LeaveType.Update";
     public const string LeaveTypeReadList = "LeaveType.ReadList";
+    public const string LeaveTypeReadListSelection = "LeaveType.ReadListSelection";
     public const string LeaveTypeRead = "LeaveType.Read";
     public const string LeaveTypeDelete = "LeaveType.Delete";
 
@@ -28,6 +29,7 @@ public static class Permissions
     public const string LeaveStatusCreate = "LeaveStatus.Create";
     public const string LeaveStatusUpdate = "LeaveStatus.Update";
     public const string LeaveStatusReadList = "LeaveStatus.ReadList";
+    public const string LeaveStatusReadListSelection = "LeaveStatus.ReadListSelection";
     public const string LeaveStatusRead = "LeaveStatus.Read";
     public const string LeaveStatusDelete = "LeaveStatus.Delete";
 

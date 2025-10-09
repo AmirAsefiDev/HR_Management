@@ -156,6 +156,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<CustomAuthorizationMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(s =>

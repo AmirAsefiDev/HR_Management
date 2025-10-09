@@ -29,7 +29,8 @@ public class LeaveRequestStatusHistoriesController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveRequestStatusHistoryReadList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<LeaveRequestStatusHistoryDto>>> Get(

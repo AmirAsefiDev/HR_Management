@@ -39,7 +39,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveRequestReadList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestListDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -62,7 +63,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpGet("me")]
     [Authorize(Policy = Permissions.MyLeaveRequestsList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetMyRequest([FromQuery] PaginationDto pagination)
@@ -98,7 +100,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestRead)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<LeaveRequestDto>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(LeaveRequestDto), StatusCodes.Status200OK)]
@@ -122,7 +125,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpGet("{id}/status-history")]
     [Authorize(Policy = Permissions.LeaveRequestStatusHistoryRead)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveRequestStatusHistoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -167,7 +171,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveRequestCreate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -223,7 +228,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestUpdate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -261,7 +267,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpPatch("{id}/change-status")]
     [Authorize(Policy = Permissions.LeaveRequestChangeStatus)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -305,7 +312,8 @@ public class LeaveRequestsController : ControllerBase
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveRequestDelete)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]

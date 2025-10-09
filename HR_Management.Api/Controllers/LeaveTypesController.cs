@@ -30,7 +30,8 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveTypeReadList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveTypeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<LeaveTypeDto>>> Get([FromQuery] PaginationDto pagination)
@@ -44,6 +45,28 @@ public class LeaveTypesController : ControllerBase
     }
 
     /// <summary>
+    ///     Retrieves list of leave type for selection for example in select,dropdown
+    /// </summary>
+    /// <returns>
+    /// </returns>
+    /// <remarks>
+    ///     Sample request: GET: api/leave-types/selection
+    /// </remarks>
+    [HttpGet("selection")]
+    [Authorize(Policy = Permissions.LeaveTypeReadListSelection)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(List<LeaveTypeDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<LeaveTypeDto>>> Get()
+    {
+        var result = await _mediator.Send(new GetLeaveTypeListSelectionRequest());
+        if (!result.Any())
+            return NoContent();
+        return Ok(result);
+    }
+
+    /// <summary>
     ///     receive a leave type by id
     /// </summary>
     /// <param name="id"></param>
@@ -53,7 +76,8 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeRead)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(LeaveTypeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<LeaveTypeDto>> Get(int id)
@@ -72,7 +96,8 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveTypeCreate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -97,7 +122,8 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpPut("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeUpdate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -122,7 +148,8 @@ public class LeaveTypesController : ControllerBase
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveTypeDelete)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]

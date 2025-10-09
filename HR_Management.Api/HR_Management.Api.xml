@@ -244,6 +244,16 @@
                 Sample request: GET: api/leave-statuses
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Get">
+            <summary>
+                Retrieves list of leave status for selection for example in select,dropdown
+            </summary>
+            <returns>
+            </returns>
+            <remarks>
+                Sample request: GET: api/leave-statuses/selection
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Get(System.Int32)">
             <summary>
                 Retrieves the details of a specific leave status by its Id
@@ -277,19 +287,16 @@
                 POST api/leave-statuses
                 {
                 "name":"emergency",
-                "description":"(Optional)Using for accepted leave request.",
+                "description":"(Optional)ex:Using for accepted leave request.",
                 }
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Put(System.Int32,HR_Management.Application.DTOs.LeaveRequest.UpdateLeaveRequestDto)">
+        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Put(HR_Management.Application.DTOs.LeaveStatus.UpdateLeaveStatusDto)">
             <summary>
                 Updates the details of an existing leave request.
             </summary>
-            <param name="id">
-                The Id of the leave request to be updated.
-            </param>
             <param name="request">
-                The updated leave request data (start date, end date, leave type, etc.).
+                The updated leave status data (id,name, description).
             </param>
             <returns>
                 Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
@@ -303,26 +310,26 @@
                 {
                 "id":1,
                 "name":"emergency",
-                "description":"(Optional)Using for accepted leave request.",
+                "description":"(Optional)ex:Using for accepted leave request.",
                 }
-            </remarks>
-        </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Put(System.Int32,System.String)">
-            <summary>
-                PUT api/leave-statuses/5
-            </summary>
-            <param name="id"></param>
-            <remarks>
-                Sample request:
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveStatusesController.Delete(System.Int32)">
             <summary>
-                DELETE api/leave-statuses/5
+                Deletes an existing leave status by its Id.
             </summary>
-            <param name="id"></param>
+            <param name="id">
+                The Id of the leave status to be deleted
+            </param>
+            <returns>
+                Returns a <see cref="T:HR_Management.Common.ResultDto" /> wrapped in an <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult" />:
+                - 200 (OK) : Leave status successfully deleted
+                - 400 (BadRequest) : Invalid request (e.g, Id isn't valid)
+                - 500 (InternalServerError) : An unexpected error occurred
+            </returns>
             <remarks>
                 Sample request:
+                DELETE api/leave-statuses/5
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(HR_Management.Common.Pagination.PaginationDto)">
@@ -332,6 +339,16 @@
             <returns></returns>
             <remarks>
                 SampleRequest: GET api/leave-types/
+            </remarks>
+        </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get">
+            <summary>
+                Retrieves list of leave type for selection for example in select,dropdown
+            </summary>
+            <returns>
+            </returns>
+            <remarks>
+                Sample request: GET: api/leave-types/selection
             </remarks>
         </member>
         <member name="M:HR_Management.Api.Controllers.LeaveTypesController.Get(System.Int32)">

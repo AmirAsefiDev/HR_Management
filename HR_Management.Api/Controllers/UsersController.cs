@@ -35,7 +35,7 @@ public class UsersController : ControllerBase
     [HttpGet("me")]
     [Authorize(Policy = Permissions.UserRead)]
     [ProducesResponseType(typeof(GetUserDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetUserInfo()
     {
@@ -69,7 +69,8 @@ public class UsersController : ControllerBase
     [Authorize(Policy = Permissions.UserReadList)]
     [ProducesResponseType(typeof(PagedResultDto<GetUsersLookupDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResultDto<GetUsersLookupDto>>> GetUsersLookup(
         [FromQuery] PaginationDto pagination)
@@ -101,7 +102,7 @@ public class UsersController : ControllerBase
     [Authorize(Policy = Permissions.UserEditProfile)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> EditProfile([FromBody] EditProfileRequestDto request)
     {
@@ -142,7 +143,7 @@ public class UsersController : ControllerBase
     [Authorize(Policy = Permissions.UserEditProfile)]
     [ProducesResponseType(typeof(ResultDto<UpdateUserPictureResponseDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<UpdateUserPictureResponseDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateUserPicture([FromForm] UpdateUserPictureRequestDto request)
     {
@@ -177,7 +178,7 @@ public class UsersController : ControllerBase
     [HttpDelete("delete-profile-picture")]
     [Authorize(Policy = Permissions.UserEditProfile)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     public async Task<ActionResult> DeleteProfilePicture([FromQuery] string picture)
     {
@@ -210,7 +211,8 @@ public class UsersController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.UserReadList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<GetUsersDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]

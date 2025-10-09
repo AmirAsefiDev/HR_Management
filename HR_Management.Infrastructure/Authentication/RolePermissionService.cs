@@ -14,7 +14,10 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveRequestCreate,
                 Permissions.LeaveRequestDelete,
                 Permissions.LeaveRequestRead,
+
                 Permissions.LeaveTypeReadList,
+                Permissions.LeaveTypeReadListSelection,
+
                 Permissions.MyLeaveRequestsList,
                 Permissions.LeaveRequestStatusHistoryRead,
                 Permissions.UserEditProfile,
@@ -40,6 +43,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveTypeUpdate,
                 Permissions.LeaveTypeReadList,
                 Permissions.LeaveTypeRead,
+                Permissions.LeaveTypeReadListSelection,
                 Permissions.LeaveTypeDelete,
 
                 Permissions.LeaveRequestStatusHistoryReadList,
@@ -48,6 +52,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveStatusCreate,
                 Permissions.LeaveStatusUpdate,
                 Permissions.LeaveStatusReadList,
+                Permissions.LeaveStatusReadListSelection,
                 Permissions.LeaveStatusRead,
                 Permissions.LeaveStatusDelete,
 
@@ -69,12 +74,14 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveAllocationRead,
 
                 Permissions.LeaveTypeReadList,
+                Permissions.LeaveTypeReadListSelection,
                 Permissions.LeaveTypeRead,
 
                 Permissions.LeaveRequestStatusHistoryReadList,
                 Permissions.LeaveRequestStatusHistoryRead,
 
                 Permissions.LeaveStatusReadList,
+                Permissions.LeaveStatusReadListSelection,
                 Permissions.LeaveStatusRead,
 
                 Permissions.UserEditProfile,
@@ -99,6 +106,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveTypeCreate,
                 Permissions.LeaveTypeUpdate,
                 Permissions.LeaveTypeReadList,
+                Permissions.LeaveTypeReadListSelection,
                 Permissions.LeaveTypeRead,
                 Permissions.LeaveTypeDelete,
 
@@ -108,6 +116,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveStatusCreate,
                 Permissions.LeaveStatusUpdate,
                 Permissions.LeaveStatusReadList,
+                Permissions.LeaveStatusReadListSelection,
                 Permissions.LeaveStatusRead,
                 Permissions.LeaveStatusDelete,
 

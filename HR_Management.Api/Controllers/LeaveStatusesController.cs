@@ -1,5 +1,4 @@
-﻿using HR_Management.Application.DTOs.LeaveRequest;
-using HR_Management.Application.DTOs.LeaveStatus;
+﻿using HR_Management.Application.DTOs.LeaveStatus;
 using HR_Management.Application.Features.LeaveStatuses.Requests.Commands;
 using HR_Management.Application.Features.LeaveStatuses.Requests.Queries;
 using HR_Management.Common;
@@ -36,17 +35,40 @@ public class LeaveStatusesController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Authorize(Policy = Permissions.LeaveStatusReadList)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(PagedResultDto<LeaveStatusDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<PagedResultDto<LeaveRequestListDto>>> Get([FromQuery] PaginationDto pagination)
+    public async Task<ActionResult<PagedResultDto<LeaveStatusDto>>> Get([FromQuery] PaginationDto pagination)
     {
         var leaveRequests = await
             _mediator.Send(new GetLeaveStatusListRequest { Pagination = pagination });
         if (!leaveRequests.Items.Any())
             return NoContent();
         return Ok(leaveRequests);
+    }
+
+    /// <summary>
+    ///     Retrieves list of leave status for selection for example in select,dropdown
+    /// </summary>
+    /// <returns>
+    /// </returns>
+    /// <remarks>
+    ///     Sample request: GET: api/leave-statuses/selection
+    /// </remarks>
+    [HttpGet("selection")]
+    [Authorize(Policy = Permissions.LeaveStatusReadListSelection)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(List<LeaveStatusDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<LeaveStatusDto>>> Get()
+    {
+        var result = await _mediator.Send(new GetLeaveStatusListSelectionRequest());
+        if (!result.Any())
+            return NoContent();
+        return Ok(result);
     }
 
     /// <summary>
@@ -65,7 +87,8 @@ public class LeaveStatusesController : ControllerBase
     /// </remarks>
     [HttpGet("{id}")]
     [Authorize(Policy = Permissions.LeaveStatusRead)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<LeaveStatusDto>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<LeaveStatusDto>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(LeaveStatusDto), StatusCodes.Status200OK)]
@@ -75,6 +98,7 @@ public class LeaveStatusesController : ControllerBase
         var result = await _mediator.Send(new GetLeaveStatusDetailRequest { Id = id });
         return StatusCode(result.StatusCode, result.Data);
     }
+
 
     /// <summary>
     ///     Creates a new leave status.
@@ -97,7 +121,8 @@ public class LeaveStatusesController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Authorize(Policy = Permissions.LeaveStatusCreate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto<int>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -110,7 +135,6 @@ public class LeaveStatusesController : ControllerBase
         var result = await _mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
-
 
     /// <summary>
     ///     Updates the details of an existing leave request.
@@ -135,7 +159,8 @@ public class LeaveStatusesController : ControllerBase
     /// </remarks>
     [HttpPut]
     [Authorize(Policy = Permissions.LeaveStatusUpdate)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
@@ -168,7 +193,8 @@ public class LeaveStatusesController : ControllerBase
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize(Policy = Permissions.LeaveStatusDelete)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
