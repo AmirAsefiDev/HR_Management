@@ -26,5 +26,18 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.HasOne(x => x.Role)
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.RoleId);
+
+        builder.HasData(new User
+        {
+            Id = 1,
+            FullName = "Amir Asefi",
+            Mobile = "9123456789",
+            CountryCode = 98,
+            Email = "amirasefi.info@gmail.com",
+            PasswordHash = "AQAAAAEAACcQAAAAECLoPiPh/lUma22MQhg2lQABEBIb/P2SIPqIBNC/Sg5QoQQMJqlXRYMclDsTIJEwIQ==",
+            RoleId = 2,
+            CreatedAt = DateTime.Now,
+            Picture = "/images/user/default_profile.jpg"
+        });
     }
 }

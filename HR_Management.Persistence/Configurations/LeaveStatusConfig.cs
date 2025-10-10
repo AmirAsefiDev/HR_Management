@@ -15,5 +15,13 @@ public class LeaveStatusConfig : IEntityTypeConfiguration<LeaveStatus>
         builder.Property(x => x.Description).HasMaxLength(500);
 
         builder.HasIndex(x => x.Name).IsUnique();
+
+        builder.HasData(new List<LeaveStatus>
+        {
+            new() { Id = 1, Name = "Pending" },
+            new() { Id = 2, Name = "Approved" },
+            new() { Id = 3, Name = "Rejected" },
+            new() { Id = 4, Name = "Cancelled" }
+        });
     }
 }
