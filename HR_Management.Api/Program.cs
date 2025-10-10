@@ -22,9 +22,6 @@ builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
-builder.Services.AddMediatR(config =>
-    config.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
-
 builder.Services.AddSwaggerGen(s =>
 {
     s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "HR_Management.Api.xml"), true);
