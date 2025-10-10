@@ -74,7 +74,7 @@
                 DELETE api/leave-allocations/5
             </remarks>
         </member>
-        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.ResetAllocation">
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.ResetAllocations">
             <summary>
                 Resets all existing leave allocations for every user in system and generates new allocations for the new
                 period(year).

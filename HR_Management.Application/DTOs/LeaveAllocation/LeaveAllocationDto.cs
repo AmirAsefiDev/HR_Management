@@ -6,6 +6,7 @@ public class LeaveAllocationDto : BaseDto, ILeaveAllocationDto
 {
     public DateTime DateCreated { get; set; }
     public int TotalDays { get; set; }
+    public int UsedDays { get; set; }
     public int Period { get; set; }
     public string LeaveTypeName { get; set; }
     public string FullName { get; set; }
