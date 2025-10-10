@@ -9,4 +9,6 @@ public interface ILeaveAllocationRepository : IGenericRepository<LeaveAllocation
     Task<bool> HasSufficientAllocationAsync(int userId, int leaveTypeId, int requestedAmount);
     Task<LeaveAllocation> GetUserAllocationAsync(int userId, int leaveTypeId, int requestedAmount);
     Task<bool> HasAnyLeaveAllocationWithTypeIdAsync(int leaveTypeId);
+    Task DeleteAllAsync();
+    Task AddRange(IEnumerable<LeaveAllocation> allocations);
 }

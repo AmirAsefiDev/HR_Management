@@ -5,6 +5,7 @@ using HR_Management.Application.Contracts.Infrastructure.Authentication.JWT;
 using HR_Management.Application.Contracts.Infrastructure.Path;
 using HR_Management.Application.Models;
 using HR_Management.Infrastructure.Authentication;
+using HR_Management.Infrastructure.Job;
 using HR_Management.Infrastructure.Path;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,8 @@ public static class InfrastructureServicesRegistration
         services.AddAuthorization(options => { options.AddPermissionPolicies(); });
 
         services.AddScoped<IPathService, PathService>();
+
+        services.AddHostedService<YearlyLeaveAllocationJob>();
 
         return services;
     }

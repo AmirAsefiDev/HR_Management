@@ -74,6 +74,18 @@
                 DELETE api/leave-allocations/5
             </remarks>
         </member>
+        <member name="M:HR_Management.Api.Controllers.LeaveAllocationsController.ResetAllocation">
+            <summary>
+                Resets all existing leave allocations for every user in system and generates new allocations for the new
+                period(year).
+            </summary>
+            <returns></returns>
+            <remarks>
+                sample Request: POST api/leave-allocations/reset
+                This endpoint should typically be executed at the beginning of a new year
+                to renew all users leave allocations based on the current leave types and their default days.
+            </remarks>
+        </member>
         <member name="M:HR_Management.Api.Controllers.LeaveRequestsController.Get(HR_Management.Common.Pagination.PaginationDto)">
             <summary>
                 Retrieves list of leave requests

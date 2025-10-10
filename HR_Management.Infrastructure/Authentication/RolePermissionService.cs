@@ -30,6 +30,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveAllocationReadList,
                 Permissions.LeaveAllocationRead,
                 Permissions.LeaveAllocationDelete,
+                Permissions.LeaveAllocationReset,
 
                 Permissions.LeaveRequestCreate,
                 Permissions.LeaveRequestUpdate,
@@ -72,6 +73,7 @@ public class RolePermissionService : IRolePermissionService
 
                 Permissions.LeaveAllocationReadList,
                 Permissions.LeaveAllocationRead,
+                Permissions.LeaveAllocationReset,
 
                 Permissions.LeaveTypeReadList,
                 Permissions.LeaveTypeReadListSelection,
@@ -95,6 +97,7 @@ public class RolePermissionService : IRolePermissionService
                 Permissions.LeaveAllocationReadList,
                 Permissions.LeaveAllocationRead,
                 Permissions.LeaveAllocationDelete,
+                Permissions.LeaveAllocationReset,
 
                 Permissions.LeaveRequestCreate,
                 Permissions.LeaveRequestUpdate,

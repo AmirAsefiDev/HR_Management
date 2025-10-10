@@ -54,4 +54,16 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
             await _context.LeaveAllocations.AnyAsync(lr => lr.LeaveTypeId == leaveTypeId);
         return isExistsLeaveAllocationWithTypeId;
     }
+
+    public async Task DeleteAllAsync()
+    {
+        _context.LeaveAllocations.RemoveRange(_context.LeaveAllocations);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddRange(IEnumerable<LeaveAllocation> allocations)
+    {
+        await _context.LeaveAllocations.AddRangeAsync(allocations);
+        await _context.SaveChangesAsync();
+    }
 }

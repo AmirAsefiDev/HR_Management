@@ -7,6 +7,7 @@ public static class Permissions
     public const string LeaveAllocationReadList = "LeaveAllocation.ReadList";
     public const string LeaveAllocationRead = "LeaveAllocation.Read";
     public const string LeaveAllocationDelete = "LeaveAllocation.Delete";
+    public const string LeaveAllocationReset = "LeaveAllocation.Reset";
 
     public const string LeaveRequestCreate = "LeaveRequest.Create";
     public const string LeaveRequestUpdate = "LeaveRequest.Update";

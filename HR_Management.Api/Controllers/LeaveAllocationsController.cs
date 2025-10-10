@@ -148,4 +148,26 @@ public class LeaveAllocationsController : ControllerBase
         var result = await _mediator.Send(command);
         return StatusCode(result.StatusCode, result);
     }
+
+    /// <summary>
+    ///     Resets all existing leave allocations for every user in system and generates new allocations for the new
+    ///     period(year).
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    ///     sample Request: POST api/leave-allocations/reset
+    ///     This endpoint should typically be executed at the beginning of a new year
+    ///     to renew all users leave allocations based on the current leave types and their default days.
+    /// </remarks>
+    [HttpPost("reset")]
+    [Authorize(Policy = Permissions.LeaveAllocationReset)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> ResetAllocations()
+    {
+        var result = await _mediator.Send(new RebuildLeaveAllocationsForNewYearCommand());
+        return Ok(result);
+    }
 }
