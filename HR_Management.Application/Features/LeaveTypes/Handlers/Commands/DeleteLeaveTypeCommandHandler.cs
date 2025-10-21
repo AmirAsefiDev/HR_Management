@@ -24,6 +24,7 @@ public class DeleteLeaveTypeCommandHandler : IRequestHandler<DeleteLeaveTypeComm
 
     public async Task<ResultDto> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
     {
+        var g = await _leaveTypeRepo.GetAllAsync();
         if (request.Id == 0)
             return ResultDto.Failure("Please enter leave type Id.");
         if (request.Id < 0)

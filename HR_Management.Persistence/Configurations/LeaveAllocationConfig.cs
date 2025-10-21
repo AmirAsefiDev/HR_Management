@@ -6,6 +6,13 @@ namespace HR_Management.Persistence.Configurations;
 
 public class LeaveAllocationConfig : IEntityTypeConfiguration<LeaveAllocation>
 {
+    private readonly bool _isMemory;
+
+    public LeaveAllocationConfig(bool isMemory = false)
+    {
+        _isMemory = isMemory;
+    }
+
     public void Configure(EntityTypeBuilder<LeaveAllocation> builder)
     {
         builder.ToTable("LeaveAllocation");
@@ -25,8 +32,9 @@ public class LeaveAllocationConfig : IEntityTypeConfiguration<LeaveAllocation>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Property(x => x.RemainingDays)
-            .HasComputedColumnSql("[TotalDays] - [UsedDays]", true);
+        if (!_isMemory) //because in memory database doesn't support this feature.
+            builder.Property(x => x.RemainingDays)
+                .HasComputedColumnSql("[TotalDays] - [UsedDays]", true);
 
         builder.HasData(new List<LeaveAllocation>
         {

@@ -12,7 +12,7 @@ public class ILeaveTypeDtoValidator : AbstractValidator<ILeaveTypeDto>
 
         RuleFor(p => p.DefaultDay)
             .NotEmpty().WithMessage("{PropertyName} is required")
-            .GreaterThanOrEqualTo(1).WithMessage("{PropertyName} Must be at least 1")
-            .LessThanOrEqualTo(100).WithMessage("{PropertyName} Must be at last 100");
+            .GreaterThanOrEqualTo(1).WithMessage("{PropertyName} must be at least 1")
+            .LessThanOrEqualTo(100).WithMessage("{PropertyName} must be at most 100");
     }
 }

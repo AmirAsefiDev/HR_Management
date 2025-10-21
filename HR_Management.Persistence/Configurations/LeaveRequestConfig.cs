@@ -6,6 +6,13 @@ namespace HR_Management.Persistence.Configurations;
 
 public class LeaveRequestConfig : IEntityTypeConfiguration<LeaveRequest>
 {
+    private readonly bool _isMemory;
+
+    public LeaveRequestConfig(bool isMemory = false)
+    {
+        _isMemory = isMemory;
+    }
+
     public void Configure(EntityTypeBuilder<LeaveRequest> builder)
     {
         builder.ToTable("LeaveRequest");
@@ -30,8 +37,9 @@ public class LeaveRequestConfig : IEntityTypeConfiguration<LeaveRequest>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasIndex(x => x.DateRequested);
-        builder.ToTable(t => t.HasCheckConstraint("CK_LeaveRequest_Date",
-            "[StartDate] <= [EndDate]"));
+        if (!_isMemory) //because in memory database doesn't support this feature.
+            builder.ToTable(t => t.HasCheckConstraint("CK_LeaveRequest_Date",
+                "[StartDate] <= [EndDate]"));
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.LeaveRequests)

@@ -27,6 +27,9 @@ public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeComm
             return ResultDto.Failure(validationResult.Errors.First().ErrorMessage);
 
         var leaveType = await _leaveTypeRepo.GetAsync(request.LeaveTypeDto.Id);
+        if (leaveType == null)
+            return ResultDto.Failure($"No leave type was found by {request.LeaveTypeDto.Id}.");
+
         _mapper.Map(request.LeaveTypeDto, leaveType);
 
         await _leaveTypeRepo.UpdateAsync(leaveType);

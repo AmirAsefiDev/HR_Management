@@ -7,6 +7,7 @@ using HR_Management.Infrastructure;
 using HR_Management.Persistence;
 using HR_Management.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -18,6 +19,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddTransient<ILeaveManagementDbContext, LeaveManagementDbContext>();
+
+if (builder.Environment.IsEnvironment("Test"))
+    builder.Services.AddDbContext<LeaveManagementDbContext>(options =>
+        options.UseInMemoryDatabase("TestDb"));
+else
+    builder.Services.AddDbContext<LeaveManagementDbContext>(options =>
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("LeaveManagementConnectionString"));
+    });
+
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
@@ -178,3 +189,7 @@ app.MapControllerRoute(
     "{controller:Home}/{action=Index}/{id?}"
 );
 app.Run();
+
+public partial class Program
+{
+}

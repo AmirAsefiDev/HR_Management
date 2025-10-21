@@ -2,11 +2,12 @@
 using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
+using HR_Management.Common;
 using MediatR;
 
 namespace HR_Management.Application.Features.LeaveTypes.Handlers.Queries;
 
-public class GetLeaveTypeDetailRequestHandler : IRequestHandler<GetLeaveTypeDetailRequest, LeaveTypeDto>
+public class GetLeaveTypeDetailRequestHandler : IRequestHandler<GetLeaveTypeDetailRequest, ResultDto<LeaveTypeDto>>
 {
     private readonly ILeaveTypeRepository _leaveTypeRepo;
     private readonly IMapper _mapper;
@@ -17,9 +18,14 @@ public class GetLeaveTypeDetailRequestHandler : IRequestHandler<GetLeaveTypeDeta
         _mapper = mapper;
     }
 
-    public async Task<LeaveTypeDto> Handle(GetLeaveTypeDetailRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<LeaveTypeDto>> Handle(GetLeaveTypeDetailRequest request,
+        CancellationToken cancellationToken)
     {
         var getLeaveType = await _leaveTypeRepo.GetAsync(request.Id);
-        return _mapper.Map<LeaveTypeDto>(getLeaveType);
+        if (getLeaveType == null)
+            return ResultDto<LeaveTypeDto>.Failure($"No leaveType found with {request.Id}.", 404);
+
+        var dto = _mapper.Map<LeaveTypeDto>(getLeaveType);
+        return ResultDto<LeaveTypeDto>.Success(dto);
     }
 }

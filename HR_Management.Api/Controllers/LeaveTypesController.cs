@@ -78,12 +78,13 @@ public class LeaveTypesController : ControllerBase
     [Authorize(Policy = Permissions.LeaveTypeRead)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ResultDto), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(LeaveTypeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<LeaveTypeDto>> Get(int id)
     {
         var leaveType = await _mediator.Send(new GetLeaveTypeDetailRequest { Id = id });
-        return Ok(leaveType);
+        return StatusCode(leaveType.StatusCode, leaveType);
     }
 
     /// <summary>

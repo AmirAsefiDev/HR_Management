@@ -1,5 +1,6 @@
 ﻿using HR_Management.Application.Contracts.Persistence.Context;
 using HR_Management.Domain;
+using HR_Management.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Persistence.Context;
@@ -8,7 +9,11 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
 {
     public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
     {
+        IsInMemoryDatabase = options.Extensions
+            .Any(ext => ext.GetType().Name.Contains("InMemory", StringComparison.OrdinalIgnoreCase));
     }
+
+    private bool IsInMemoryDatabase { get; }
 
     public virtual DbSet<LeaveRequestStatusHistory> LeaveRequestStatusHistories { get; set; }
     public virtual DbSet<Role> Roles { get; set; }
@@ -47,6 +52,16 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("dbo");
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
+        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
+
+        modelBuilder.ApplyConfiguration(new LeaveRequestConfig(IsInMemoryDatabase));
+        modelBuilder.ApplyConfiguration(new LeaveRequestStatusHistoryConfig());
+        modelBuilder.ApplyConfiguration(new LeaveTypeConfig());
+        modelBuilder.ApplyConfiguration(new LeaveStatusConfig());
+        modelBuilder.ApplyConfiguration(new LeaveAllocationConfig(IsInMemoryDatabase));
+        modelBuilder.ApplyConfiguration(new UserConfig());
+        modelBuilder.ApplyConfiguration(new RoleConfig());
+        modelBuilder.ApplyConfiguration(new UserTokenConfig());
+        modelBuilder.ApplyConfiguration(new PasswordResetTokenConfig());
     }
 }
