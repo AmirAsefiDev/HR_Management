@@ -41,7 +41,8 @@ public class
                 : query.OrderBy(ls => ls.Description),
             "datecreated" => isDescending
                 ? query.OrderByDescending(ls => ls.DateCreated)
-                : query.OrderBy(ls => ls.DateCreated)
+                : query.OrderBy(ls => ls.DateCreated),
+            _ => query.OrderByDescending(ls => ls.Id)
         };
 
 

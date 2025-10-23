@@ -1,7 +1,6 @@
 ﻿using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.Features.LeaveTypes.Handlers.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
-using HR_Management.UnitTests.Common;
 using HR_Management.UnitTests.Mocks;
 using Moq;
 
@@ -16,7 +15,7 @@ public class DeleteLeaveTypeCommandHandlerTest : TestBase
     public DeleteLeaveTypeCommandHandlerTest()
     {
         _mockTypeRepo = MockLeaveTypeRepository.DeleteMock();
-        _mockRequestRepo = MockLeaveRequestRepository.HasAnyLeaveAllocationWithTypeIdMock();
+        _mockRequestRepo = MockLeaveRequestRepository.HasAnyLeaveRequestWithTypeIdMock();
         _mockAllocationRepo = MockLeaveAllocationRepository.HasAnyLeaveAllocationWithTypeIdMock();
     }
 

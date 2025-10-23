@@ -45,5 +45,20 @@ public class LeaveRequestConfig : IEntityTypeConfiguration<LeaveRequest>
             .WithMany(x => x.LeaveRequests)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        if (_isMemory)
+            builder.HasData(new List<LeaveRequest>
+            {
+                new()
+                {
+                    Id = 1,
+                    DateCreated = DateTime.UtcNow,
+                    LeaveTypeId = 1,
+                    LeaveStatusId = 1,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddDays(7),
+                    RequestComments = "Test leave"
+                }
+            });
     }
 }

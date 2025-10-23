@@ -3,7 +3,6 @@ using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Application.Features.LeaveTypes.Handlers.Queries;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
 using HR_Management.Common.Pagination;
-using HR_Management.UnitTests.Common;
 using HR_Management.UnitTests.Mocks;
 using Moq;
 
@@ -21,11 +20,12 @@ public class GetLeaveTypesListRequestHandlerTests : TestBase
     [Fact]
     public async Task GetLeaveTypeListTest()
     {
+        //Arrange
         var handler = new GetLeaveTypeListRequestHandler(_mockRepository.Object, _mapper);
-
+        //Act
         var result = await handler.Handle(new GetLeaveTypeListRequest { Pagination = new PaginationDto() },
             CancellationToken.None);
-
+        //Assert
         Assert.IsType<PagedResultDto<LeaveTypeDto>>(result);
     }
 }

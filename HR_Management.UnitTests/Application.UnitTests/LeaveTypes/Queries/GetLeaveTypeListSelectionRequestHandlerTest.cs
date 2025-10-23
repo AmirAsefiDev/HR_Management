@@ -2,7 +2,6 @@
 using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Application.Features.LeaveTypes.Handlers.Queries;
 using HR_Management.Application.Features.LeaveTypes.Requests.Queries;
-using HR_Management.UnitTests.Common;
 using HR_Management.UnitTests.Mocks;
 using Moq;
 

@@ -11,9 +11,9 @@ using Shouldly;
 
 namespace HR_Management.UnitTests.API.IntegrationTests;
 
-public class LeaveTypeControllerTests : IntegrationTestBase
+public class LeaveTypesControllerTests : IntegrationTestBase
 {
-    public LeaveTypeControllerTests(CustomWebApplicationFactory factory) : base(factory)
+    public LeaveTypesControllerTests(CustomWebApplicationFactory factory) : base(factory)
     {
     }
 
@@ -42,12 +42,22 @@ public class LeaveTypeControllerTests : IntegrationTestBase
         //Arrange
         using var scope = new CustomWebApplicationFactory().Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<LeaveManagementDbContext>();
-        context.LeaveTypes.RemoveRange(context.LeaveTypes);
-        await context.SaveChangesAsync();
-        //Act
-        var response = await _client.GetAsync("api/leave-types/selection");
-        //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var originalData = context.LeaveTypes.ToList();
+        try
+        {
+            context.LeaveTypes.RemoveRange(context.LeaveTypes);
+            await context.SaveChangesAsync();
+            //Act
+            var response = await _client.GetAsync("api/leave-types/selection");
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+        finally
+        {
+            context.ChangeTracker.Clear();
+            await context.LeaveTypes.AddRangeAsync(originalData);
+            await context.SaveChangesAsync();
+        }
     }
 
 
@@ -55,7 +65,7 @@ public class LeaveTypeControllerTests : IntegrationTestBase
     public async Task Get_ShouldReturnOkAndLeaveType()
     {
         await Post_ShouldReturnCreated_WhenValid();
-        var response = await _client.GetAsync("api/leave-types/9");
+        var response = await _client.GetAsync("api/leave-types/4");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var result = await response.Content.ReadFromJsonAsync<ResultDto<LeaveTypeDto>>();
@@ -116,7 +126,7 @@ public class LeaveTypeControllerTests : IntegrationTestBase
             DefaultDay = 99
         };
         //Act
-        var response = await _client.PutAsJsonAsync("api/leave-types/9", dto);
+        var response = await _client.PutAsJsonAsync("api/leave-types/4", dto);
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var result = await response.Content.ReadFromJsonAsync<ResultDto>();
@@ -146,14 +156,15 @@ public class LeaveTypeControllerTests : IntegrationTestBase
         //Creating new leave type handy
         using var scope = new CustomWebApplicationFactory().Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<LeaveManagementDbContext>();
-        await context.LeaveTypes.AddAsync(new LeaveType
+        var entity = new LeaveType
         {
             Name = "Test to delete",
             DefaultDay = 3
-        });
+        };
+        await context.LeaveTypes.AddAsync(entity);
         await context.SaveChangesAsync();
         //Act
-        var response = await _client.DeleteAsync("api/leave-types/8");
+        var response = await _client.DeleteAsync($"api/leave-types/{entity.Id}");
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var result = await response.Content.ReadAsStringAsync();
@@ -163,7 +174,7 @@ public class LeaveTypeControllerTests : IntegrationTestBase
     [Fact]
     public async Task Delete_ShouldReturnConflict_WhenLeaveTypeUsed()
     {
-        //Acr
+        //Act
         var response = await _client.DeleteAsync("api/leave-types/1");
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);

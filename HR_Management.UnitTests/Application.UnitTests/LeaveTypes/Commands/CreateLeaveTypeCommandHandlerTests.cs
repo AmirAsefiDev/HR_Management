@@ -3,7 +3,6 @@ using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Application.Features.LeaveTypes.Handlers.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
 using HR_Management.Common;
-using HR_Management.UnitTests.Common;
 using HR_Management.UnitTests.Mocks;
 using MediatR;
 using Moq;
@@ -30,18 +29,18 @@ public class CreateLeaveTypeCommandHandlerTests : TestBase
     [Fact]
     public async Task Should_Create_LeaveType()
     {
+        //Arrange
         var mockMediator = new Mock<IMediator>();
         mockMediator.Setup(m => m.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
-
         var handler = new CreateLeaveTypeCommandHandler(_mockRepository.Object, _mapper, mockMediator.Object);
+        //Act
         var result = await handler.Handle(new CreateLeaveTypeCommand
         {
             LeaveTypeDto = _createLeaveTypeDto
         }, CancellationToken.None);
-
+        //Assert
         result.ShouldBeOfType<ResultDto<int>>();
-
         var leaveTypes = await _mockRepository.Object.GetAllAsync();
         leaveTypes.Count.ShouldBe(4);
     }

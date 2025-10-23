@@ -3,10 +3,11 @@ using HR_Management.Application.Contracts.Persistence;
 using HR_Management.Application.DTOs.LeaveStatus.Validators;
 using HR_Management.Application.Features.LeaveStatuses.Requests.Commands;
 using HR_Management.Common;
+using MediatR;
 
 namespace HR_Management.Application.Features.LeaveStatuses.Handlers.Commands;
 
-public class UpdateLeaveStatusCommandHandler
+public class UpdateLeaveStatusCommandHandler : IRequestHandler<UpdateLeaveStatusCommand, ResultDto>
 {
     private readonly ILeaveStatusRepository _leaveStatusRepo;
     private readonly IMapper _mapper;

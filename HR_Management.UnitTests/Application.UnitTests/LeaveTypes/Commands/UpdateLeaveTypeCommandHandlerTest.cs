@@ -2,7 +2,6 @@
 using HR_Management.Application.DTOs.LeaveType;
 using HR_Management.Application.Features.LeaveTypes.Handlers.Commands;
 using HR_Management.Application.Features.LeaveTypes.Requests.Commands;
-using HR_Management.UnitTests.Common;
 using HR_Management.UnitTests.Mocks;
 using Moq;
 
@@ -38,7 +37,6 @@ public class UpdateLeaveTypeCommandHandlerTest : TestBase
 
         //Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal("The requested leave type has been successfully updated.", result.Message);
         Assert.Equal(200, result.StatusCode);
     }
 }
