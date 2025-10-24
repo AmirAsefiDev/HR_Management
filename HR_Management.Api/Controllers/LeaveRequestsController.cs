@@ -134,7 +134,7 @@ public class LeaveRequestsController : ControllerBase
         [FromQuery] PaginationDto pagination)
     {
         var leaveRequestStatusHistories = await _mediator.Send(
-            new GetLeaveRequestStatusHistoryRequest
+            new GetLeaveRequestStatusHistoriesByRequestIdRequest
             {
                 LeaveRequestId = id,
                 Pagination = pagination

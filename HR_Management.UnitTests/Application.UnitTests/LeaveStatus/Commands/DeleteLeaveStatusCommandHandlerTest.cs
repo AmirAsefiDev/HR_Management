@@ -16,7 +16,7 @@ public class DeleteLeaveStatusCommandHandlerTest : TestBase
     {
         _mockStatusRepo = MockLeaveStatusRepository.DeleteMock();
         _mockRequestRepo = MockLeaveRequestRepository.HasAnyLeaveRequestWithStatusIdMock();
-        _mockStatusHistoryRepo = MockLeaveRequestStatusHistoryRepository.HasAnyLeaveHistoryWithStatusIdAsync();
+        _mockStatusHistoryRepo = MockLeaveRequestStatusHistoryRepository.HasAnyLeaveHistoryWithStatusIdMock();
     }
 
     [Theory]

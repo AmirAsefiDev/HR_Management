@@ -55,7 +55,7 @@ public class LeaveManagementDbContext : DbContext, ILeaveManagementDbContext
         //modelBuilder.ApplyConfigurationsFromAssembly(typeof(LeaveManagementDbContext).Assembly);
 
         modelBuilder.ApplyConfiguration(new LeaveRequestConfig(IsInMemoryDatabase));
-        modelBuilder.ApplyConfiguration(new LeaveRequestStatusHistoryConfig());
+        modelBuilder.ApplyConfiguration(new LeaveRequestStatusHistoryConfig(IsInMemoryDatabase));
         modelBuilder.ApplyConfiguration(new LeaveTypeConfig());
         modelBuilder.ApplyConfiguration(new LeaveStatusConfig());
         modelBuilder.ApplyConfiguration(new LeaveAllocationConfig(IsInMemoryDatabase));

@@ -8,20 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HR_Management.Application.Features.LeaveRequestStatusHistories.Handlers.Queries;
 
-public class GetLeaveRequestStatusHistoryRequestHandler : IRequestHandler<GetLeaveRequestStatusHistoryRequest,
+public class GetLeaveRequestStatusHistoriesByRequestIdRequestHandler : IRequestHandler<
+    GetLeaveRequestStatusHistoriesByRequestIdRequest,
     PagedResultDto<LeaveRequestStatusHistoryDto>>
 {
     private readonly ILeaveRequestStatusHistoryRepository _leaveRequestStatusHistoryRepo;
     private readonly IMapper _mapper;
 
-    public GetLeaveRequestStatusHistoryRequestHandler(
+    public GetLeaveRequestStatusHistoriesByRequestIdRequestHandler(
         ILeaveRequestStatusHistoryRepository leaveRequestStatusHistoryRepo, IMapper mapper)
     {
         _leaveRequestStatusHistoryRepo = leaveRequestStatusHistoryRepo;
         _mapper = mapper;
     }
 
-    public async Task<PagedResultDto<LeaveRequestStatusHistoryDto>> Handle(GetLeaveRequestStatusHistoryRequest request,
+    public async Task<PagedResultDto<LeaveRequestStatusHistoryDto>> Handle(
+        GetLeaveRequestStatusHistoriesByRequestIdRequest request,
         CancellationToken cancellationToken)
     {
         var query = _leaveRequestStatusHistoryRepo

@@ -6,6 +6,13 @@ namespace HR_Management.Persistence.Configurations;
 
 public class LeaveRequestStatusHistoryConfig : IEntityTypeConfiguration<LeaveRequestStatusHistory>
 {
+    private readonly bool _isMemory;
+
+    public LeaveRequestStatusHistoryConfig(bool isMemory = false)
+    {
+        _isMemory = isMemory;
+    }
+
     public void Configure(EntityTypeBuilder<LeaveRequestStatusHistory> builder)
     {
         builder.ToTable("LeaveRequestStatusHistory");
@@ -27,5 +34,15 @@ public class LeaveRequestStatusHistoryConfig : IEntityTypeConfiguration<LeaveReq
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(x => x.Comment).HasColumnType("nvarchar(500)");
+
+        if (_isMemory)
+            builder.HasData(new LeaveRequestStatusHistory
+            {
+                Id = 1,
+                DateCreated = DateTime.UtcNow,
+                LeaveRequestId = 1,
+                LeaveStatusId = 1,
+                Comment = "Test"
+            });
     }
 }

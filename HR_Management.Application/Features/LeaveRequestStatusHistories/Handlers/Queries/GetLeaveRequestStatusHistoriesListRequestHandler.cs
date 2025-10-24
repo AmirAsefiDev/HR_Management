@@ -55,11 +55,11 @@ public class GetLeaveRequestStatusHistoriesListRequestHandler : IRequestHandler<
         if (!string.IsNullOrWhiteSpace(pagination.searchKey))
         {
             var searchKey = pagination.searchKey.Trim().ToLowerInvariant();
-            query = query.Where(lh =>
-                lh.LeaveStatus.Name.ToLower().Contains(searchKey) ||
-                lh.LeaveRequest.RequestComments.ToLower().Contains(searchKey) ||
-                lh.Comment.ToLower().Contains(searchKey) ||
-                lh.User.FullName.ToLower().Contains(searchKey));
+            query = query.Where(lsh =>
+                lsh.LeaveStatus.Name.ToLower().Contains(searchKey) ||
+                lsh.LeaveRequest.RequestComments.ToLower().Contains(searchKey) ||
+                lsh.Comment.ToLower().Contains(searchKey) ||
+                lsh.User.FullName.ToLower().Contains(searchKey));
         }
 
         var pagedQuery = await query.ToPagedAsync(pagination.pageNumber, pagination.pageSize);
