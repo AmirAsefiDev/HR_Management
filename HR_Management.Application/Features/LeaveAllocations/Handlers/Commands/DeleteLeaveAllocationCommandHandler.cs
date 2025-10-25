@@ -23,7 +23,7 @@ public class DeleteLeaveAllocationCommandHandler : IRequestHandler<DeleteLeaveAl
 
         var leaveAllocation = await _leaveAllocationRepo.GetAsync(request.Id);
         if (leaveAllocation == null)
-            ResultDto.Failure($"No leave allocation found with Id = {request.Id}.");
+            return ResultDto.Failure($"No leave allocation found with Id = {request.Id}.");
 
         await _leaveAllocationRepo.DeleteAsync(leaveAllocation);
         return ResultDto.Success("Leave allocation deleted successfully.");

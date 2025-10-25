@@ -8,9 +8,18 @@ public static class LeaveAllocationSeedData
     {
         return
         [
-            new LeaveAllocation { Id = 1, LeaveTypeId = 1 },
-            new LeaveAllocation { Id = 2, LeaveTypeId = 1 },
-            new LeaveAllocation { Id = 3, LeaveTypeId = 1 }
+            new LeaveAllocation
+            {
+                Id = 1, LeaveTypeId = 1, DateCreated = DateTime.UtcNow, Period = DateTime.UtcNow.Year, TotalDays = 10
+            },
+            new LeaveAllocation
+            {
+                Id = 2, LeaveTypeId = 2, DateCreated = DateTime.UtcNow, Period = DateTime.UtcNow.Year, TotalDays = 15
+            },
+            new LeaveAllocation
+            {
+                Id = 3, LeaveTypeId = 2, DateCreated = DateTime.UtcNow, Period = DateTime.UtcNow.Year, TotalDays = 20
+            }
         ];
     }
 }

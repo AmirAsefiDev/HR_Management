@@ -6,9 +6,8 @@ using MediatR;
 
 namespace HR_Management.Application.Features.LeaveAllocations.Handlers.Commands;
 
-public class
-    RebuildLeaveAllocationsForNewYearCommandHandler : IRequestHandler<RebuildLeaveAllocationsForNewYearCommand,
-    ResultDto>
+public class RebuildLeaveAllocationsForNewYearCommandHandler
+    : IRequestHandler<RebuildLeaveAllocationsForNewYearCommand, ResultDto>
 {
     private readonly ILeaveAllocationRepository _leaveAllocationRepo;
     private readonly ILeaveTypeRepository _leaveTypeRepo;
@@ -44,7 +43,7 @@ public class
                 TotalDays = leaveType.DefaultDay
             });
 
-        await _leaveAllocationRepo.AddRange(allocations);
+        await _leaveAllocationRepo.AddRangeAsync(allocations);
 
         return ResultDto.Success("Leave allocations has been reset for the new year.");
     }

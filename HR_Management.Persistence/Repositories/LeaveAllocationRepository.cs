@@ -32,7 +32,7 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         return allocation.RemainingDays >= requestedAmount;
     }
 
-    public async Task<LeaveAllocation> GetUserAllocationAsync(int userId, int leaveTypeId, int requestedAmount)
+    public async Task<LeaveAllocation> GetUserAllocationAsync(int userId, int leaveTypeId)
     {
         var userAllocation = await _context.LeaveAllocations
             .FirstOrDefaultAsync(la => la.UserId == userId && la.LeaveTypeId == leaveTypeId);
@@ -61,7 +61,7 @@ public class LeaveAllocationRepository : GenericRepository<LeaveAllocation>, ILe
         await _context.SaveChangesAsync();
     }
 
-    public async Task AddRange(IEnumerable<LeaveAllocation> allocations)
+    public async Task AddRangeAsync(IEnumerable<LeaveAllocation> allocations)
     {
         await _context.LeaveAllocations.AddRangeAsync(allocations);
         await _context.SaveChangesAsync();

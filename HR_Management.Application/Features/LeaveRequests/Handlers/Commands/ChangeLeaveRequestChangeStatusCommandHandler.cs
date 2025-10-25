@@ -63,8 +63,7 @@ public class
                 requestedAmount = (leaveRequest.EndDate.Date - leaveRequest.StartDate.Date).TotalDays + 1;
 
             var allocation = await
-                _leaveAllocationRepo.GetUserAllocationAsync(leaveRequest.UserId, leaveRequest.LeaveTypeId,
-                    (int)requestedAmount);
+                _leaveAllocationRepo.GetUserAllocationAsync(leaveRequest.UserId, leaveRequest.LeaveTypeId);
             if (allocation == null)
                 return ResultDto.Failure("No leave allocation found for this user for leave type.");
             if (allocation.RemainingDays < requestedAmount)

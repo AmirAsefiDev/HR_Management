@@ -72,6 +72,7 @@ public class LeaveAllocationsController : ControllerBase
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ResultDto<LeaveAllocationDto>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResultDto<LeaveAllocationDto>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(LeaveAllocationDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResultDto), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Get(int id)

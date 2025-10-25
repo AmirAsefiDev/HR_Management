@@ -42,6 +42,15 @@ public class LeaveTypeRepositoryTest
     }
 
     [Fact]
+    public async Task ExistAsync_ShouldReturnTrue()
+    {
+        //Act
+        var result = await _repo.ExistAsync(1);
+        //Assert
+        Assert.True(result);
+    }
+
+    [Fact]
     public async Task AddAsync_Should_Add_New_LeaveType()
     {
         // Arrange

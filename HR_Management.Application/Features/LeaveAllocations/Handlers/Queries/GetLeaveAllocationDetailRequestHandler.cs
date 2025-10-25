@@ -33,6 +33,6 @@ public class
 
         return ResultDto<LeaveAllocationDto>.Success(
             _mapper.Map<LeaveAllocationDto>(getLeaveAllocation)
-            , "LeaveAllocation Retrieves Successfully.");
+            , "LeaveAllocation retrieves successfully.");
     }
 }

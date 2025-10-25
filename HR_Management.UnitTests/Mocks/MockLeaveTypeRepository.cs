@@ -24,6 +24,9 @@ public static class MockLeaveTypeRepository
     {
         var leaveTypes = LeaveTypeSeedData.GetList();
         var mockRepo = CreateBaseMock(leaveTypes);
+
+        mockRepo.Setup(lt => lt.ExistAsync(It.IsAny<int>())).ReturnsAsync(true);
+
         return mockRepo;
     }
 
