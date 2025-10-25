@@ -4,10 +4,11 @@ using HR_Management.Application.DTOs.LeaveAllocation;
 using HR_Management.Common;
 using HR_Management.Common.Pagination;
 using HR_Management.Persistence.Context;
+using HR_Management.UnitTests.API.IntegrationTests.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
-namespace HR_Management.UnitTests.API.IntegrationTests.Common;
+namespace HR_Management.UnitTests.API.IntegrationTests;
 
 public class LeaveAllocationsControllerTests : IntegrationTestBase
 {
@@ -23,7 +24,7 @@ public class LeaveAllocationsControllerTests : IntegrationTestBase
         //Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var content = await response.Content.ReadFromJsonAsync<PagedResultDto<LeaveAllocationDto>>();
-        content.Items.Count.ShouldBe(7);
+        content.Items.Count.ShouldBe(10);
     }
 
     [Fact]
@@ -140,12 +141,25 @@ public class LeaveAllocationsControllerTests : IntegrationTestBase
     [Fact]
     public async Task Post_ShouldReturnOkAndResetAllocations()
     {
-        //Act
-        var response = await _client.PostAsync("api/leave-allocations/reset", null);
-        //Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var content = await response.Content.ReadFromJsonAsync<ResultDto>();
-        Assert.IsType<ResultDto>(content);
-        Assert.True(content.IsSuccess);
+        //Arrange
+        using var scope = new CustomWebApplicationFactory().Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<LeaveManagementDbContext>();
+        var originalData = context.LeaveAllocations.ToList();
+        try
+        {
+            //Act
+            var response = await _client.PostAsync("api/leave-allocations/reset", null);
+            //Assert
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var content = await response.Content.ReadFromJsonAsync<ResultDto>();
+            Assert.IsType<ResultDto>(content);
+            Assert.True(content.IsSuccess);
+        }
+        finally
+        {
+            context.ChangeTracker.Clear();
+            await context.LeaveAllocations.AddRangeAsync(originalData);
+            await context.SaveChangesAsync();
+        }
     }
 }
